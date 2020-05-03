@@ -3,14 +3,13 @@
 <section class="page-wrap"><div class="container">
 	<section class="row">
 		<div id="slide" class="slide">
-<?php if ( function_exists( 'soliloquy' ) ) { soliloquy( '40' ); }?>
+<?php if ( function_exists( 'soliloquy' ) ) { soliloquy( '98' ); }?>
 	</div>
 	</section>
 	<section class="row">
 		<div class="col-lg-3">
 			<?php if( is_active_sidebar('page-sidebar')):?>
 				<?php dynamic_sidebar('page-sidebar');?>
-				<div id="search" class="search"><?php get_search_form();?></div>
 		<?php endif;?>
 		</div>
 		<div class="col-lg-9">
@@ -20,15 +19,12 @@
 				<?php endif?>
 			<?php get_template_part('includes/section','content');?>
 		</div>
-	</div>
 </section>
 <section class="row">
 	<div class="cpr">
 		&copy; Bogit codeing 2020
 	</div>
-</div>
 </section>
-</div>
-</section>
+</div></section>
 
 <?php get_footer();?>
