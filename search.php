@@ -1,11 +1,9 @@
 <?php get_header();?>
 <div id="swgimage"></div>
 <section class="page-wrap"><div class="container">
-	
-
 	<div class="row">
 		<div id="slide" class="slide">
-<?php if ( function_exists( 'soliloquy' ) ) { soliloquy( '98' ); }?>
+<?php if ( function_exists( 'soliloquy' ) ) { soliloquy( '40' ); }?>
 	</div>
 	</div>
 	<div class="row">

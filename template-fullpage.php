@@ -12,7 +12,7 @@ Template Name: Full Page
 
 	<div class="row">
 		<div id="slide" class="slide">
-<?php if ( function_exists( 'soliloquy' ) ) { soliloquy( '98' ); }?>
+<?php if ( function_exists( 'soliloquy' ) ) { soliloquy( '40' ); }?>
 	</div>
 	</div>
 	<div class="row">

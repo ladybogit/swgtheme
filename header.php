@@ -7,7 +7,7 @@
 </head>
 <body <?php body_class();?>>
 <header>
-<div class="container sticky-top">
+<div class="container sticky-top" id="menu">
 	<?php
 		wp_nav_menu(
 			array(
