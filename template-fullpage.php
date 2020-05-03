@@ -16,7 +16,7 @@ Template Name: Full Page
 	</div>
 	</div>
 	<div class="row">
-		<h1><?php the_title();?></h1>
+		<h1 class="head1"><?php the_title();?></h1>
 	</div>
 	<div class="row">
 

@@ -22,7 +22,7 @@
 			</div>
 		</div>
 		<div class="col-lg-9">
-			<h1><?php the_title();?></h1>
+			<h1 class="head1"><?php the_title();?></h1>
 			<?php if(has_post_thumbnail()):?>
 				<img src="<?php the_post_thumbnail_url('blog-small');?>" class= "img-fliud mb-3 img-thumbnail mr-4">
 				<?php endif?>
