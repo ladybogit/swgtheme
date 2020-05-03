@@ -12,3 +12,6 @@ dubble comment box removed
 CSS alinment changes to archives
 CSS color chance to archive cards
 Auther: added before auther name
+Added template for about page
+added scetion for about page
+remved unnessasery file
