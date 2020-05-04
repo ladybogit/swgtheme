@@ -28,3 +28,7 @@ bottom bar moved into wraper and css adusted acordinly
 search bar moved to header
 wraper fixed
 fixed "Search Results For" on blog pages
+
+0.2.0
+Search page fized
+search bar add (sill need work on postioning)

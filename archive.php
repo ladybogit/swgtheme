@@ -25,6 +25,16 @@
 				<img src="<?php the_post_thumbnail_url('blog-small');?>" class= "img-fliud mb-3 img-thumbnail mr-4">
 				<?php endif?>
 			<?php get_template_part('includes/section','archive');?>
+<?php
+			global $wp_query;
+			$big = 99999999;
+			echo paginate_links( array(
+				'base' => str_replace($big, '%#%', esc_url( get_pagenum_link( $big))),
+				'format' => '?paged=%#%',
+				'currant' => max( 1, get_query_var('paged')),
+				'total' => $wp_query->max_num_pages
+			));
+		 ?>
 		</div>
 </section>
 <section class="row">

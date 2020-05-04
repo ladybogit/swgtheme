@@ -109,13 +109,15 @@ header .top-menu li:last-child a {
 }
 
 
-.search {
+header .search-bar {
   position:fixed;
-  display:flex;
-top: 1px;
-right: 10%;
-height: 30px;
-width: 150px;
+  display:inline-block;
+  font-size:8px;
+ padding: 2px 7px;
+top: 10px;
+left: 80%;
+height: 10px;
+width: 20%;
 z-index: 999999;
 }
 .col-lg-3 {
@@ -181,11 +183,11 @@ position: relative;
 	margin: 0;
 	padding: 0;
 }
-.widget_search {
+/*.widget_search {
 	position: fixed;
 	top: 2px;
-	right: 20px;
-}
+	left: 70%;
+}*/
 
   #swgimage {
   	position:relative;

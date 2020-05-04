@@ -23,7 +23,11 @@
 		<div class="col-lg-9">
 			<h1 class="head1"><?php the_title();?></h1>
 			<h1>Search Results For '<?php echo get_search_query();?>'</h1>
+			<?php // Get number of results
+$results_count = $wp_query->found_posts;
+?>
 			<?php if(has_post_thumbnail()):?>
+				
 				<img src="<?php the_post_thumbnail_url('blog-small');?>" class= "img-fliud mb-3 img-thumbnail mr-4">
 				<?php endif?>
 			<?php get_template_part('includes/section','content');?>
