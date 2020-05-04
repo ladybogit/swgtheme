@@ -1,7 +1,3 @@
-this theme requers the following
-
-Soliloquy Sliders
-
 Chaingelog
 
 0.1.1:
@@ -29,6 +25,11 @@ search bar moved to header
 wraper fixed
 fixed "Search Results For" on blog pages
 
-0.2.0
+0.2.0:
 Search page fized
 search bar add (sill need work on postioning)
+
+0.3.0:
+built in gallary added
+galary sidebar for gallery 
+back end added for gallery

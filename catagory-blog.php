@@ -3,7 +3,9 @@
 <section class="page-wrap"><div class="container">
 	<section class="row">
 		<div id="slide" class="slide">
-<?php if ( function_exists( 'soliloquy' ) ) { soliloquy( '98' ); }?>
+<?php if( is_active_sidebar('galary-sidebar')):?>
+				<?php dynamic_sidebar('galary-sidebar');?>
+		<?php endif;?>
 	</div>
 	</section>
 	<section class="row">

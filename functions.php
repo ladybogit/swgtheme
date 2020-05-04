@@ -64,6 +64,14 @@ register_sidebar(
 			'after_title' => '</h4>'
 	)
 );
+register_sidebar(
+	array(
+			'name' => 'galary Sidebar',
+			'id' => 'galary-sidebar',
+			'before_title' => '<h4 class="widget-title">',
+			'after_title' => '</h4>'
+	)
+);
 }
 add_action('widgets_init','my_sidebars');
 
@@ -99,8 +107,8 @@ function swg_init() {
     register_post_type('swg_images', $args);
 }
 add_action('init', 'swg_init');
-add_image_size('swg_widget', 180, 100, true);
-add_image_size('swg_function', 600, 280, true);
+add_image_size('swg_widget', 1000, 1000, true);
+add_image_size('swg_function', 1600, 1400, true);
 
 function swg_function($type='swg_function') {
     $args = array(
@@ -119,7 +127,7 @@ function swg_function($type='swg_function') {
         $result .='<img title="'.get_the_title().'" src="' . $the_url[0] . '" data-thumb="' . $the_url[0] . '" alt=""/>';
     }
     $result .= '</div>';
-    $result .='<div id = "htmlcaption" class = "nivo-html-caption">';
+    $result .='<div id = "htmlcaption" class = "swg-html-caption">';
     $result .='<strong>This</strong> is an example of a <em>HTML</em> caption with <a href = "#">a link</a>.';
     $result .='</div>';
     $result .='</div>';
@@ -137,7 +145,6 @@ class swg_Widget extends WP_Widget {
     public function __construct() {
         parent::__construct('swg_Widget', 'SWG Slideshow', array('description' => __('A SWG Slideshow Widget', 'text_domain')));
     }
-}
 
 public function form($instance) {
     if (isset($instance['title'])) {
@@ -167,7 +174,8 @@ public function widget($args, $instance) {
     echo $before_widget;
     if (!empty($title))
         echo $before_title . $title . $after_title;
-    echo np_function('np_widget');
+    echo swg_function('swg_widget');
     echo $after_widget;
 }
 
+}

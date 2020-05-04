@@ -162,6 +162,7 @@ background-color:#000;
 position:relative;
 }
 .slide {
+  display:flex;
 	box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -350,6 +351,16 @@ font: bold 18px;
   background: -ms-linear-gradient(top,  #EE0A20,  #8C0D15);
   background: -webkit-gradient(linear, left top, left bottom, from(#EE0A20), to(#8C0D15));
   background: -moz-linear-gradient(top,  #EE0A20,  #8C0D15); 
+}
+.widget.textwidget{
+  width:100%;
+  height: 100%;
+}
+.img {
+    vertical-align: middle;
+    border-style: none;
+    width: 100%;
+    height: 100%;
 }
  .wp-caption {
 

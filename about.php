@@ -1,16 +1,15 @@
 <?php get_header();?>
 <div id="swgimage"></div>
 <section class="page-wrap"><div class="container">
-	
-
-	<div class="row">
+	<section class="row">
 		<div id="slide" class="slide">
-<?php if ( function_exists( 'soliloquy' ) ) { soliloquy( 'site1', 'slug' ); };?>
+<?php if( is_active_sidebar('galary-sidebar')):?>
+				<?php dynamic_sidebar('galary-sidebar');?>
+		<?php endif;?>
 	</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-3">
-			<div class="side-menu"> <?php
+	</section>
+	<section class="row">
+		<div class="col-lg-3"><div class="side-menu"> <?php
 			wp_nav_menu(
 				array(
 					'theme_location' => 'side-menu'
@@ -29,11 +28,12 @@
 				<?php endif?>
 			<?php get_template_part('includes/section','aboutcontent');?>
 		</div>
-	</div>
-</div>
-<div class="row">
+</section>
+<section class="row">
 	<div class="cpr">
 		&copy; Bogit codeing 2020
 	</div>
+</section>
 </div></section>
+
 <?php get_footer();?>
