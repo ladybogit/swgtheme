@@ -3,12 +3,19 @@
 function load_css()
 {
 		wp_register_style('bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', 
-		array(), false, 'all');
+			array(), false, 'all');
 		wp_enqueue_style('bootstrap');
 
 		wp_register_style('stylesheet', get_template_directory_uri() . '/css/main.css', 
-		array(), false, 'all');
+			array(), false, 'all');
 		wp_enqueue_style('stylesheet');
+
+		wp_register_style('swg_styles', get_template_directory_uri() . 'css/swg-slider.css', array(), false, 'all');
+		wp_enqueue_style('swg_styles');
+
+    	wp_register_style('swg_styles_theme', get_template_directory_uri() . 'css/default.css',
+    		array(), false, 'all');
+		wp_enqueue_style('swg_styles_theme');
 }
 
 add_action('wp_enqueue_scripts','load_css');
@@ -18,6 +25,11 @@ function load_js()
 		wp_enqueue_script('jquery');
 		wp_register_script('bootstrapjs', get_template_directory_uri() . '/js/bootstrap.min.js', 'jquery', false, true);
 		wp_enqueue_script('bootstrapjs');
+		  wp_register_script('swg_image-script',  get_template_directory_uri() .'js/jquery.swg.slider.js',);
+		  wp_enqueue_script('swg_image-script');
+
+		          wp_register_script('swg_script', get_template_directory_uri() .'js/swg.js',);
+		           wp_enqueue_script('swg_script');
 }
 
 add_action('wp_enqueue_scripts','load_js');
@@ -73,3 +85,89 @@ add_theme_support( 'custom-logo', array(
     'height' => 480,
     'width'  => 720,
 ) );
+
+ 
+function swg_init() {
+    $args = array(
+        'public' => true,
+        'label' => 'Star Wars Galaxies Image Slider',
+        'supports' => array(
+            'title',
+            'thumbnail'
+        )
+    );
+    register_post_type('swg_images', $args);
+}
+add_action('init', 'swg_init');
+add_image_size('swg_widget', 180, 100, true);
+add_image_size('swg_function', 600, 280, true);
+
+function swg_function($type='swg_function') {
+    $args = array(
+        'post_type' => 'np_images',
+        'posts_per_page' => 5
+    );
+    $result = '<div class="slider-wrapper theme-default">';
+    $result .= '<div id="slider" class="swgSlider">';
+ 
+    //the loop
+    $loop = new WP_Query($args);
+    while ($loop->have_posts()) {
+        $loop->the_post();
+ 
+        $the_url = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), $type);
+        $result .='<img title="'.get_the_title().'" src="' . $the_url[0] . '" data-thumb="' . $the_url[0] . '" alt=""/>';
+    }
+    $result .= '</div>';
+    $result .='<div id = "htmlcaption" class = "nivo-html-caption">';
+    $result .='<strong>This</strong> is an example of a <em>HTML</em> caption with <a href = "#">a link</a>.';
+    $result .='</div>';
+    $result .='</div>';
+    return $result;
+}
+add_shortcode('swg-shortcode', 'swg_function');
+
+function swg_widgets_init() {
+    register_widget('swg_Widget');
+}
+ 
+add_action('widgets_init', 'swg_widgets_init');
+class swg_Widget extends WP_Widget {
+ 
+    public function __construct() {
+        parent::__construct('swg_Widget', 'SWG Slideshow', array('description' => __('A SWG Slideshow Widget', 'text_domain')));
+    }
+}
+
+public function form($instance) {
+    if (isset($instance['title'])) {
+        $title = $instance['title'];
+    }
+    else {
+        $title = __('Widget Slideshow', 'text_domain');
+    }
+    ?>
+        <p>
+            <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
+        </p>
+    <?php
+}
+ 
+public function update($new_instance, $old_instance) {
+    $instance = array();
+    $instance['title'] = strip_tags($new_instance['title']);
+ 
+    return $instance;
+}
+public function widget($args, $instance) {
+    extract($args);
+    // the title
+    $title = apply_filters('widget_title', $instance['title']);
+    echo $before_widget;
+    if (!empty($title))
+        echo $before_title . $title . $after_title;
+    echo np_function('np_widget');
+    echo $after_widget;
+}
+
