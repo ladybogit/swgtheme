@@ -33,3 +33,7 @@ search bar add (sill need work on postioning)
 built in gallary added
 galary sidebar for gallery 
 back end added for gallery
+
+0.3.1
+SWG image moved into page-wrap
+SWG image CSS posstion data adjusted

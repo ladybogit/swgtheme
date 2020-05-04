@@ -133,8 +133,8 @@ function swg_function($type='swg_function') {
     $result .='</div>';
     return $result;
 }
-add_shortcode('swg-shortcode', 'swg_function');
-
+/*add_shortcode('swg-shortcode', 'swg_function');
+*/
 function swg_widgets_init() {
     register_widget('swg_Widget');
 }

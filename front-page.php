@@ -1,6 +1,6 @@
 <?php get_header();?>
-<div id="swgimage"></div>
 <section class="page-wrap"><div class="container">
+	<div id="swgimage"></div>
 	<section class="row">
 		<div id="slide" class="slide">
 <?php if( is_active_sidebar('galary-sidebar')):?>
