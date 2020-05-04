@@ -34,6 +34,10 @@ built in gallary added
 galary sidebar for gallery 
 back end added for gallery
 
-0.3.1
+0.3.1:
 SWG image moved into page-wrap
 SWG image CSS posstion data adjusted
+
+0.3.2
+search bar moved to corecct postion
+search bar size adusted
