@@ -17,6 +17,6 @@
 		);
 	?>
 </div>
-<?php wp_link_pages( $args ); ?> 
+ 
 <div class="search-bar"><?php get_search_form();?></div>
 </header>
