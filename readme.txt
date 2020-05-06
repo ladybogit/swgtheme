@@ -61,3 +61,6 @@ CSS footer menu fix
 finished 1 level sub-menu top-menu
 started 1 level sub-menu side-menu not showing atm will fix soon
 started 1 level sub-menu footer-menu working but need work
+
+0.5.1:
+side-menu sub-menu CSS fixed
