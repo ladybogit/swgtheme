@@ -56,8 +56,3 @@ footer sidebar added
 0.4.1:
 footer menu css added
 CSS footer menu fix
-
-0.5.0:
-finished 1 level sub-menu top-menu
-started 1 level sub-menu side-menu not showing atm will fix soon
-started 1 level sub-menu footer-menu working but need work

@@ -92,16 +92,6 @@ header .top-menu li:first-child a {
 header .top-menu li:last-child a {
 	border-bottom-right-radius: 1em;
 }
-header .top-menu li .sub-menu {
-  display:none;
-  list-style-type:none;
-  height: 50px;
-  line-height: 50px;
-}
-header .top-menu .menu-item-has-children:hover .sub-menu {
-  display:flex;border:1px;
-  top:30px;
-}
 header .search-bar {
   position: absolute;
   display: inline-block;
@@ -112,8 +102,6 @@ header .search-bar {
   height: 30px;
   width: 20%;
 }
-
-
 .search-bar {
   display: inline-block;
   font-size: 6px;
@@ -265,17 +253,6 @@ header .search-bar {
   background-color: #4CAF50;
   color: white;
 }
-.side-menu li .sub-menu {
-  /*position: absolute;*/
-  top:-15px;
-  display:none;
-  list-style-type:none;
-  height: 50px;
-  line-height: 50px;
-}
-.side-menu .menu-item-has-children:hover .sub-menu {
-  display:box;
-  }
 .cpr {
  position: absolute;
   display: inline-block;
@@ -458,17 +435,6 @@ z-index:99;
 .footer-menu li:last-child a {
   border-top-right-radius: 1em;
 }
-.footer-menu li .sub-menu {
-  position: absolute;
-  top:-15px;
-  display:none;
-  list-style-type:none;
-  height: 50px;
-  line-height: 50px;
-}
-.footer-menu .menu-item-has-children:hover .sub-menu {
-  display:flex;
-  }
 .footer2 {
   justify-content: center;
   align-items: center;
