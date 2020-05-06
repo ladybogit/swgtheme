@@ -31,8 +31,23 @@
 		</div>
 </section>
 <section class="row">
-	<div class="cpr">
-		&copy; Bogit codeing 2020
+		<div id="footer" class="footer">
+	<?php
+		wp_nav_menu(
+			array(
+				'theme_location' => 'footer-menu',
+				'menu_class' => 'footer-menu'
+			)
+		);
+	?>
+
+</div>
+
+	
+		<div id="footer2" class="footer2">
+<?php if( is_active_sidebar('footer-sidebar')):?>
+				<?php dynamic_sidebar('footer-sidebar');?>
+		<?php endif;?>
 	</div>
 </section>
 </div></section>

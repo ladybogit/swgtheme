@@ -1,6 +1,6 @@
 <?php get_header();?>
+<section class="page-wrap"><div class="container">	
 <div id="swgimage"></div>
-<section class="page-wrap"><div class="container">
 	<section class="row">
 		<div id="slide" class="slide">
 <?php if( is_active_sidebar('galary-sidebar')):?>
@@ -29,15 +29,30 @@
 $results_count = $wp_query->found_posts;
 ?>
 			<?php if(has_post_thumbnail()):?>
-				
+
 				<img src="<?php the_post_thumbnail_url('blog-small');?>" class= "img-fliud mb-3 img-thumbnail mr-4">
 				<?php endif?>
 			<?php get_template_part('includes/section','content');?>
 		</div>
 </section>
 <section class="row">
-	<div class="cpr">
-		&copy; Bogit codeing 2020
+		<div id="footer" class="footer">
+	<?php
+		wp_nav_menu(
+			array(
+				'theme_location' => 'footer-menu',
+				'menu_class' => 'footer-menu'
+			)
+		);
+	?>
+
+</div>
+
+	
+		<div id="footer2" class="footer2">
+<?php if( is_active_sidebar('footer-sidebar')):?>
+				<?php dynamic_sidebar('footer-sidebar');?>
+		<?php endif;?>
 	</div>
 </section>
 </div></section>

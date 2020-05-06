@@ -42,6 +42,7 @@ register_nav_menus(
 array(
 'top-menu' => 'Top Menu Locaion',
 'side-menu' => 'Side Menu Locaion',
+'footer-menu' => 'Footer Locaion',
 'mobile-menu' => 'Mobile Menu Locaion',
 	)
 );
@@ -61,8 +62,16 @@ register_sidebar(
 );
 register_sidebar(
 	array(
-			'name' => 'galary Sidebar',
+			'name' => 'Galary Sidebar',
 			'id' => 'galary-sidebar',
+			'before_title' => '<h4 class="widget-title">',
+			'after_title' => '</h4>'
+	)
+);
+register_sidebar(
+	array(
+			'name' => 'Footer Sidebar',
+			'id' => 'footer-sidebar',
 			'before_title' => '<h4 class="widget-title">',
 			'after_title' => '</h4>'
 	)

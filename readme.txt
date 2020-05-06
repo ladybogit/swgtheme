@@ -48,3 +48,7 @@ CSS cleaned up
 0.3.4:
 search bar locaion fixed 
 z-index ajusted on header and swg image rest removed
+
+0.4.0
+footer menu added
+footer sidebar added
