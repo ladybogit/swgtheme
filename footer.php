@@ -1,10 +1,20 @@
-<section class="page-wrap">
+<footer>
+<div class="footer" id="footer">
 	<div class="container">
-		<div class="cpr">
+	<?php
+		wp_nav_menu(
+			array(
+				'theme_location' => 'footer-menu',
+				'menu_class' => 'footer-menu'
+			)
+		);
+	?>
+</div>
+<div class="cpr">
 		&copy; Bogit codeing 2020
 	</div>
-	</div>
-</section>
+</div>
+</footer>
 <?php wp_footer();?>
 </body>
 </html>

@@ -29,20 +29,7 @@
 			<?php get_template_part('includes/section','content');?>
 		</div>
 </section>
-<section class="row">
-		<div id="footer" class="footer">
-	<?php
-		wp_nav_menu(
-			array(
-				'theme_location' => 'footer-menu',
-				'menu_class' => 'footer-menu'
-			)
-		);
-	?>
-
-</div>
-
-	
+<section class="row">	
 		<div id="footer2" class="footer2">
 <?php if( is_active_sidebar('footer-sidebar')):?>
 				<?php dynamic_sidebar('footer-sidebar');?>
