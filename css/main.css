@@ -20,12 +20,11 @@ header {
   border-bottom-left-radius: 1em;
   border-bottom-right-radius: 1em;
   box-shadow: 3px 3px 1px #000000;
-  z-index:999999;
+  z-index:3;
 }
 section .page-wrap { 
 	top: 300px;
 	padding:0.1rem 0;
-	z-index:2;
 }
 header .top-menu {
 	top:1px; 
@@ -34,14 +33,12 @@ header .top-menu {
 	margin:0;
 	padding:0;
 	display:flex;
-	z-index:99;
 }
 header .container{
 	display:flex;
 	justify-content: center;
 	align-items: center;
 	height:100%;
-	z-index:1;
 }
 header .top-menu li a {
 	padding:1rem 1rem;
@@ -76,7 +73,6 @@ header .top-menu a {
   border-right: 25px solid transparent;
   height: 25px;
   background-color: black;
-  z-index:99;
 }
 header .top-menu a:hover {
   color: #000000 !important;
@@ -105,7 +101,6 @@ header .search-bar {
   left: 75%;
   height: 30px;
   width: 20%;
-  z-index: 999999;
 }
 .search-bar {
   display: inline-block;
@@ -115,7 +110,6 @@ header .search-bar {
   left: 75%;
   height: 30px;
   width: 20%;
-  z-index: 999999;
 }
 .form {
   display: block;
@@ -196,7 +190,7 @@ header .search-bar {
   height: 330px ;
   width: 330px;
   background-image: url("../images/swg.png");
-  z-index: 9999;
+  z-index: 2;
 }
 .side-menu {
 	top:1px; 
@@ -205,7 +199,6 @@ header .search-bar {
 	margin:0;
 	padding:0;
 	display:block;
-	z-index:99;
 }
 .side-menu ul {
   margin: 0;
@@ -233,8 +226,7 @@ header .search-bar {
   background: linear-gradient(top,  #EE0A20,  #8C0D15);
   background: -ms-linear-gradient(top,  #EE0A20,  #8C0D15);
   background: -webkit-gradient(linear, left top, left bottom, from(#EE0A20), to(#8C0D15));
-  background: -moz-linear-gradient(top,  #EE0A20,  #8C0D15); 
-  z-index:99;
+  background: -moz-linear-gradient(top,  #EE0A20,  #8C0D15);
 }
 .side-menu a {
   float: left;
@@ -248,7 +240,6 @@ header .search-bar {
   border-right: 25px solid transparent;
   height: 25px;
   background-color: black;
-  z-index:99;
 }
 .side-menu a:hover {
   color: #000000 !important;
