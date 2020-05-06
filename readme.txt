@@ -55,3 +55,4 @@ footer sidebar added
 
 0.4.1:
 footer menu css added
+CSS footer menu fix
