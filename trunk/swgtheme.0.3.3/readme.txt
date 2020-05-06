@@ -38,12 +38,9 @@ back end added for gallery
 SWG image moved into page-wrap
 SWG image CSS posstion data adjusted
 
-0.3.2:
+0.3.2
 search bar moved to corecct postion
 search bar size adusted
 
-0.3.3:
+0.3.3
 CSS cleaned up
-
-0.3.4:
-search bar locaion fixed 

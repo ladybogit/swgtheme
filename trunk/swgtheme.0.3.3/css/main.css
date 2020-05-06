@@ -97,11 +97,11 @@ header .top-menu li:last-child a {
 	border-bottom-right-radius: 1em;
 }
 header .search-bar {
-  position: absolute;
+  position: fixed;
   display: inline-block;
   font-size: 6px;
   padding: 2px 7px;
-  top: -2px;
+  top: -1px;
   left: 75%;
   height: 30px;
   width: 20%;
