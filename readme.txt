@@ -41,3 +41,6 @@ SWG image CSS posstion data adjusted
 0.3.2
 search bar moved to corecct postion
 search bar size adusted
+
+0.3.3
+CSS cleaned up
