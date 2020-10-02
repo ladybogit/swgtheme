@@ -515,3 +515,18 @@ z-index:99;
    .aligncenter {
 
    }
+/** Plugin Compatabilaty **/
+#wpforo #wpforo-wrap .wpf-button, .wpf-button {
+   color: #FFFFFF !important;
+   margin: 10px !important;
+}
+
+a.wpf-button {
+   height: auto !important;
+   width: auto !important;
+   background: #B61D18 !important;
+   border: 1px solid #777777 !important;
+}
+	.side-menu .wpf-prof-buttons a{
+   height: auto !important;
+}
