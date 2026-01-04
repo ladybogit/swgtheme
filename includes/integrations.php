@@ -38,6 +38,65 @@ class SWGTheme_Integrations {
 		if ( class_exists( 'bbPress' ) ) {
 			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'bbpress_styles' ) );
 		}
+		
+		// WooCommerce integration
+		if ( class_exists( 'WooCommerce' ) ) {
+			add_action( 'after_setup_theme', array( __CLASS__, 'woocommerce_support' ) );
+			add_filter( 'woocommerce_enqueue_styles', array( __CLASS__, 'woocommerce_styles' ) );
+		}
+		
+		// Yoast SEO compatibility
+		if ( defined( 'WPSEO_VERSION' ) ) {
+			add_filter( 'wpseo_breadcrumb_links', array( __CLASS__, 'yoast_breadcrumb_filter' ) );
+		}
+		
+		// Elementor compatibility
+		if ( defined( 'ELEMENTOR_VERSION' ) ) {
+			add_action( 'elementor/widgets/widgets_registered', array( __CLASS__, 'elementor_widgets' ) );
+		}
+		
+		// Jetpack compatibility
+		if ( class_exists( 'Jetpack' ) ) {
+			add_theme_support( 'infinite-scroll', array(
+				'container' => 'main',
+				'footer' => 'footer',
+			) );
+		}
+		
+		// Advanced Custom Fields (ACF) compatibility
+		if ( class_exists( 'ACF' ) ) {
+			add_filter( 'acf/settings/save_json', array( __CLASS__, 'acf_json_save_point' ) );
+			add_filter( 'acf/settings/load_json', array( __CLASS__, 'acf_json_load_point' ) );
+		}
+		
+		// WPML compatibility
+		if ( defined( 'WPML_VERSION' ) ) {
+			add_action( 'wp_head', array( __CLASS__, 'wpml_language_selector' ) );
+		}
+		
+		// BuddyPress compatibility
+		if ( class_exists( 'BuddyPress' ) ) {
+			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'buddypress_styles' ) );
+		}
+		
+		// The Events Calendar compatibility
+		if ( class_exists( 'Tribe__Events__Main' ) ) {
+			add_filter( 'tribe_events_views_v2_bootstrap_html', array( __CLASS__, 'events_calendar_wrapper' ), 10, 2 );
+		}
+		
+		// Easy Digital Downloads compatibility
+		if ( class_exists( 'Easy_Digital_Downloads' ) ) {
+			add_theme_support( 'edd-templates' );
+			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'edd_styles' ) );
+		}
+		
+		// SWG Auth plugin compatibility
+		if ( function_exists( 'swg_auth_run' ) ) {
+			add_action( 'wp_enqueue_scripts', array( __CLASS__, 'swg_auth_styles' ), 20 );
+			add_filter( 'widget_text', array( __CLASS__, 'swg_auth_widget_wrapper' ), 9 );
+			add_action( 'dynamic_sidebar_before', array( __CLASS__, 'swg_auth_sidebar_wrapper_start' ) );
+			add_action( 'dynamic_sidebar_after', array( __CLASS__, 'swg_auth_sidebar_wrapper_end' ) );
+		}
 	}
 	
 	/* ==============================================
@@ -377,6 +436,181 @@ class SWGTheme_Integrations {
 		if ( get_option( 'swgtheme_bbpress_custom_styles', '1' ) === '1' ) {
 			wp_enqueue_style( 'swg-bbpress', get_template_directory_uri() . '/css/bbpress.css', array(), SWGTHEME_VERSION );
 		}
+	}
+	
+	/* ==============================================
+	   WOOCOMMERCE INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Declare WooCommerce support
+	 */
+	public static function woocommerce_support() {
+		add_theme_support( 'woocommerce' );
+		add_theme_support( 'wc-product-gallery-zoom' );
+		add_theme_support( 'wc-product-gallery-lightbox' );
+		add_theme_support( 'wc-product-gallery-slider' );
+	}
+	
+	/**
+	 * Customize WooCommerce styles
+	 */
+	public static function woocommerce_styles( $enqueue_styles ) {
+		if ( get_option( 'swgtheme_woocommerce_custom_styles', '1' ) === '1' ) {
+			// Dequeue default WooCommerce styles if custom styling is enabled
+			unset( $enqueue_styles['woocommerce-general'] );
+			wp_enqueue_style( 'swg-woocommerce', get_template_directory_uri() . '/css/woocommerce.css', array(), SWGTHEME_VERSION );
+		}
+		return $enqueue_styles;
+	}
+	
+	/* ==============================================
+	   YOAST SEO INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Filter Yoast breadcrumbs
+	 */
+	public static function yoast_breadcrumb_filter( $links ) {
+		// Customize breadcrumb links if needed
+		return $links;
+	}
+	
+	/* ==============================================
+	   ELEMENTOR INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Register custom Elementor widgets
+	 */
+	public static function elementor_widgets() {
+		// Register custom widgets if needed
+		// Example: \Elementor\Plugin::instance()->widgets_manager->register_widget_type( new Custom_Widget() );
+	}
+	
+	/* ==============================================
+	   ADVANCED CUSTOM FIELDS INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Set ACF JSON save point
+	 */
+	public static function acf_json_save_point( $path ) {
+		$path = get_template_directory() . '/acf-json';
+		return $path;
+	}
+	
+	/**
+	 * Set ACF JSON load point
+	 */
+	public static function acf_json_load_point( $paths ) {
+		unset( $paths[0] );
+		$paths[] = get_template_directory() . '/acf-json';
+		return $paths;
+	}
+	
+	/* ==============================================
+	   WPML INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Add WPML language selector to header
+	 */
+	public static function wpml_language_selector() {
+		if ( function_exists( 'icl_get_languages' ) && get_option( 'swgtheme_wpml_show_selector', '1' ) === '1' ) {
+			$languages = icl_get_languages( 'skip_missing=0&orderby=code' );
+			if ( ! empty( $languages ) ) {
+				echo '<div class="wpml-language-selector">';
+				foreach ( $languages as $lang ) {
+					$class = $lang['active'] ? 'active' : '';
+					printf(
+						'<a href="%s" class="%s">%s</a>',
+						esc_url( $lang['url'] ),
+						esc_attr( $class ),
+						esc_html( $lang['native_name'] )
+					);
+				}
+				echo '</div>';
+			}
+		}
+	}
+	
+	/* ==============================================
+	   BUDDYPRESS INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Enqueue BuddyPress custom styles
+	 */
+	public static function buddypress_styles() {
+		if ( get_option( 'swgtheme_buddypress_custom_styles', '1' ) === '1' ) {
+			wp_enqueue_style( 'swg-buddypress', get_template_directory_uri() . '/css/buddypress.css', array(), SWGTHEME_VERSION );
+		}
+	}
+	
+	/* ==============================================
+	   THE EVENTS CALENDAR INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Wrap Events Calendar content
+	 */
+	public static function events_calendar_wrapper( $html, $view_slug ) {
+		return '<div class="swg-events-wrapper">' . $html . '</div>';
+	}
+	
+	/* ==============================================
+	   EASY DIGITAL DOWNLOADS INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Enqueue EDD custom styles
+	 */
+	public static function edd_styles() {
+		if ( get_option( 'swgtheme_edd_custom_styles', '1' ) === '1' ) {
+			wp_enqueue_style( 'swg-edd', get_template_directory_uri() . '/css/edd.css', array(), SWGTHEME_VERSION );
+		}
+	}
+	
+	/* ==============================================
+	   SWG AUTH PLUGIN INTEGRATION
+	   ============================================== */
+	
+	/**
+	 * Enqueue SWG Auth custom styles
+	 */
+	public static function swg_auth_styles() {
+		if ( get_option( 'swgtheme_swg_auth_custom_styles', '1' ) === '1' ) {
+			// Override plugin styles with theme styles
+			wp_dequeue_style( 'swg-auth-metrics-widget' );
+			wp_dequeue_style( 'swg-auth-resources' );
+			wp_enqueue_style( 'swg-auth-theme', get_template_directory_uri() . '/css/swg-auth.css', array(), SWGTHEME_VERSION );
+		}
+	}
+	
+	/**
+	 * Wrap SWG Auth widgets for better styling
+	 */
+	public static function swg_auth_widget_wrapper( $content ) {
+		// Check if this is an SWG Auth widget
+		if ( strpos( $content, 'swg-auth' ) !== false || strpos( $content, 'SWG Server' ) !== false ) {
+			return '<div class="swg-auth-widget-wrapper">' . $content . '</div>';
+		}
+		return $content;
+	}
+	
+	/**
+	 * Add wrapper start for SWG Auth widgets
+	 */
+	public static function swg_auth_sidebar_wrapper_start() {
+		echo '<div class="swg-auth-sidebar-widgets">';
+	}
+	
+	/**
+	 * Add wrapper end for SWG Auth widgets
+	 */
+	public static function swg_auth_sidebar_wrapper_end() {
+		echo '</div>';
 	}
 }
 
