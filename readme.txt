@@ -4,6 +4,7 @@ Chaingelog
 0.9.2
 fixed admin menu
 fixed back to top button
+fixed Performance Performance Optimization tabs
 
 0.9.1:
 updated theame to modern standards

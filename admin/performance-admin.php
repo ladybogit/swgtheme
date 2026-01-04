@@ -151,7 +151,7 @@ echo swg_cache_fragment( 'sidebar-popular-posts', function() {
 		</div>
 		
 		<!-- Tab: Images -->
-		<div class="tab-content" id="images-tab" style="display: none;">
+		<div class="tab-content" id="images-tab">
 			<h2><?php esc_html_e( 'Image Optimization', 'swgtheme' ); ?></h2>
 			
 			<table class="form-table" role="presentation">
@@ -211,7 +211,7 @@ echo swg_cache_fragment( 'sidebar-popular-posts', function() {
 		</div>
 		
 		<!-- Tab: Assets -->
-		<div class="tab-content" id="assets-tab" style="display: none;">
+		<div class="tab-content" id="assets-tab">
 			<h2><?php esc_html_e( 'Asset Optimization', 'swgtheme' ); ?></h2>
 			
 			<table class="form-table" role="presentation">
@@ -312,7 +312,7 @@ echo swg_cache_fragment( 'sidebar-popular-posts', function() {
 		</div>
 		
 		<!-- Tab: Database -->
-		<div class="tab-content" id="database-tab" style="display: none;">
+		<div class="tab-content" id="database-tab">
 			<h2><?php esc_html_e( 'Database Optimization', 'swgtheme' ); ?></h2>
 			
 			<table class="form-table" role="presentation">
@@ -384,7 +384,7 @@ echo swg_cache_fragment( 'sidebar-popular-posts', function() {
 		</div>
 		
 		<!-- Tab: Advanced -->
-		<div class="tab-content" id="advanced-tab" style="display: none;">
+		<div class="tab-content" id="advanced-tab">
 			<h2><?php esc_html_e( 'Advanced Optimizations', 'swgtheme' ); ?></h2>
 			
 			<table class="form-table" role="presentation">
@@ -449,61 +449,105 @@ echo swg_cache_fragment( 'sidebar-popular-posts', function() {
 			</table>
 		</div>
 		
-		<!-- Tab: Tools -->
-		<div class="tab-content" id="tools-tab" style="display: none;">
-			<h2><?php esc_html_e( 'Performance Tools', 'swgtheme' ); ?></h2>
-			
-			<div style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 20px; margin: 20px 0;">
-				<h3><?php esc_html_e( 'Clear All Caches', 'swgtheme' ); ?></h3>
-				<p><?php esc_html_e( 'Clear all transients, fragment cache, and object cache.', 'swgtheme' ); ?></p>
-				<form method="post" style="display: inline;">
-					<?php wp_nonce_field( 'swg_clear_cache_action', 'clear_cache_nonce' ); ?>
-					<button type="submit" name="clear_cache" class="button button-primary" onclick="return confirm('<?php esc_attr_e( 'Clear all caches?', 'swgtheme' ); ?>');">
-						<?php esc_html_e( 'Clear Caches', 'swgtheme' ); ?>
-					</button>
-				</form>
-			</div>
-			
-			<div style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 20px; margin: 20px 0;">
-				<h3><?php esc_html_e( 'Database Cleanup', 'swgtheme' ); ?></h3>
-				<p><?php esc_html_e( 'Manually run database cleanup and optimization.', 'swgtheme' ); ?></p>
-				<form method="post" style="display: inline;">
-					<?php wp_nonce_field( 'swg_cleanup_db_action', 'cleanup_db_nonce' ); ?>
-					<button type="submit" name="cleanup_db" class="button button-secondary" onclick="return confirm('<?php esc_attr_e( 'Run database cleanup? This may take a few moments.', 'swgtheme' ); ?>');">
-						<?php esc_html_e( 'Cleanup Database', 'swgtheme' ); ?>
-					</button>
-				</form>
-			</div>
-			
-			<div style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 20px; margin: 20px 0;">
-				<h3><?php esc_html_e( 'Performance Testing', 'swgtheme' ); ?></h3>
-				<p><?php esc_html_e( 'Test your site speed with these tools:', 'swgtheme' ); ?></p>
-				<ul style="list-style: disc; margin-left: 20px;">
-					<li><a href="https://pagespeed.web.dev/" target="_blank">Google PageSpeed Insights</a></li>
-					<li><a href="https://gtmetrix.com/" target="_blank">GTmetrix</a></li>
-					<li><a href="https://tools.pingdom.com/" target="_blank">Pingdom Tools</a></li>
-					<li><a href="https://webpagetest.org/" target="_blank">WebPageTest</a></li>
-				</ul>
-			</div>
-		</div>
-		
 		<input type="hidden" name="save_performance" value="1" />
-		<?php submit_button( __( 'Save Performance Settings', 'swgtheme' ) ); ?>
+		<div class="tab-content-save-button">
+			<?php submit_button( __( 'Save Performance Settings', 'swgtheme' ) ); ?>
+		</div>
 	</form>
 	
+	<!-- Tab: Tools (outside form to avoid nested forms) -->
+	<div class="tab-content" id="tools-tab">
+		<h2><?php esc_html_e( 'Performance Tools', 'swgtheme' ); ?></h2>
+		
+		<div style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 20px; margin: 20px 0;">
+			<h3><?php esc_html_e( 'Clear All Caches', 'swgtheme' ); ?></h3>
+			<p><?php esc_html_e( 'Clear all transients, fragment cache, and object cache.', 'swgtheme' ); ?></p>
+			<form method="post" style="display: inline;">
+				<?php wp_nonce_field( 'swg_clear_cache_action', 'clear_cache_nonce' ); ?>
+				<button type="submit" name="clear_cache" class="button button-primary" onclick="return confirm('<?php esc_attr_e( 'Clear all caches?', 'swgtheme' ); ?>');">
+					<?php esc_html_e( 'Clear Caches', 'swgtheme' ); ?>
+				</button>
+			</form>
+		</div>
+		
+		<div style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 20px; margin: 20px 0;">
+			<h3><?php esc_html_e( 'Database Cleanup', 'swgtheme' ); ?></h3>
+			<p><?php esc_html_e( 'Manually run database cleanup and optimization.', 'swgtheme' ); ?></p>
+			<form method="post" style="display: inline;">
+				<?php wp_nonce_field( 'swg_cleanup_db_action', 'cleanup_db_nonce' ); ?>
+				<button type="submit" name="cleanup_db" class="button button-secondary" onclick="return confirm('<?php esc_attr_e( 'Run database cleanup? This may take a few moments.', 'swgtheme' ); ?>');">
+					<?php esc_html_e( 'Cleanup Database', 'swgtheme' ); ?>
+				</button>
+			</form>
+		</div>
+		
+		<div style="background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 20px; margin: 20px 0;">
+			<h3><?php esc_html_e( 'Performance Testing', 'swgtheme' ); ?></h3>
+			<p><?php esc_html_e( 'Test your site speed with these tools:', 'swgtheme' ); ?></p>
+			<ul style="list-style: disc; margin-left: 20px;">
+				<li><a href="https://pagespeed.web.dev/" target="_blank">Google PageSpeed Insights</a></li>
+				<li><a href="https://gtmetrix.com/" target="_blank">GTmetrix</a></li>
+				<li><a href="https://tools.pingdom.com/" target="_blank">Pingdom Tools</a></li>
+				<li><a href="https://webpagetest.org/" target="_blank">WebPageTest</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<style type="text/css">
+		.wrap .tab-content { display: none !important; }
+		.wrap .tab-content.active { display: block !important; }
+	</style>
+	
 	<script type="text/javascript">
-	jQuery(document).ready(function($) {
-		// Tab switching
-		$('.nav-tab-wrapper .nav-tab').on('click', function(e) {
-			e.preventDefault();
-			
+	(function($) {
+		// Tab switching function
+		function switchTab(target) {
 			$('.nav-tab').removeClass('nav-tab-active');
-			$(this).addClass('nav-tab-active');
+			$('.nav-tab[href="' + target + '"]').addClass('nav-tab-active');
 			
-			$('.tab-content').hide();
-			var target = $(this).attr('href').replace('#', '') + '-tab';
-			$('#' + target).show();
+			$('.tab-content').removeClass('active');
+			var tabId = target.replace('#', '') + '-tab';
+			$('#' + tabId).addClass('active');
+			
+			// Hide save button for Tools tab, show for others
+			if (target === '#tools') {
+				$('.tab-content-save-button').hide();
+			} else {
+				$('.tab-content-save-button').show();
+			}
+		}
+		
+		// Initialize immediately - don't wait for document ready
+		$(document).ready(function() {
+			// Handle tab clicks
+			$('.nav-tab-wrapper .nav-tab').on('click', function(e) {
+				e.preventDefault();
+				var target = $(this).attr('href');
+				switchTab(target);
+				
+				// Update URL hash without scrolling
+				if (history.pushState) {
+					history.pushState(null, null, target);
+				} else {
+					location.hash = target;
+				}
+			});
+			
+			// Handle initial page load with hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			} else {
+				// Ensure first tab is active on initial load
+				switchTab('#caching');
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
 		});
-	});
+	})(jQuery);
 	</script>
 </div>
