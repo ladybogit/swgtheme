@@ -1,0 +1,29 @@
+{
+  "name": "Lords of the Outer Rim",
+  "short_name": "LOTR",
+  "description": "Star Wars Galaxies Community - Join the adventure in a galaxy far, far away",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#dc3545",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/wp-content/themes/swgtheme/screenshot.png",
+      "sizes": "1200x900",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment", "social"],
+  "shortcuts": [],
+  "screenshots": [
+    {
+      "src": "/wp-content/themes/swgtheme/screenshot.png",
+      "sizes": "1200x900",
+      "type": "image/png"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

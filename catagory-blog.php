@@ -3,8 +3,8 @@
 <div id="swgimage"></div>
 	<section class="row">
 		<div id="slide" class="slide">
-<?php if( is_active_sidebar('galary-sidebar')):?>
-				<?php dynamic_sidebar('galary-sidebar');?>
+<?php if( is_active_sidebar('gallery-sidebar')):?>
+				<?php dynamic_sidebar('gallery-sidebar');?>
 		<?php endif;?>
 	</div>
 	</section>

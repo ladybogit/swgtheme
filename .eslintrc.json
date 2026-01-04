@@ -1,0 +1,46 @@
+{
+	"root": true,
+	"env": {
+		"browser": true,
+		"es2021": true,
+		"jquery": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"prettier"
+	],
+	"parserOptions": {
+		"ecmaVersion": 2021,
+		"sourceType": "module"
+	},
+	"globals": {
+		"wp": "readonly",
+		"swgTheme": "readonly",
+		"debugToolbar": "readonly",
+		"toast": "readonly",
+		"loadingStates": "readonly",
+		"smoothAnimations": "readonly"
+	},
+	"rules": {
+		"no-console": "off",
+		"no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+		"no-undef": "error",
+		"prefer-const": "warn",
+		"no-var": "warn",
+		"eqeqeq": ["error", "always"],
+		"curly": ["error", "all"],
+		"brace-style": ["error", "1tbs"],
+		"indent": ["error", "tab"],
+		"quotes": ["error", "single", { "avoidEscape": true }],
+		"semi": ["error", "always"],
+		"comma-dangle": ["error", "only-multiline"],
+		"arrow-parens": ["error", "always"],
+		"object-curly-spacing": ["error", "always"],
+		"array-bracket-spacing": ["error", "never"],
+		"space-before-function-paren": ["error", {
+			"anonymous": "never",
+			"named": "never",
+			"asyncArrow": "always"
+		}]
+	}
+}

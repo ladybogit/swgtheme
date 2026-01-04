@@ -3,8 +3,8 @@
 	<div id="swgimage"></div>
 	<section class="row">
 		<div id="slide" class="slide">
-<?php if( is_active_sidebar('galary-sidebar')):?>
-				<?php dynamic_sidebar('galary-sidebar');?>
+<?php if( is_active_sidebar('gallery-sidebar')):?>
+				<?php dynamic_sidebar('gallery-sidebar');?>
 		<?php endif;?>
 	</div>
 	</section>
@@ -22,11 +22,18 @@
 			</div>
 		</div>
 		<div class="col-lg-9">
-			<h1 class="head1"><?php the_title();?></h1>
-			<?php if(has_post_thumbnail()):?>
-				<img src="<?php the_post_thumbnail_url('blog-small');?>" class= "img-fliud mb-3 img-thumbnail mr-4">
-				<?php endif?>
-			<?php get_template_part('includes/section','content');?>
+			<?php 
+			$title_404 = get_option( 'swgtheme_404_title', 'Page Not Found' );
+			$message_404 = get_option( 'swgtheme_404_message', 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.' );
+			$button_text_404 = get_option( 'swgtheme_404_button_text', 'Go to Homepage' );
+			?>
+			<h1 class="head1"><?php echo esc_html( $title_404 ); ?></h1>
+			<div class="swg-404-content">
+				<p><?php echo esc_html( $message_404 ); ?></p>
+				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="button swg-404-button">
+					<?php echo esc_html( $button_text_404 ); ?>
+				</a>
+			</div>
 		</div>
 </section>
 <section class="row">	
