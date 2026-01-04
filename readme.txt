@@ -1,4 +1,7 @@
 Chaingelog
+0.9.1:
+updated theame to modern standards
+implamented all featchers for testing
 
 0.1.1:
 Text shadows removed
