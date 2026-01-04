@@ -12,7 +12,7 @@
 				) );
 				?>
 			</nav>
-			<div class="site-info">
+			<div class="site-info"style="display: none !important;>
 				<?php
 				$footer_copyright = get_option( 'swgtheme_footer_copyright', '' );
 				if ( ! empty( $footer_copyright ) ) {
@@ -40,8 +40,8 @@
 		</div>
 	</footer>
 </div><!-- #page -->
-<div id="sticky-footer" style="position: fixed; bottom: 0; left: 0; width: 100%; height: 35px; background: linear-gradient(top, #5E5E5E, #000000); border-top-left-radius: 1em; border-top-right-radius: 1em; box-shadow: 3px 3px 1px #000000; z-index: 99999; text-align: center; display: flex; align-items: center; justify-content: center; pointer-events: none;">
-	<div style="pointer-events: auto;"></div>
+<div id="sticky-footer" style="position: fixed; bottom: 0; left: 0; width: 100%; background: linear-gradient(top, #5E5E5E, #000000); border-top-left-radius: 1em; border-top-right-radius: 1em; box-shadow: 3px 3px 1px #000000; z-index: 99999; text-align: center; padding: 10px 0;">
+	<div class="container"></div>
 </div>
 <script>
 (function() {
@@ -49,12 +49,13 @@
 	var originalFooter = document.getElementById('footer');
 	var stickyFooter = document.getElementById('sticky-footer');
 	if (originalFooter && stickyFooter) {
-		// Hide original footer
-		originalFooter.style.display = 'none';
 		// Copy content to sticky footer
 		var footerContent = originalFooter.querySelector('.container');
 		if (footerContent) {
-			stickyFooter.querySelector('div').innerHTML = footerContent.innerHTML;
+			var stickyContainer = stickyFooter.querySelector('.container');
+			if (stickyContainer) {
+				stickyContainer.innerHTML = footerContent.innerHTML;
+			}
 		}
 	}
 })();

@@ -8010,59 +8010,8 @@ function swgtheme_enqueue_ux_assets() {
 		' );
 	}
 	
-	// Back to Top Button
-	if ( get_option( 'swgtheme_enable_back_to_top', '0' ) === '1' ) {
-		$position = get_option( 'swgtheme_back_to_top_position', 'bottom-right' );
-		$pos_style = ( $position === 'bottom-left' ) ? 'left: 20px;' : 'right: 20px;';
-		
-		add_action( 'wp_footer', function() use ( $pos_style ) {
-			echo '<button id="back-to-top" style="' . esc_attr( $pos_style ) . '" aria-label="Back to top">↑</button>';
-		} );
-		
-		wp_add_inline_style( 'swgtheme-style', '
-			#back-to-top {
-				position: fixed;
-				bottom: 20px;
-				background: var(--primary-color, #dc3545);
-				color: white;
-				border: none;
-				border-radius: 50%;
-				width: 50px;
-				height: 50px;
-				font-size: 24px;
-				cursor: pointer;
-				opacity: 0;
-				visibility: hidden;
-				transition: all 0.3s ease;
-				z-index: 9999;
-			}
-			#back-to-top.visible {
-				opacity: 1;
-				visibility: visible;
-			}
-			#back-to-top:hover {
-				transform: translateY(-5px);
-				box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-			}
-		' );
-		
-		wp_add_inline_script( 'jquery', '
-			jQuery(document).ready(function($) {
-				$(window).scroll(function() {
-					if ($(this).scrollTop() > 300) {
-						$("#back-to-top").addClass("visible");
-					} else {
-						$("#back-to-top").removeClass("visible");
-					}
-				});
-				
-				$("#back-to-top").click(function() {
-					$("html, body").animate({scrollTop: 0}, 600);
-					return false;
-				});
-			});
-		' );
-	}
+	// Back to Top Button - handled by theme-features.js
+	// Removed duplicate implementation to prevent two buttons from appearing
 	
 	// Reading Progress Bar
 	if ( get_option( 'swgtheme_enable_reading_progress', '0' ) === '1' && is_single() ) {
