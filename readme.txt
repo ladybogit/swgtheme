@@ -1,5 +1,5 @@
 Chaingelog
-<<<<<<< HEAD
+
 =======
 0.9.2
 fixed admin menu
@@ -8,7 +8,6 @@ fixed back to top button
 0.9.1:
 updated theame to modern standards
 implamented all featchers for testing
->>>>>>> 3365753763c9ae85d96ba90213cc1eb31feafd3c
 
 0.1.1:
 Text shadows removed
