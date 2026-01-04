@@ -1,6 +1,4 @@
 Chaingelog
-0.9.1
-added all fechers needs testing 
 
 0.1.1:
 Text shadows removed

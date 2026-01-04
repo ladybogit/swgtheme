@@ -1,3 +1,3 @@
 jQuery(document).ready(function($) {
-	$('#slider').swgSlider();
+	// Slider is initialized in jquery.swg.slider.js
 });

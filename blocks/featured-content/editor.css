@@ -1,0 +1,21 @@
+.wp-block-swgtheme-featured-content {
+	padding: 2rem;
+	background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(139, 0, 0, 0.1) 100%);
+	border-left: 4px solid #dc3545;
+	border-radius: 8px;
+}
+
+.wp-block-swgtheme-featured-content .swg-featured-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.wp-block-swgtheme-featured-content .swg-featured-title {
+	color: #dc3545;
+	font-size: 1.75rem;
+	font-weight: 700;
+}
+
+.wp-block-swgtheme-featured-content .swg-featured-text {
+	font-size: 1.125rem;
+}

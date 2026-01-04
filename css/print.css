@@ -1,0 +1,166 @@
+/**
+ * Print Stylesheet
+ * Optimized styles for printing
+ */
+
+@media print {
+	/* Hide non-essential elements */
+	header,
+	.site-header,
+	.swg-mobile-menu-toggle,
+	.swg-mobile-menu,
+	.swg-notification-bar,
+	.swg-cookie-consent,
+	.swg-back-to-top,
+	.swg-social-share,
+	.swg-reading-progress,
+	footer,
+	.site-footer,
+	.widget,
+	.sidebar,
+	.side-menu,
+	nav,
+	.navigation,
+	.comment-form,
+	.comments-area,
+	#swgimage,
+	.slide,
+	.gallery-sidebar,
+	.page-sidebar,
+	.footer-sidebar,
+	.footer2,
+	button,
+	.button,
+	input[type="submit"],
+	.swg-ajax-search-results {
+		display: none !important;
+	}
+	
+	/* Reset page layout */
+	* {
+		background: transparent !important;
+		color: #000 !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+	
+	body {
+		font-size: 12pt;
+		line-height: 1.5;
+		color: #000;
+		background: #fff;
+	}
+	
+	/* Main content */
+	.page-wrap,
+	.col-lg-9,
+	article,
+	.entry-content {
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		max-width: 100% !important;
+	}
+	
+	/* Typography */
+	h1, h2, h3, h4, h5, h6 {
+		page-break-after: avoid;
+		page-break-inside: avoid;
+		font-weight: bold;
+		color: #000;
+	}
+	
+	h1 {
+		font-size: 24pt;
+	}
+	
+	h2 {
+		font-size: 18pt;
+	}
+	
+	h3 {
+		font-size: 14pt;
+	}
+	
+	p, blockquote {
+		orphans: 3;
+		widows: 3;
+	}
+	
+	blockquote {
+		border-left: 3px solid #ccc;
+		padding-left: 10pt;
+		margin: 15pt 0;
+		font-style: italic;
+	}
+	
+	/* Links */
+	a {
+		text-decoration: underline;
+		color: #000;
+	}
+	
+	a[href]:after {
+		content: " (" attr(href) ")";
+		font-size: 9pt;
+		color: #666;
+	}
+	
+	a[href^="#"]:after,
+	a[href^="javascript:"]:after {
+		content: "";
+	}
+	
+	/* Images */
+	img {
+		max-width: 100% !important;
+		page-break-inside: avoid;
+	}
+	
+	/* Tables */
+	table {
+		border-collapse: collapse;
+		width: 100%;
+		page-break-inside: avoid;
+	}
+	
+	th, td {
+		border: 1px solid #ddd;
+		padding: 8pt;
+		text-align: left;
+	}
+	
+	th {
+		background-color: #f0f0f0;
+		font-weight: bold;
+	}
+	
+	/* Code blocks */
+	pre, code {
+		border: 1px solid #ccc;
+		page-break-inside: avoid;
+		font-family: "Courier New", Courier, monospace;
+		font-size: 10pt;
+		background: #f5f5f5;
+		padding: 5pt;
+	}
+	
+	pre {
+		white-space: pre-wrap;
+		word-wrap: break-word;
+	}
+	
+	/* Page breaks */
+	.page-break {
+		page-break-after: always;
+	}
+	
+	/* Print-specific classes */
+	.print-only {
+		display: block !important;
+	}
+	
+	.no-print {
+		display: none !important;
+	}
+}

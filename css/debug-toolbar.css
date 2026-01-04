@@ -1,0 +1,348 @@
+/* Debug Toolbar Styles */
+
+.swg-debug-toolbar {
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 90%;
+	max-width: 1200px;
+	height: 400px;
+	background: #1e1e1e;
+	color: #d4d4d4;
+	font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+	font-size: 13px;
+	box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+	z-index: 999998;
+	display: none;
+	flex-direction: column;
+	border-radius: 8px 8px 0 0;
+	transition: all 0.3s ease;
+}
+
+.swg-debug-toolbar.visible {
+	display: flex;
+}
+
+.swg-debug-toolbar.minimized {
+	height: 50px;
+}
+
+.swg-debug-toolbar.minimized .debug-toolbar-content,
+.swg-debug-toolbar.minimized .debug-toolbar-footer {
+	display: none;
+}
+
+.debug-toolbar-header {
+	background: #252526;
+	padding: 10px 15px;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	border-bottom: 1px solid #3e3e42;
+	cursor: move;
+	user-select: none;
+}
+
+.debug-toolbar-logo {
+	font-weight: bold;
+	color: #28a745;
+	font-size: 14px;
+}
+
+.debug-toolbar-tabs {
+	display: flex;
+	gap: 5px;
+	flex: 1;
+}
+
+.debug-tab {
+	background: transparent;
+	border: none;
+	color: #969696;
+	padding: 5px 12px;
+	cursor: pointer;
+	border-radius: 3px;
+	transition: all 0.2s;
+	font-size: 12px;
+}
+
+.debug-tab:hover {
+	background: #2a2a2a;
+	color: #ffffff;
+}
+
+.debug-tab.active {
+	background: #1e1e1e;
+	color: #28a745;
+	font-weight: bold;
+}
+
+.debug-toolbar-actions {
+	display: flex;
+	gap: 5px;
+}
+
+.debug-action {
+	background: transparent;
+	border: none;
+	color: #969696;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	border-radius: 3px;
+	transition: all 0.2s;
+	font-size: 16px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.debug-action:hover {
+	background: #2a2a2a;
+	color: #ffffff;
+}
+
+.debug-toolbar-content {
+	flex: 1;
+	overflow: hidden;
+	position: relative;
+}
+
+.debug-panel {
+	display: none;
+	height: 100%;
+	overflow-y: auto;
+	padding: 15px;
+}
+
+.debug-panel.active {
+	display: block;
+}
+
+/* Console Panel */
+.debug-console-output {
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+.debug-log-entry {
+	padding: 5px 10px;
+	margin-bottom: 2px;
+	border-left: 3px solid;
+	background: #252526;
+	border-radius: 3px;
+}
+
+.debug-log-log {
+	border-left-color: #569cd6;
+}
+
+.debug-log-error {
+	border-left-color: #f14c4c;
+	background: #3f1f1f;
+}
+
+.debug-log-warn {
+	border-left-color: #ffc107;
+	background: #3f3f1f;
+}
+
+.debug-log-time {
+	color: #6c757d;
+	margin-right: 10px;
+}
+
+.debug-log-type {
+	color: #28a745;
+	margin-right: 10px;
+	font-weight: bold;
+}
+
+.debug-log-message {
+	color: #d4d4d4;
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+/* Network Panel */
+.debug-network-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 12px;
+}
+
+.debug-network-table th {
+	background: #252526;
+	padding: 8px;
+	text-align: left;
+	color: #28a745;
+	font-weight: bold;
+	position: sticky;
+	top: 0;
+}
+
+.debug-network-table td {
+	padding: 6px 8px;
+	border-bottom: 1px solid #3e3e42;
+}
+
+.debug-network-table tr:hover {
+	background: #252526;
+}
+
+.debug-network-error {
+	background: #3f1f1f !important;
+}
+
+.debug-method-badge {
+	background: #569cd6;
+	color: #fff;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 10px;
+	font-weight: bold;
+}
+
+.debug-url {
+	color: #4ec9b0;
+	max-width: 400px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.debug-status-success {
+	color: #28a745;
+	font-weight: bold;
+}
+
+.debug-status-error {
+	color: #f14c4c;
+	font-weight: bold;
+}
+
+/* Performance Panel */
+.debug-metrics-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 15px;
+}
+
+.debug-metric {
+	background: #252526;
+	padding: 15px;
+	border-radius: 5px;
+	border-left: 3px solid #28a745;
+}
+
+.debug-metric-label {
+	color: #969696;
+	font-size: 11px;
+	margin-bottom: 5px;
+	text-transform: uppercase;
+}
+
+.debug-metric-value {
+	color: #28a745;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+/* Info Panel */
+.debug-info-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 12px;
+}
+
+.debug-info-table tr {
+	border-bottom: 1px solid #3e3e42;
+}
+
+.debug-info-label {
+	padding: 10px;
+	color: #969696;
+	width: 200px;
+	font-weight: bold;
+}
+
+.debug-info-value {
+	padding: 10px;
+	color: #d4d4d4;
+	word-break: break-word;
+}
+
+/* Footer */
+.debug-toolbar-footer {
+	background: #252526;
+	padding: 8px 15px;
+	display: flex;
+	gap: 20px;
+	border-top: 1px solid #3e3e42;
+	font-size: 11px;
+}
+
+.debug-footer-item {
+	color: #969696;
+}
+
+.debug-footer-item strong {
+	color: #28a745;
+	margin-left: 5px;
+}
+
+/* Scrollbars */
+.debug-panel::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+.debug-panel::-webkit-scrollbar-track {
+	background: #1e1e1e;
+}
+
+.debug-panel::-webkit-scrollbar-thumb {
+	background: #3e3e42;
+	border-radius: 5px;
+}
+
+.debug-panel::-webkit-scrollbar-thumb:hover {
+	background: #505050;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.swg-debug-toolbar {
+		width: 100%;
+		max-width: none;
+		left: 0;
+		transform: none;
+		border-radius: 0;
+	}
+	
+	.debug-toolbar-tabs {
+		overflow-x: auto;
+		flex-wrap: nowrap;
+	}
+	
+	.debug-metrics-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* Animation */
+@keyframes slideUp {
+	from {
+		transform: translateX(-50%) translateY(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(-50%) translateY(0);
+		opacity: 1;
+	}
+}
+
+.swg-debug-toolbar.visible {
+	animation: slideUp 0.3s ease-out;
+}

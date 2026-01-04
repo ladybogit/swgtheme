@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "swgtheme/featured-content",
+	"version": "1.0.0",
+	"title": "Featured Content",
+	"category": "widgets",
+	"icon": "star-filled",
+	"description": "Display featured content with Star Wars themed styling",
+	"keywords": ["featured", "highlight", "star wars"],
+	"textdomain": "swgtheme",
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"],
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true
+		}
+	},
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": "Featured Content"
+		},
+		"content": {
+			"type": "string",
+			"default": ""
+		},
+		"showIcon": {
+			"type": "boolean",
+			"default": true
+		},
+		"iconType": {
+			"type": "string",
+			"default": "star",
+			"enum": ["star", "shield", "lightsaber"]
+		},
+		"alignment": {
+			"type": "string",
+			"default": "center"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./editor.css",
+	"style": "file:./style.css"
+}

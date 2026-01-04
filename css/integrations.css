@@ -1,0 +1,294 @@
+/* Contact Form 7 & Gravity Forms Styling */
+
+/* ==============================================
+   CONTACT FORM 7 CUSTOM STYLES
+   ============================================== */
+
+.swg-contact-form {
+	max-width: 600px;
+}
+
+.swg-contact-form p {
+	margin-bottom: 1.5rem;
+}
+
+.swg-contact-form label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 600;
+	color: #333;
+}
+
+.swg-contact-form input[type="text"],
+.swg-contact-form input[type="email"],
+.swg-contact-form input[type="url"],
+.swg-contact-form input[type="tel"],
+.swg-contact-form input[type="number"],
+.swg-contact-form input[type="date"],
+.swg-contact-form textarea,
+.swg-contact-form select {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 2px solid #ddd;
+	border-radius: 5px;
+	font-size: 1rem;
+	transition: all 0.3s ease;
+}
+
+.swg-contact-form input:focus,
+.swg-contact-form textarea:focus,
+.swg-contact-form select:focus {
+	outline: none;
+	border-color: #dc3545;
+	box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.swg-contact-form textarea {
+	min-height: 150px;
+	resize: vertical;
+}
+
+.swg-contact-form input[type="submit"],
+.swg-contact-form button[type="submit"] {
+	background: #dc3545;
+	color: #fff;
+	padding: 0.75rem 2rem;
+	border: none;
+	border-radius: 5px;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.swg-contact-form input[type="submit"]:hover,
+.swg-contact-form button[type="submit"]:hover {
+	background: #c82333;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.swg-contact-form input[type="submit"]:active,
+.swg-contact-form button[type="submit"]:active {
+	transform: translateY(0);
+}
+
+/* CF7 validation messages */
+.wpcf7-not-valid-tip {
+	color: #dc3545;
+	font-size: 0.875rem;
+	margin-top: 0.25rem;
+	display: block;
+}
+
+.wpcf7-validation-errors,
+.wpcf7-mail-sent-ng {
+	background: #f8d7da;
+	border: 2px solid #dc3545;
+	color: #721c24;
+	padding: 1rem;
+	margin-top: 1rem;
+	border-radius: 5px;
+}
+
+.wpcf7-mail-sent-ok {
+	background: #d4edda;
+	border: 2px solid #28a745;
+	color: #155724;
+	padding: 1rem;
+	margin-top: 1rem;
+	border-radius: 5px;
+}
+
+.wpcf7-spinner {
+	margin-left: 10px;
+}
+
+/* ==============================================
+   GRAVITY FORMS CUSTOM STYLES
+   ============================================== */
+
+.gform_wrapper form {
+	max-width: 600px;
+}
+
+.gform_wrapper .gfield {
+	margin-bottom: 1.5rem;
+}
+
+.gform_wrapper .gfield_label {
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 0.5rem;
+}
+
+.gform_wrapper input[type="text"],
+.gform_wrapper input[type="email"],
+.gform_wrapper input[type="url"],
+.gform_wrapper input[type="tel"],
+.gform_wrapper input[type="number"],
+.gform_wrapper input[type="password"],
+.gform_wrapper textarea,
+.gform_wrapper select {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border: 2px solid #ddd;
+	border-radius: 5px;
+	font-size: 1rem;
+	transition: all 0.3s ease;
+}
+
+.gform_wrapper input:focus,
+.gform_wrapper textarea:focus,
+.gform_wrapper select:focus {
+	outline: none;
+	border-color: #dc3545;
+	box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.gform_wrapper textarea {
+	min-height: 150px;
+	resize: vertical;
+}
+
+.gform_wrapper .gfield_required {
+	color: #dc3545;
+}
+
+.gform_wrapper .validation_error {
+	background: #f8d7da;
+	border: 2px solid #dc3545;
+	color: #721c24;
+	padding: 1rem;
+	margin-bottom: 1.5rem;
+	border-radius: 5px;
+}
+
+.gform_wrapper .gfield_error {
+	background: #fff3cd;
+	border-radius: 5px;
+	padding: 1rem;
+}
+
+.gform_wrapper .validation_message {
+	color: #dc3545;
+	font-size: 0.875rem;
+	margin-top: 0.25rem;
+}
+
+.gform_wrapper .gform_confirmation_message {
+	background: #d4edda;
+	border: 2px solid #28a745;
+	color: #155724;
+	padding: 1.5rem;
+	border-radius: 5px;
+	margin-bottom: 1.5rem;
+}
+
+/* ==============================================
+   BBPRESS FORUM STYLES
+   ============================================== */
+
+#bbpress-forums {
+	background: #fff;
+	padding: 2rem;
+	border-radius: 10px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#bbpress-forums .bbp-forum-title,
+#bbpress-forums .bbp-topic-title {
+	font-size: 1.1rem;
+	font-weight: 600;
+}
+
+#bbpress-forums .bbp-forum-title a,
+#bbpress-forums .bbp-topic-title a {
+	color: #333;
+	text-decoration: none;
+	transition: color 0.3s ease;
+}
+
+#bbpress-forums .bbp-forum-title a:hover,
+#bbpress-forums .bbp-topic-title a:hover {
+	color: #dc3545;
+}
+
+#bbpress-forums .bbp-header {
+	background: #f8f9fa;
+	border-bottom: 2px solid #dc3545;
+	padding: 0.75rem 1rem;
+	font-weight: 600;
+}
+
+#bbpress-forums .bbp-body .bbp-forum-info,
+#bbpress-forums .bbp-body .bbp-topic-title {
+	padding: 1rem;
+}
+
+#bbpress-forums .odd,
+#bbpress-forums .even {
+	border-bottom: 1px solid #eee;
+}
+
+#bbpress-forums .odd:hover,
+#bbpress-forums .even:hover {
+	background: #f8f9fa;
+}
+
+.bbp-submit-wrapper button,
+.bbp-submit-wrapper input[type="submit"] {
+	background: #dc3545;
+	color: #fff;
+	padding: 0.75rem 2rem;
+	border: none;
+	border-radius: 5px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.bbp-submit-wrapper button:hover,
+.bbp-submit-wrapper input[type="submit"]:hover {
+	background: #c82333;
+	transform: translateY(-2px);
+}
+
+#bbpress-forums .bbp-reply-content,
+#bbpress-forums .bbp-topic-content {
+	padding: 1rem;
+	line-height: 1.6;
+}
+
+#bbpress-forums .bbp-meta {
+	color: #666;
+	font-size: 0.875rem;
+}
+
+.bbp-pagination-links {
+	display: flex;
+	gap: 0.5rem;
+	margin-top: 1.5rem;
+}
+
+.bbp-pagination-links a,
+.bbp-pagination-links span.current {
+	padding: 0.5rem 1rem;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	text-decoration: none;
+	color: #333;
+	transition: all 0.3s ease;
+}
+
+.bbp-pagination-links a:hover {
+	background: #dc3545;
+	color: #fff;
+	border-color: #dc3545;
+}
+
+.bbp-pagination-links span.current {
+	background: #dc3545;
+	color: #fff;
+	border-color: #dc3545;
+}
