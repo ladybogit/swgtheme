@@ -2197,13 +2197,19 @@ class SWG_Author_Bio_Widget extends WP_Widget {
  * Add Theme Options page to admin menu.
  */
 function swgtheme_add_admin_page() {
-	add_theme_page(
+	// Debug: Log that this function is being called
+	error_log('swgtheme_add_admin_page is being called');
+	
+	$page = add_theme_page(
 		__( 'Theme Options', 'swgtheme' ),
 		__( 'Theme Options', 'swgtheme' ),
 		'manage_options',
 		'swgtheme-options',
 		'swgtheme_options_page'
 	);
+	
+	// Debug: Log the page hook
+	error_log('Theme Options page hook: ' . $page);
 	
 	add_theme_page(
 		__( 'User & Social Features', 'swgtheme' ),
@@ -2236,8 +2242,20 @@ function swgtheme_add_admin_page() {
 		'swgtheme-performance',
 		'swgtheme_performance_page'
 	);
+	
+	// Add System Info page (hidden from menu, only accessible from dev tools)
+	if ( function_exists( 'SWGTheme_Dev_Tools::is_dev_mode' ) && SWGTheme_Dev_Tools::is_dev_mode() ) {
+		add_submenu_page(
+			null, // Hidden from menu
+			__( 'System Information', 'swgtheme' ),
+			__( 'System Info', 'swgtheme' ),
+			'manage_options',
+			'swg-system-info',
+			'swgtheme_system_info_page'
+		);
+	}
 }
-add_action( 'admin_menu', 'swgtheme_add_admin_page' );
+add_action( 'admin_menu', 'swgtheme_add_admin_page', 10 );
 
 /**
  * Security Dashboard page callback
@@ -2261,112 +2279,229 @@ function swgtheme_performance_page() {
 }
 
 /**
+ * System Information page callback
+ */
+function swgtheme_system_info_page() {
+	?>
+	<div class="wrap">
+		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+		
+		<div class="swg-system-info">
+			<h2>Server Environment</h2>
+			<table class="widefat striped">
+				<tbody>
+					<tr>
+						<th style="width:300px;">PHP Version</th>
+						<td><?php echo PHP_VERSION; ?></td>
+					</tr>
+					<tr>
+						<th>WordPress Version</th>
+						<td><?php echo get_bloginfo( 'version' ); ?></td>
+					</tr>
+					<tr>
+						<th>Theme Version</th>
+						<td><?php echo defined( 'SWGTHEME_VERSION' ) ? SWGTHEME_VERSION : 'Unknown'; ?></td>
+					</tr>
+					<tr>
+						<th>Server Software</th>
+						<td><?php echo esc_html( $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown' ); ?></td>
+					</tr>
+					<tr>
+						<th>PHP Memory Limit</th>
+						<td><?php echo ini_get( 'memory_limit' ); ?></td>
+					</tr>
+					<tr>
+						<th>WP Memory Limit</th>
+						<td><?php echo WP_MEMORY_LIMIT; ?></td>
+					</tr>
+					<tr>
+						<th>WP Max Memory Limit</th>
+						<td><?php echo WP_MAX_MEMORY_LIMIT; ?></td>
+					</tr>
+					<tr>
+						<th>Upload Max Filesize</th>
+						<td><?php echo ini_get( 'upload_max_filesize' ); ?></td>
+					</tr>
+					<tr>
+						<th>Post Max Size</th>
+						<td><?php echo ini_get( 'post_max_size' ); ?></td>
+					</tr>
+					<tr>
+						<th>Max Execution Time</th>
+						<td><?php echo ini_get( 'max_execution_time' ); ?> seconds</td>
+					</tr>
+					<tr>
+						<th>Debug Mode</th>
+						<td><?php echo WP_DEBUG ? '<span style="color:green;">✓ Enabled</span>' : '<span style="color:gray;">Disabled</span>'; ?></td>
+					</tr>
+					<tr>
+						<th>Environment</th>
+						<td><?php echo class_exists( 'SWGTheme_Dev_Tools' ) && SWGTheme_Dev_Tools::is_local_environment() ? 'Local' : 'Production'; ?></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h2 style="margin-top:30px;">Database</h2>
+			<table class="widefat striped">
+				<tbody>
+					<tr>
+						<th style="width:300px;">Database Host</th>
+						<td><?php echo DB_HOST; ?></td>
+					</tr>
+					<tr>
+						<th>Database Name</th>
+						<td><?php echo DB_NAME; ?></td>
+					</tr>
+					<tr>
+						<th>Database Charset</th>
+						<td><?php echo DB_CHARSET; ?></td>
+					</tr>
+					<tr>
+						<th>Table Prefix</th>
+						<td><?php global $wpdb; echo $wpdb->prefix; ?></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<h2 style="margin-top:30px;">Theme Features</h2>
+			<table class="widefat striped">
+				<tbody>
+					<tr>
+						<th style="width:300px;">Dark Mode</th>
+						<td><?php echo get_option( 'swgtheme_enable_dark_mode', '1' ) === '1' ? '✓ Enabled' : 'Disabled'; ?></td>
+					</tr>
+					<tr>
+						<th>Slider</th>
+						<td><?php echo get_option( 'swgtheme_slider_enabled', '0' ) === '1' ? '✓ Enabled' : 'Disabled'; ?></td>
+					</tr>
+					<tr>
+						<th>Global Color Scheme</th>
+						<td><?php echo get_option( 'swgtheme_use_global_color', '0' ) === '1' ? '✓ Enabled' : 'Disabled'; ?></td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<p style="margin-top:30px;">
+				<a href="<?php echo wp_nonce_url( admin_url( 'admin-post.php?action=swg_clear_cache' ), 'swg_clear_cache' ); ?>" class="button button-secondary">Clear All Caches</a>
+			</p>
+		</div>
+	</div>
+	<?php
+}
+
+/**
  * Register theme settings.
  */
 function swgtheme_register_settings() {
-	register_setting( 'swgtheme_options_group', 'swgtheme_logo_text' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_footer_text' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_slider_enabled' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_slider_count' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_use_global_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_primary_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_button_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_border_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_link_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_text_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_social_facebook' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_social_twitter' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_social_discord' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_social_youtube' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_social_instagram' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_social_twitch' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_social_steam' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_dark_mode' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_auto' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_auto_start' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_auto_end' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_toggle_position' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_transition_speed' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_system_preference' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_default' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_background_image' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_preloader' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_style' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_bg_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_spinner_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_text' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_logo' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_speed' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_fade_duration' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_back_to_top' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_heading_font' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_body_font' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_heading_font_size' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_body_font_size' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_letter_spacing' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_line_height' );
+	// Settings args with capability
+	$args = array(
+		'type' => 'string',
+		'sanitize_callback' => 'sanitize_text_field',
+	);
+	
+	register_setting( 'swgtheme_options_group', 'swgtheme_logo_text', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_footer_text', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_slider_enabled', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_slider_count', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_use_global_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_primary_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_button_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_border_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_link_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_text_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_social_facebook', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_social_twitter', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_social_discord', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_social_youtube', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_social_instagram', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_social_twitch', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_social_steam', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_dark_mode', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_auto', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_auto_start', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_auto_end', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_toggle_position', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_transition_speed', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_system_preference', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_default', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dark_mode_background_image', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_preloader', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_style', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_bg_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_spinner_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_text', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_logo', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_speed', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_preloader_fade_duration', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_back_to_top', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_heading_font', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_body_font', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_heading_font_size', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_body_font_size', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_letter_spacing', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_line_height', $args );
 	
 	// Background Options
-	register_setting( 'swgtheme_options_group', 'swgtheme_background_image' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_background_position' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_background_size' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_parallax' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_background_image', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_background_position', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_background_size', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_parallax', $args );
 	
 	// Slider Autoplay Options
-	register_setting( 'swgtheme_options_group', 'swgtheme_slider_autoplay' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_slider_speed' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_slider_pause_hover' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_slider_loop' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_slider_autoplay', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_slider_speed', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_slider_pause_hover', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_slider_loop', $args );
 	
 	// Admin Backend Settings
-	register_setting( 'swgtheme_options_group', 'swgtheme_login_logo' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_login_logo_width' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_login_logo_height' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_login_bg_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_login_bg_image' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_login_button_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_admin_primary_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_admin_accent_color' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_hide_wp_logo' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_hide_admin_bar_front' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dashboard_welcome_title' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_dashboard_welcome_text' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_login_logo', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_login_logo_width', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_login_logo_height', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_login_bg_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_login_bg_image', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_login_button_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_admin_primary_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_admin_accent_color', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_hide_wp_logo', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_hide_admin_bar_front', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dashboard_welcome_title', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_dashboard_welcome_text', $args );
 	
 	// Custom CSS
-	register_setting( 'swgtheme_options_group', 'swgtheme_custom_css' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_custom_css', $args );
 	
 	// Mobile Menu
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_mobile_menu' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_mobile_menu', $args );
 	
 	// SEO Options
-	register_setting( 'swgtheme_options_group', 'swgtheme_meta_description' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_meta_keywords' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_og_image' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_meta_description', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_meta_keywords', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_og_image', $args );
 	
 	// Notification Bar
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_notification' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_notification_text' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_notification_type' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_notification', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_notification_text', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_notification_type', $args );
 	
 	// Analytics
-	register_setting( 'swgtheme_options_group', 'swgtheme_google_analytics' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_facebook_pixel' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_google_analytics', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_facebook_pixel', $args );
 	
 	// Animation Controls
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_animations' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_animation_speed' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_animations', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_animation_speed', $args );
 	
 	// Social Sharing
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_social_share' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_social_share_platforms' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_social_share', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_social_share_platforms', $args );
 	
 	// Reading Progress Bar
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_reading_progress' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_progress_bar_color' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_reading_progress', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_progress_bar_color', $args );
 	
 	// Related Posts
-	register_setting( 'swgtheme_options_group', 'swgtheme_enable_related_posts' );
-	register_setting( 'swgtheme_options_group', 'swgtheme_related_posts_count' );
+	register_setting( 'swgtheme_options_group', 'swgtheme_enable_related_posts', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_related_posts_count', $args );
 	
 	// Breadcrumbs
 	register_setting( 'swgtheme_options_group', 'swgtheme_enable_breadcrumbs' );
@@ -3100,6 +3235,14 @@ function swgtheme_dashboard_stats_widget() {
  * Theme Options page callback.
  */
 function swgtheme_options_page() {
+	// Debug: Log that callback is being called
+	error_log('swgtheme_options_page callback is being called');
+	error_log('Current user can manage_options: ' . (current_user_can('manage_options') ? 'YES' : 'NO'));
+	
+	if ( ! current_user_can( 'manage_options' ) ) {
+		error_log('Permission denied - user lacks manage_options capability');
+		wp_die( __( 'You do not have sufficient permissions to access this page.', 'swgtheme' ) );
+	}
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>

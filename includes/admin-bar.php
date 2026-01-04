@@ -23,7 +23,7 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 	$wp_admin_bar->add_node( array(
 		'id'    => 'swg-theme',
 		'title' => '⚙️ SWG Theme',
-		'href'  => admin_url( 'themes.php?page=swgtheme_options' ),
+		'href'  => admin_url( 'themes.php?page=swgtheme-options' ),
 		'meta'  => array(
 			'title' => __( 'SWG Theme Settings', 'swgtheme' ),
 		),
@@ -42,7 +42,7 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 		'parent' => 'swg-settings-group',
 		'id'     => 'swg-theme-options',
 		'title'  => '🎨 Theme Options',
-		'href'   => admin_url( 'themes.php?page=swgtheme_options' ),
+		'href'   => admin_url( 'themes.php?page=swgtheme-options' ),
 		'meta'   => array(
 			'title' => __( 'Configure theme settings', 'swgtheme' ),
 		),
@@ -52,7 +52,7 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 		'parent' => 'swg-settings-group',
 		'id'     => 'swg-slider-settings',
 		'title'  => '🖼️ Slider Settings',
-		'href'   => admin_url( 'themes.php?page=swgtheme_slider' ),
+		'href'   => admin_url( 'edit.php?post_type=swg_images&page=swg-slider-options' ),
 		'meta'   => array(
 			'title' => __( 'Manage slider images', 'swgtheme' ),
 		),
@@ -68,7 +68,7 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 		),
 	) );
 	
-	// --- Security & Integrations ---
+	// --- Security & Management ---
 	$wp_admin_bar->add_node( array(
 		'parent' => 'swg-theme',
 		'id'     => 'swg-security',
@@ -86,6 +86,105 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 		'href'   => admin_url( 'themes.php?page=swgtheme-integrations' ),
 		'meta'   => array(
 			'title' => __( 'Third-party service integrations', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-theme',
+		'id'     => 'swg-performance',
+		'title'  => '⚡ Performance',
+		'href'   => admin_url( 'themes.php?page=swgtheme-performance' ),
+		'meta'   => array(
+			'title' => __( 'Performance optimization settings', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-theme',
+		'id'     => 'swg-admin-management',
+		'title'  => '⚙️ Admin Management',
+		'href'   => admin_url( 'themes.php?page=swgtheme-admin-management' ),
+		'meta'   => array(
+			'title' => __( 'Admin backend customization', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-theme',
+		'id'     => 'swg-ux-settings',
+		'title'  => '🎯 UX & Interaction',
+		'href'   => admin_url( 'themes.php?page=swgtheme-ux' ),
+		'meta'   => array(
+			'title' => __( 'User experience settings', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-theme',
+		'id'     => 'swg-seo',
+		'title'  => '📊 Advanced SEO',
+		'href'   => admin_url( 'themes.php?page=swgtheme-advanced-seo' ),
+		'meta'   => array(
+			'title' => __( 'SEO and analytics settings', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-theme',
+		'id'     => 'swg-membership',
+		'title'  => '👥 Membership',
+		'href'   => admin_url( 'themes.php?page=swgtheme-membership' ),
+		'meta'   => array(
+			'title' => __( 'Membership and user management', 'swgtheme' ),
+		),
+	) );
+	
+	// --- Content Management ---
+	$wp_admin_bar->add_group( array(
+		'parent' => 'swg-theme',
+		'id'     => 'swg-content-group',
+		'meta'   => array(
+			'class' => 'ab-sub-secondary',
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-content-group',
+		'id'     => 'swg-slider-images',
+		'title'  => '🖼️ Manage Slider',
+		'href'   => admin_url( 'edit.php?post_type=swg_images' ),
+		'meta'   => array(
+			'title' => __( 'Manage slider images', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-content-group',
+		'id'     => 'swg-user-badges',
+		'title'  => '🏆 User Badges',
+		'href'   => admin_url( 'users.php?page=swgtheme-badges' ),
+		'meta'   => array(
+			'title' => __( 'Manage user badges', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-content-group',
+		'id'     => 'swg-menus',
+		'title'  => '📋 Menus',
+		'href'   => admin_url( 'nav-menus.php' ),
+		'meta'   => array(
+			'title' => __( 'Manage navigation menus', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-content-group',
+		'id'     => 'swg-widgets',
+		'title'  => '🧩 Widgets',
+		'href'   => admin_url( 'widgets.php' ),
+		'meta'   => array(
+			'title' => __( 'Manage widgets', 'swgtheme' ),
 		),
 	) );
 	
@@ -177,6 +276,61 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 		'href'   => admin_url( 'customize.php' ),
 		'meta'   => array(
 			'title' => __( 'Open WordPress Customizer', 'swgtheme' ),
+		),
+	) );
+	
+	// New Post
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-quick-actions',
+		'id'     => 'swg-new-post',
+		'title'  => '📝 New Post',
+		'href'   => admin_url( 'post-new.php' ),
+		'meta'   => array(
+			'title' => __( 'Create a new post', 'swgtheme' ),
+		),
+	) );
+	
+	// New Page
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-quick-actions',
+		'id'     => 'swg-new-page',
+		'title'  => '📄 New Page',
+		'href'   => admin_url( 'post-new.php?post_type=page' ),
+		'meta'   => array(
+			'title' => __( 'Create a new page', 'swgtheme' ),
+		),
+	) );
+	
+	// Media Library
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-quick-actions',
+		'id'     => 'swg-media',
+		'title'  => '📁 Media Library',
+		'href'   => admin_url( 'upload.php' ),
+		'meta'   => array(
+			'title' => __( 'Manage media files', 'swgtheme' ),
+		),
+	) );
+	
+	// Users
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-quick-actions',
+		'id'     => 'swg-users',
+		'title'  => '👤 Users',
+		'href'   => admin_url( 'users.php' ),
+		'meta'   => array(
+			'title' => __( 'Manage users', 'swgtheme' ),
+		),
+	) );
+	
+	// Plugins
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-quick-actions',
+		'id'     => 'swg-plugins',
+		'title'  => '🔌 Plugins',
+		'href'   => admin_url( 'plugins.php' ),
+		'meta'   => array(
+			'title' => __( 'Manage plugins', 'swgtheme' ),
 		),
 	) );
 	
