@@ -1,4 +1,7 @@
 Chaingelog
+0.9.2
+fixed admin menu
+
 0.9.1:
 updated theame to modern standards
 implamented all featchers for testing
