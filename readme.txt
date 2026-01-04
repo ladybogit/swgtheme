@@ -5,6 +5,9 @@ Chaingelog
 fixed admin menu
 fixed back to top button
 fixed Performance Performance Optimization tabs
+all admin pages not use tab
+hidden all theame pages on side bat and added the to admin bar (there is a check box to unhide in Theme Options called clean admin
+added SWG Theme Information page with Theme Details and system info
 
 0.9.1:
 updated theame to modern standards

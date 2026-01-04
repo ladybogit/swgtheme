@@ -29,7 +29,7 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 		),
 	) );
 	
-	// --- Settings Group ---
+	// --- Settings Group (Alphabetically Sorted) ---
 	$wp_admin_bar->add_group( array(
 		'parent' => 'swg-theme',
 		'id'     => 'swg-settings-group',
@@ -40,11 +40,81 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 	
 	$wp_admin_bar->add_node( array(
 		'parent' => 'swg-settings-group',
-		'id'     => 'swg-theme-options',
-		'title'  => '🎨 Theme Options',
-		'href'   => admin_url( 'themes.php?page=swgtheme-options' ),
+		'id'     => 'swg-admin-management',
+		'title'  => '⚙️ Admin Management',
+		'href'   => admin_url( 'themes.php?page=swgtheme-admin-management' ),
 		'meta'   => array(
-			'title' => __( 'Configure theme settings', 'swgtheme' ),
+			'title' => __( 'Admin backend customization', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-settings-group',
+		'id'     => 'swg-seo',
+		'title'  => '📊 Advanced SEO',
+		'href'   => admin_url( 'themes.php?page=swgtheme-advanced-seo' ),
+		'meta'   => array(
+			'title' => __( 'SEO and analytics settings', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-settings-group',
+		'id'     => 'swg-documentation',
+		'title'  => '📚 Documentation & Support',
+		'href'   => admin_url( 'themes.php?page=swgtheme-documentation' ),
+		'meta'   => array(
+			'title' => __( 'Documentation and support settings', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-settings-group',
+		'id'     => 'swg-integrations',
+		'title'  => '🔌 Integrations',
+		'href'   => admin_url( 'themes.php?page=swgtheme-integrations' ),
+		'meta'   => array(
+			'title' => __( 'Third-party service integrations', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-settings-group',
+		'id'     => 'swg-membership',
+		'title'  => '👥 Membership',
+		'href'   => admin_url( 'themes.php?page=swgtheme-membership' ),
+		'meta'   => array(
+			'title' => __( 'Membership and user management', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-settings-group',
+		'id'     => 'swg-multilang',
+		'title'  => '🌍 Multi-language',
+		'href'   => admin_url( 'themes.php?page=swgtheme-multilang' ),
+		'meta'   => array(
+			'title' => __( 'Multi-language and translation settings', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-settings-group',
+		'id'     => 'swg-performance',
+		'title'  => '⚡ Performance',
+		'href'   => admin_url( 'themes.php?page=swgtheme-performance' ),
+		'meta'   => array(
+			'title' => __( 'Performance optimization settings', 'swgtheme' ),
+		),
+	) );
+	
+	$wp_admin_bar->add_node( array(
+		'parent' => 'swg-settings-group',
+		'id'     => 'swg-security',
+		'title'  => '🔒 Security',
+		'href'   => admin_url( 'themes.php?page=swgtheme-security' ),
+		'meta'   => array(
+			'title' => __( 'Security dashboard and logs', 'swgtheme' ),
 		),
 	) );
 	
@@ -60,57 +130,16 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 	
 	$wp_admin_bar->add_node( array(
 		'parent' => 'swg-settings-group',
-		'id'     => 'swg-user-social',
-		'title'  => '👥 User Social Links',
-		'href'   => admin_url( 'themes.php?page=swgtheme-user-social' ),
+		'id'     => 'swg-theme-options',
+		'title'  => '🎨 Theme Options',
+		'href'   => admin_url( 'themes.php?page=swgtheme-options' ),
 		'meta'   => array(
-			'title' => __( 'Configure social media links', 'swgtheme' ),
-		),
-	) );
-	
-	// --- Security & Management ---
-	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-theme',
-		'id'     => 'swg-security',
-		'title'  => '🔒 Security',
-		'href'   => admin_url( 'themes.php?page=swgtheme-security' ),
-		'meta'   => array(
-			'title' => __( 'Security dashboard and logs', 'swgtheme' ),
+			'title' => __( 'Configure theme settings', 'swgtheme' ),
 		),
 	) );
 	
 	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-theme',
-		'id'     => 'swg-integrations',
-		'title'  => '🔌 Integrations',
-		'href'   => admin_url( 'themes.php?page=swgtheme-integrations' ),
-		'meta'   => array(
-			'title' => __( 'Third-party service integrations', 'swgtheme' ),
-		),
-	) );
-	
-	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-theme',
-		'id'     => 'swg-performance',
-		'title'  => '⚡ Performance',
-		'href'   => admin_url( 'themes.php?page=swgtheme-performance' ),
-		'meta'   => array(
-			'title' => __( 'Performance optimization settings', 'swgtheme' ),
-		),
-	) );
-	
-	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-theme',
-		'id'     => 'swg-admin-management',
-		'title'  => '⚙️ Admin Management',
-		'href'   => admin_url( 'themes.php?page=swgtheme-admin-management' ),
-		'meta'   => array(
-			'title' => __( 'Admin backend customization', 'swgtheme' ),
-		),
-	) );
-	
-	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-theme',
+		'parent' => 'swg-settings-group',
 		'id'     => 'swg-ux-settings',
 		'title'  => '🎯 UX & Interaction',
 		'href'   => admin_url( 'themes.php?page=swgtheme-ux' ),
@@ -120,22 +149,12 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 	) );
 	
 	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-theme',
-		'id'     => 'swg-seo',
-		'title'  => '📊 Advanced SEO',
-		'href'   => admin_url( 'themes.php?page=swgtheme-advanced-seo' ),
+		'parent' => 'swg-settings-group',
+		'id'     => 'swg-user-social',
+		'title'  => '👥 User Social Links',
+		'href'   => admin_url( 'themes.php?page=swgtheme-user-social' ),
 		'meta'   => array(
-			'title' => __( 'SEO and analytics settings', 'swgtheme' ),
-		),
-	) );
-	
-	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-theme',
-		'id'     => 'swg-membership',
-		'title'  => '👥 Membership',
-		'href'   => admin_url( 'themes.php?page=swgtheme-membership' ),
-		'meta'   => array(
-			'title' => __( 'Membership and user management', 'swgtheme' ),
+			'title' => __( 'Configure social media links', 'swgtheme' ),
 		),
 	) );
 	
@@ -194,7 +213,6 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 			'parent' => 'swg-theme',
 			'id'     => 'swg-dev-tools',
 			'title'  => '🔧 Developer Tools',
-			'href'   => '#',
 			'meta'   => array(
 				'title' => __( 'Developer utilities', 'swgtheme' ),
 			),
@@ -339,72 +357,11 @@ function swgtheme_admin_bar_menu( $wp_admin_bar ) {
 		'parent' => 'swg-theme',
 		'id'     => 'swg-info',
 		'title'  => 'ℹ️ Theme Info',
-		'href'   => '#',
+		'href'   => admin_url( 'admin.php?page=swg-theme-info' ),
 		'meta'   => array(
 			'title' => __( 'Theme version and information', 'swgtheme' ),
 		),
 	) );
-	
-	// Theme version
-	$theme = wp_get_theme();
-	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-info',
-		'id'     => 'swg-version',
-		'title'  => sprintf( __( 'Version: %s', 'swgtheme' ), $theme->get( 'Version' ) ),
-		'href'   => '#',
-		'meta'   => array(
-			'class' => 'swg-admin-bar-info',
-		),
-	) );
-	
-	// WordPress version
-	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-info',
-		'id'     => 'swg-wp-version',
-		'title'  => sprintf( __( 'WordPress: %s', 'swgtheme' ), get_bloginfo( 'version' ) ),
-		'href'   => '#',
-		'meta'   => array(
-			'class' => 'swg-admin-bar-info',
-		),
-	) );
-	
-	// PHP version
-	$wp_admin_bar->add_node( array(
-		'parent' => 'swg-info',
-		'id'     => 'swg-php-version',
-		'title'  => sprintf( __( 'PHP: %s', 'swgtheme' ), PHP_VERSION ),
-		'href'   => '#',
-		'meta'   => array(
-			'class' => 'swg-admin-bar-info',
-		),
-	) );
-	
-	// Active integrations count
-	$active_integrations = 0;
-	if ( get_option( 'swgtheme_mailchimp_api_key' ) ) {
-		$active_integrations++;
-	}
-	if ( get_option( 'swgtheme_discord_webhook_url' ) ) {
-		$active_integrations++;
-	}
-	if ( get_option( 'swgtheme_twitch_client_id' ) ) {
-		$active_integrations++;
-	}
-	if ( get_option( 'swgtheme_youtube_api_key' ) ) {
-		$active_integrations++;
-	}
-	
-	if ( $active_integrations > 0 ) {
-		$wp_admin_bar->add_node( array(
-			'parent' => 'swg-info',
-			'id'     => 'swg-integrations-count',
-			'title'  => sprintf( __( 'Active Integrations: %d', 'swgtheme' ), $active_integrations ),
-			'href'   => admin_url( 'themes.php?page=swgtheme-integrations' ),
-			'meta'   => array(
-				'class' => 'swg-admin-bar-info',
-			),
-		) );
-	}
 }
 add_action( 'admin_bar_menu', 'swgtheme_admin_bar_menu', 100 );
 
@@ -525,6 +482,29 @@ function swgtheme_admin_bar_css() {
 		/* Dark mode toggle highlight on frontend */
 		body:not(.wp-admin) #wpadminbar #wp-admin-bar-swg-toggle-dark-mode > .ab-item:hover {
 			background: #46b450 !important;
+		}
+		/* Enable scrolling for long admin bar submenus */
+		#wpadminbar #wp-admin-bar-swg-theme > .ab-sub-wrapper {
+			max-height: calc(100vh - 32px) !important;
+			overflow-y: auto !important;
+			overflow-x: hidden !important;
+		}
+		#wpadminbar #wp-admin-bar-swg-theme > .ab-sub-wrapper > .ab-submenu {
+			max-height: none !important;
+		}
+		/* Custom scrollbar styling for admin bar */
+		#wpadminbar #wp-admin-bar-swg-theme > .ab-sub-wrapper::-webkit-scrollbar {
+			width: 8px;
+		}
+		#wpadminbar #wp-admin-bar-swg-theme > .ab-sub-wrapper::-webkit-scrollbar-track {
+			background: rgba(0,0,0,0.1);
+		}
+		#wpadminbar #wp-admin-bar-swg-theme > .ab-sub-wrapper::-webkit-scrollbar-thumb {
+			background: rgba(255,255,255,0.2);
+			border-radius: 4px;
+		}
+		#wpadminbar #wp-admin-bar-swg-theme > .ab-sub-wrapper::-webkit-scrollbar-thumb:hover {
+			background: rgba(255,255,255,0.3);
 		}
 	</style>
 	<?php
@@ -681,6 +661,734 @@ function swgtheme_handle_clear_debug_log() {
 	exit;
 }
 add_action( 'admin_post_swg_clear_debug_log', 'swgtheme_handle_clear_debug_log' );
+
+/**
+ * Register Theme Info page
+ */
+function swgtheme_theme_info_page() {
+	add_submenu_page(
+		null, // Hidden from menu
+		__( 'Theme Info', 'swgtheme' ),
+		__( 'Theme Info', 'swgtheme' ),
+		'manage_options',
+		'swg-theme-info',
+		'swgtheme_theme_info_page_content'
+	);
+}
+add_action( 'admin_menu', 'swgtheme_theme_info_page' );
+
+/**
+ * Theme Info page content
+ */
+function swgtheme_theme_info_page_content() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( __( 'You do not have permission to access this page', 'swgtheme' ) );
+	}
+	
+	$theme = wp_get_theme();
+	
+	// Active integrations count
+	$active_integrations = array();
+	if ( get_option( 'swgtheme_mailchimp_api_key' ) ) {
+		$active_integrations[] = 'MailChimp';
+	}
+	if ( get_option( 'swgtheme_discord_webhook_url' ) ) {
+		$active_integrations[] = 'Discord';
+	}
+	if ( get_option( 'swgtheme_twitch_client_id' ) ) {
+		$active_integrations[] = 'Twitch';
+	}
+	if ( get_option( 'swgtheme_youtube_api_key' ) ) {
+		$active_integrations[] = 'YouTube';
+	}
+	
+	?>
+	<div class="wrap">
+		<h1><?php esc_html_e( 'SWG Theme Information', 'swgtheme' ); ?></h1>
+		
+		<div class="card" style="max-width: 800px;">
+			<h2><?php esc_html_e( 'Theme Details', 'swgtheme' ); ?></h2>
+			<table class="form-table">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Theme Name:', 'swgtheme' ); ?></th>
+					<td><strong><?php echo esc_html( $theme->get( 'Name' ) ); ?></strong></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Theme Version:', 'swgtheme' ); ?></th>
+					<td><strong><?php echo esc_html( $theme->get( 'Version' ) ); ?></strong></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Author:', 'swgtheme' ); ?></th>
+					<td><?php echo wp_kses_post( $theme->get( 'Author' ) ); ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Description:', 'swgtheme' ); ?></th>
+					<td><?php echo wp_kses_post( $theme->get( 'Description' ) ); ?></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="card" style="max-width: 800px; margin-top: 20px;">
+			<h2><?php esc_html_e( 'System Information', 'swgtheme' ); ?></h2>
+			<table class="form-table">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'WordPress Version:', 'swgtheme' ); ?></th>
+					<td><strong><?php echo esc_html( get_bloginfo( 'version' ) ); ?></strong></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'PHP Version:', 'swgtheme' ); ?></th>
+					<td><strong><?php echo esc_html( PHP_VERSION ); ?></strong></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'MySQL Version:', 'swgtheme' ); ?></th>
+					<td><strong><?php global $wpdb; echo esc_html( $wpdb->db_version() ); ?></strong></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Server:', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown' ); ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Max Upload Size:', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( size_format( wp_max_upload_size() ) ); ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'PHP Memory Limit:', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( ini_get( 'memory_limit' ) ); ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'WordPress Memory Limit:', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( WP_MEMORY_LIMIT ); ?></td>
+				</tr>
+			</table>
+		</div>
+		
+		<?php if ( ! empty( $active_integrations ) ) : ?>
+		<div class="card" style="max-width: 800px; margin-top: 20px;">
+			<h2><?php esc_html_e( 'Active Integrations', 'swgtheme' ); ?></h2>
+			<p>
+				<?php
+				printf(
+					esc_html( _n( '%d integration is currently active:', '%d integrations are currently active:', count( $active_integrations ), 'swgtheme' ) ),
+					count( $active_integrations )
+				);
+				?>
+			</p>
+			<ul style="list-style: disc; margin-left: 20px;">
+				<?php foreach ( $active_integrations as $integration ) : ?>
+					<li><?php echo esc_html( $integration ); ?></li>
+				<?php endforeach; ?>
+			</ul>
+			<p>
+				<a href="<?php echo esc_url( admin_url( 'themes.php?page=swgtheme-integrations' ) ); ?>" class="button button-primary">
+					<?php esc_html_e( 'Manage Integrations', 'swgtheme' ); ?>
+				</a>
+			</p>
+		</div>
+		<?php endif; ?>
+		
+		<h1 style="margin-top: 40px; padding-bottom: 10px; border-bottom: 3px solid #0073aa;">
+			<?php esc_html_e( 'System Information', 'swgtheme' ); ?>
+		</h1>
+		
+		<!-- Tab Navigation -->
+		<h2 class="nav-tab-wrapper">
+			<a href="#host-system" class="nav-tab nav-tab-active"><?php esc_html_e( 'Host System', 'swgtheme' ); ?></a>
+			<a href="#php-info" class="nav-tab"><?php esc_html_e( 'PHP Information', 'swgtheme' ); ?></a>
+			<a href="#apache-info" class="nav-tab"><?php esc_html_e( 'Apache Server', 'swgtheme' ); ?></a>
+			<a href="#mysql-info" class="nav-tab"><?php esc_html_e( 'MySQL Database', 'swgtheme' ); ?></a>
+		</h2>
+		
+		<!-- Tab 1: Host System Information -->
+		<div id="host-system" class="tab-content active">
+		<div class="card" style="max-width: 800px; margin-top: 20px;">
+			<h2><?php esc_html_e( 'Host System Information', 'swgtheme' ); ?></h2>
+			<p><?php esc_html_e( 'Operating system and hardware details:', 'swgtheme' ); ?></p>
+			<table class="form-table">
+				<tr>
+					<th scope="row" style="width: 35%;"><?php esc_html_e( 'Operating System:', 'swgtheme' ); ?></th>
+					<td><strong><?php echo esc_html( php_uname( 's' ) . ' ' . php_uname( 'r' ) ); ?></strong></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'OS Version:', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( php_uname( 'v' ) ); ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Hostname:', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( php_uname( 'n' ) ); ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Machine Type:', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( php_uname( 'm' ) ); ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Server Architecture:', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( php_uname( 'a' ) ); ?></td>
+				</tr>
+				<?php
+				// Disk space information
+				$disk_free = @disk_free_space( ABSPATH );
+				$disk_total = @disk_total_space( ABSPATH );
+				if ( $disk_free !== false && $disk_total !== false ) {
+					$disk_used = $disk_total - $disk_free;
+					$disk_percent = ( $disk_used / $disk_total ) * 100;
+					?>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Disk Space (Total):', 'swgtheme' ); ?></th>
+						<td><?php echo esc_html( size_format( $disk_total, 2 ) ); ?></td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Disk Space (Used):', 'swgtheme' ); ?></th>
+						<td>
+							<?php 
+							echo esc_html( size_format( $disk_used, 2 ) ); 
+							echo ' (' . esc_html( number_format( $disk_percent, 1 ) ) . '%)';
+							?>
+							<div style="background: #ddd; height: 20px; border-radius: 3px; margin-top: 5px; overflow: hidden;">
+								<div style="background: <?php echo $disk_percent > 90 ? '#dc3232' : ( $disk_percent > 75 ? '#f0b849' : '#46b450' ); ?>; height: 100%; width: <?php echo esc_attr( $disk_percent ); ?>%;"></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Disk Space (Free):', 'swgtheme' ); ?></th>
+						<td><?php echo esc_html( size_format( $disk_free, 2 ) ); ?></td>
+					</tr>
+					<?php
+				}
+				
+				// PHP Memory Usage
+				$memory_current = memory_get_usage( true );
+				$memory_peak = memory_get_peak_usage( true );
+				?>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'PHP Memory Usage (Current):', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( size_format( $memory_current, 2 ) ); ?></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'PHP Memory Usage (Peak):', 'swgtheme' ); ?></th>
+					<td><?php echo esc_html( size_format( $memory_peak, 2 ) ); ?></td>
+				</tr>
+				<?php
+				// CPU Info (Windows specific)
+				if ( strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) {
+					$cpu_name = getenv( 'PROCESSOR_IDENTIFIER' );
+					$cpu_arch = getenv( 'PROCESSOR_ARCHITECTURE' );
+					$cpu_count = getenv( 'NUMBER_OF_PROCESSORS' );
+					
+					if ( $cpu_name ) {
+						?>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'CPU:', 'swgtheme' ); ?></th>
+							<td><?php echo esc_html( $cpu_name ); ?></td>
+						</tr>
+						<?php
+					}
+					if ( $cpu_arch ) {
+						?>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'CPU Architecture:', 'swgtheme' ); ?></th>
+							<td><?php echo esc_html( $cpu_arch ); ?></td>
+						</tr>
+						<?php
+					}
+					if ( $cpu_count ) {
+						?>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Number of Processors:', 'swgtheme' ); ?></th>
+							<td><?php echo esc_html( $cpu_count ); ?></td>
+						</tr>
+						<?php
+					}
+					
+					// Try to get total RAM (Windows)
+					@exec( 'wmic computersystem get totalphysicalmemory', $output );
+					if ( isset( $output[1] ) && is_numeric( trim( $output[1] ) ) ) {
+						$total_ram = trim( $output[1] );
+						?>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Total Physical Memory (RAM):', 'swgtheme' ); ?></th>
+							<td><?php echo esc_html( size_format( $total_ram, 2 ) ); ?></td>
+						</tr>
+						<?php
+					}
+				}
+				
+				// Server uptime
+				if ( function_exists( 'shell_exec' ) && strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN' ) {
+					$uptime_output = @shell_exec( 'net statistics server | find "since"' );
+					if ( $uptime_output ) {
+						?>
+						<tr>
+							<th scope="row"><?php esc_html_e( 'Server Uptime:', 'swgtheme' ); ?></th>
+							<td><?php echo esc_html( trim( str_replace( 'Statistics since', 'Since', $uptime_output ) ) ); ?></td>
+						</tr>
+						<?php
+					}
+				}
+				?>
+			</table>
+		</div>
+		</div>
+		
+		<!-- Tab 2: PHP Information -->
+		<div id="php-info" class="tab-content">
+		<div class="card" style="max-width: 800px; margin-top: 20px;">
+			<h2><?php esc_html_e( 'PHP Information', 'swgtheme' ); ?></h2>
+			<p><?php esc_html_e( 'Complete PHP configuration and environment details:', 'swgtheme' ); ?></p>
+			<div style="max-height: 600px; overflow-y: auto; overflow-x: auto; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px;">
+				<?php
+				ob_start();
+				phpinfo();
+				$phpinfo = ob_get_clean();
+				
+				// Remove HTML/HEAD/BODY tags to embed properly
+				$phpinfo = preg_replace( '%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo );
+				
+				// Add custom styling to phpinfo output
+				?>
+				<style>
+					.phpinfo-container table {
+						border-collapse: collapse;
+						width: 100%;
+					}
+					.phpinfo-container td, .phpinfo-container th {
+						border: 1px solid #ddd;
+						padding: 8px;
+						font-size: 12px;
+					}
+					.phpinfo-container th {
+						background-color: #0073aa;
+						color: white;
+						text-align: left;
+					}
+					.phpinfo-container tr:nth-child(even) {
+						background-color: #f9f9f9;
+					}
+					.phpinfo-container h2 {
+						background-color: #0073aa;
+						color: white;
+						padding: 10px;
+						margin: 0;
+						font-size: 16px;
+					}
+					.phpinfo-container .e {
+						background-color: #ccccff;
+						font-weight: bold;
+					}
+					.phpinfo-container .v {
+						background-color: #f0f0f0;
+					}
+					.phpinfo-container .h {
+						background-color: #9999cc;
+						color: white;
+						font-weight: bold;
+					}
+				</style>
+				<div class="phpinfo-container">
+					<?php echo $phpinfo; ?>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+		<!-- Tab 3: Apache Server Information -->
+		<div id="apache-info" class="tab-content">
+		<div class="card" style="max-width: 800px; margin-top: 20px;">
+			<h2><?php esc_html_e( 'Apache Server Information', 'swgtheme' ); ?></h2>
+			<p><?php esc_html_e( 'Apache/Server configuration and environment details:', 'swgtheme' ); ?></p>
+			<div style="max-height: 600px; overflow-y: auto; overflow-x: auto; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; padding: 15px;">
+				<table class="widefat striped" style="font-size: 12px; font-family: 'Courier New', monospace;">
+					<thead>
+						<tr>
+							<th style="width: 35%;"><?php esc_html_e( 'Variable', 'swgtheme' ); ?></th>
+							<th><?php esc_html_e( 'Value', 'swgtheme' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						// Apache-specific functions
+						if ( function_exists( 'apache_get_version' ) ) {
+							?>
+							<tr>
+								<td><strong>Apache Version</strong></td>
+								<td><?php echo esc_html( apache_get_version() ); ?></td>
+							</tr>
+							<?php
+						}
+						
+						if ( function_exists( 'apache_get_modules' ) ) {
+							$modules = apache_get_modules();
+							?>
+							<tr>
+								<td><strong>Loaded Apache Modules</strong></td>
+								<td>
+									<?php 
+									echo esc_html( implode( ', ', array_slice( $modules, 0, 10 ) ) ); 
+									if ( count( $modules ) > 10 ) {
+										echo '<br><em>' . esc_html( sprintf( __( '... and %d more modules', 'swgtheme' ), count( $modules ) - 10 ) ) . '</em>';
+									}
+									?>
+								</td>
+							</tr>
+							<?php
+						}
+						
+						// Server variables
+						$server_vars = array(
+							'SERVER_SOFTWARE' => 'Server Software',
+							'SERVER_NAME' => 'Server Name',
+							'SERVER_ADDR' => 'Server Address',
+							'SERVER_PORT' => 'Server Port',
+							'REMOTE_ADDR' => 'Remote Address',
+							'DOCUMENT_ROOT' => 'Document Root',
+							'SERVER_ADMIN' => 'Server Admin',
+							'SERVER_PROTOCOL' => 'Server Protocol',
+							'REQUEST_METHOD' => 'Request Method',
+							'QUERY_STRING' => 'Query String',
+							'HTTP_HOST' => 'HTTP Host',
+							'HTTP_USER_AGENT' => 'User Agent',
+							'HTTP_ACCEPT' => 'HTTP Accept',
+							'HTTP_ACCEPT_LANGUAGE' => 'Accept Language',
+							'HTTP_ACCEPT_ENCODING' => 'Accept Encoding',
+							'HTTPS' => 'HTTPS Status',
+							'SCRIPT_FILENAME' => 'Script Filename',
+							'SCRIPT_NAME' => 'Script Name',
+							'REQUEST_URI' => 'Request URI',
+							'PHP_SELF' => 'PHP Self',
+							'GATEWAY_INTERFACE' => 'Gateway Interface',
+						);
+						
+						foreach ( $server_vars as $var => $label ) {
+							if ( isset( $_SERVER[$var] ) ) {
+								$value = $_SERVER[$var];
+								// Truncate very long values
+								if ( strlen( $value ) > 200 ) {
+									$value = substr( $value, 0, 200 ) . '...';
+								}
+								?>
+								<tr>
+									<td><strong><?php echo esc_html( $label ); ?></strong></td>
+									<td style="word-break: break-all;"><?php echo esc_html( $value ); ?></td>
+								</tr>
+								<?php
+							}
+						}
+						
+						// Additional environment variables
+						?>
+						<tr>
+							<td colspan="2" style="background: #0073aa; color: white; font-weight: bold; padding: 8px;">
+								<?php esc_html_e( 'Environment Variables', 'swgtheme' ); ?>
+							</td>
+						</tr>
+						<?php
+						
+						$env_vars = array(
+							'PATH' => 'System Path',
+							'TEMP' => 'Temp Directory',
+							'TMP' => 'TMP Directory',
+							'WINDIR' => 'Windows Directory',
+							'SystemRoot' => 'System Root',
+							'PROCESSOR_ARCHITECTURE' => 'Processor Architecture',
+							'NUMBER_OF_PROCESSORS' => 'Number of Processors',
+						);
+						
+						foreach ( $env_vars as $var => $label ) {
+							$value = getenv( $var );
+							if ( $value !== false ) {
+								if ( strlen( $value ) > 200 ) {
+									$value = substr( $value, 0, 200 ) . '...';
+								}
+								?>
+								<tr>
+									<td><strong><?php echo esc_html( $label ); ?></strong></td>
+									<td style="word-break: break-all;"><?php echo esc_html( $value ); ?></td>
+								</tr>
+								<?php
+							}
+						}
+						?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+		
+		<!-- Tab 4: MySQL Database Information -->
+		<div id="mysql-info" class="tab-content">
+		<div class="card" style="max-width: 800px; margin-top: 20px;">
+			<h2><?php esc_html_e( 'MySQL Database Information', 'swgtheme' ); ?></h2>
+			<p><?php esc_html_e( 'MySQL/MariaDB server configuration and status:', 'swgtheme' ); ?></p>
+			<div style="max-height: 600px; overflow-y: auto; overflow-x: auto; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; padding: 15px;">
+				<table class="widefat striped" style="font-size: 12px; font-family: 'Courier New', monospace;">
+					<thead>
+						<tr>
+							<th style="width: 40%;"><?php esc_html_e( 'Variable', 'swgtheme' ); ?></th>
+							<th><?php esc_html_e( 'Value', 'swgtheme' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						global $wpdb;
+						
+						// Basic database info
+						?>
+						<tr>
+							<td colspan="2" style="background: #0073aa; color: white; font-weight: bold; padding: 8px;">
+								<?php esc_html_e( 'Database Configuration', 'swgtheme' ); ?>
+							</td>
+						</tr>
+						<tr>
+							<td><strong>MySQL Version</strong></td>
+							<td><?php echo esc_html( $wpdb->db_version() ); ?></td>
+						</tr>
+						<tr>
+							<td><strong>Database Name</strong></td>
+							<td><?php echo esc_html( DB_NAME ); ?></td>
+						</tr>
+						<tr>
+							<td><strong>Database Host</strong></td>
+							<td><?php echo esc_html( DB_HOST ); ?></td>
+						</tr>
+						<tr>
+							<td><strong>Database User</strong></td>
+							<td><?php echo esc_html( DB_USER ); ?></td>
+						</tr>
+						<tr>
+							<td><strong>Database Charset</strong></td>
+							<td><?php echo esc_html( DB_CHARSET ); ?></td>
+						</tr>
+						<tr>
+							<td><strong>Database Collate</strong></td>
+							<td><?php echo esc_html( DB_COLLATE ?: 'Default' ); ?></td>
+						</tr>
+						<tr>
+							<td><strong>Table Prefix</strong></td>
+							<td><?php echo esc_html( $wpdb->prefix ); ?></td>
+						</tr>
+						
+						<?php
+						// Get MySQL variables
+						$mysql_vars = $wpdb->get_results( "SHOW VARIABLES WHERE Variable_name IN (
+							'max_connections',
+							'max_allowed_packet',
+							'innodb_buffer_pool_size',
+							'query_cache_size',
+							'tmp_table_size',
+							'max_heap_table_size',
+							'key_buffer_size',
+							'thread_cache_size',
+							'table_open_cache',
+							'sort_buffer_size',
+							'read_buffer_size',
+							'join_buffer_size',
+							'innodb_log_file_size',
+							'innodb_log_buffer_size',
+							'character_set_server',
+							'collation_server',
+							'sql_mode',
+							'max_execution_time',
+							'wait_timeout',
+							'interactive_timeout'
+						)", ARRAY_A );
+						
+						if ( ! empty( $mysql_vars ) ) {
+							?>
+							<tr>
+								<td colspan="2" style="background: #0073aa; color: white; font-weight: bold; padding: 8px;">
+									<?php esc_html_e( 'MySQL Server Variables', 'swgtheme' ); ?>
+								</td>
+							</tr>
+							<?php
+							foreach ( $mysql_vars as $var ) {
+								$value = $var['Value'];
+								// Format large numbers
+								if ( is_numeric( $value ) && $value > 1024 ) {
+									$value .= ' (' . size_format( $value, 2 ) . ')';
+								}
+								?>
+								<tr>
+									<td><strong><?php echo esc_html( $var['Variable_name'] ); ?></strong></td>
+									<td style="word-break: break-all;"><?php echo esc_html( $value ); ?></td>
+								</tr>
+								<?php
+							}
+						}
+						
+						// Get database status
+						$status_vars = $wpdb->get_results( "SHOW STATUS WHERE Variable_name IN (
+							'Uptime',
+							'Threads_connected',
+							'Questions',
+							'Slow_queries',
+							'Opens',
+							'Flush_commands',
+							'Open_tables',
+							'Queries',
+							'Connections',
+							'Bytes_received',
+							'Bytes_sent',
+							'Aborted_connects',
+							'Table_locks_waited',
+							'Created_tmp_disk_tables',
+							'Created_tmp_tables',
+							'Max_used_connections'
+						)", ARRAY_A );
+						
+						if ( ! empty( $status_vars ) ) {
+							?>
+							<tr>
+								<td colspan="2" style="background: #0073aa; color: white; font-weight: bold; padding: 8px;">
+									<?php esc_html_e( 'MySQL Server Status', 'swgtheme' ); ?>
+								</td>
+							</tr>
+							<?php
+							foreach ( $status_vars as $var ) {
+								$value = $var['Value'];
+								// Format specific values
+								if ( $var['Variable_name'] === 'Uptime' && is_numeric( $value ) ) {
+									$days = floor( $value / 86400 );
+									$hours = floor( ( $value % 86400 ) / 3600 );
+									$minutes = floor( ( $value % 3600 ) / 60 );
+									$value .= sprintf( ' (%dd %dh %dm)', $days, $hours, $minutes );
+								} elseif ( in_array( $var['Variable_name'], array( 'Bytes_received', 'Bytes_sent' ) ) && is_numeric( $value ) ) {
+									$value .= ' (' . size_format( $value, 2 ) . ')';
+								}
+								?>
+								<tr>
+									<td><strong><?php echo esc_html( $var['Variable_name'] ); ?></strong></td>
+									<td><?php echo esc_html( $value ); ?></td>
+								</tr>
+								<?php
+							}
+						}
+						
+						// Get table information
+						$tables = $wpdb->get_results( "
+							SELECT 
+								TABLE_NAME,
+								ENGINE,
+								TABLE_ROWS,
+								DATA_LENGTH,
+								INDEX_LENGTH,
+								AUTO_INCREMENT
+							FROM information_schema.TABLES 
+							WHERE TABLE_SCHEMA = '" . DB_NAME . "' 
+							AND TABLE_NAME LIKE '" . $wpdb->prefix . "%'
+							ORDER BY DATA_LENGTH DESC
+							LIMIT 10
+						", ARRAY_A );
+						
+						if ( ! empty( $tables ) ) {
+							?>
+							<tr>
+								<td colspan="2" style="background: #0073aa; color: white; font-weight: bold; padding: 8px;">
+									<?php esc_html_e( 'Top 10 Largest Tables', 'swgtheme' ); ?>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+										<tr style="background: #f0f0f0;">
+											<th style="text-align: left; padding: 5px; border: 1px solid #ddd;">Table</th>
+											<th style="text-align: left; padding: 5px; border: 1px solid #ddd;">Engine</th>
+											<th style="text-align: right; padding: 5px; border: 1px solid #ddd;">Rows</th>
+											<th style="text-align: right; padding: 5px; border: 1px solid #ddd;">Data Size</th>
+											<th style="text-align: right; padding: 5px; border: 1px solid #ddd;">Index Size</th>
+										</tr>
+										<?php foreach ( $tables as $table ) : ?>
+											<tr>
+												<td style="padding: 5px; border: 1px solid #ddd;"><?php echo esc_html( $table['TABLE_NAME'] ); ?></td>
+												<td style="padding: 5px; border: 1px solid #ddd;"><?php echo esc_html( $table['ENGINE'] ); ?></td>
+												<td style="padding: 5px; border: 1px solid #ddd; text-align: right;"><?php echo esc_html( number_format( $table['TABLE_ROWS'] ) ); ?></td>
+												<td style="padding: 5px; border: 1px solid #ddd; text-align: right;"><?php echo esc_html( size_format( $table['DATA_LENGTH'], 2 ) ); ?></td>
+												<td style="padding: 5px; border: 1px solid #ddd; text-align: right;"><?php echo esc_html( size_format( $table['INDEX_LENGTH'], 2 ) ); ?></td>
+											</tr>
+										<?php endforeach; ?>
+									</table>
+								</td>
+							</tr>
+							<?php
+						}
+						?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+		
+		<!-- Tab Switching Script -->
+		<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			function switchTab(tabId) {
+				// Remove active class from all tabs and content
+				$('.nav-tab').removeClass('nav-tab-active');
+				$('.tab-content').removeClass('active');
+				
+				// Add active class to clicked tab and corresponding content
+				$('a[href="' + tabId + '"]').addClass('nav-tab-active');
+				$(tabId).addClass('active');
+				
+				// Update URL hash without scrolling
+				if (history.pushState) {
+					history.pushState(null, null, tabId);
+				} else {
+					location.hash = tabId;
+				}
+			}
+			
+			// Handle tab clicks
+			$('.nav-tab').on('click', function(e) {
+				e.preventDefault();
+				var tabId = $(this).attr('href');
+				switchTab(tabId);
+			});
+			
+			// Handle initial hash on page load
+			if (window.location.hash) {
+				var hash = window.location.hash;
+				if ($('.tab-content' + hash).length) {
+					switchTab(hash);
+				}
+			}
+			
+			// Handle browser back/forward buttons
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					var hash = window.location.hash;
+					if ($('.tab-content' + hash).length) {
+						switchTab(hash);
+					}
+				}
+			});
+		});
+		</script>
+		
+		<style>
+		.tab-content {
+			display: none !important;
+		}
+		.tab-content.active {
+			display: block !important;
+		}
+		</style>
+		
+		<div class="card" style="max-width: 800px; margin-top: 20px;">
+			<h2><?php esc_html_e( 'Quick Links', 'swgtheme' ); ?></h2>
+			<p>
+				<a href="<?php echo esc_url( admin_url( 'themes.php?page=swgtheme-options' ) ); ?>" class="button">
+					<?php esc_html_e( 'Theme Options', 'swgtheme' ); ?>
+				</a>
+				<a href="<?php echo esc_url( admin_url( 'themes.php?page=swgtheme-performance' ) ); ?>" class="button">
+					<?php esc_html_e( 'Performance Settings', 'swgtheme' ); ?>
+				</a>
+				<a href="<?php echo esc_url( admin_url( 'themes.php?page=swgtheme-security' ) ); ?>" class="button">
+					<?php esc_html_e( 'Security Settings', 'swgtheme' ); ?>
+				</a>
+			</p>
+		</div>
+	</div>
+	<?php
+}
 
 // Register debug log page
 if ( function_exists( 'is_dev_mode' ) && is_dev_mode() ) {

@@ -2258,6 +2258,33 @@ function swgtheme_add_admin_page() {
 add_action( 'admin_menu', 'swgtheme_add_admin_page', 10 );
 
 /**
+ * Hide theme pages from Appearance menu when Clean Admin is enabled
+ */
+function swgtheme_hide_theme_pages_css() {
+	if ( get_option( 'swgtheme_clean_admin', '1' ) === '1' ) {
+		?>
+		<style>
+			/* Hide theme pages from Appearance menu when Clean Admin is enabled */
+			#menu-appearance a[href*="swgtheme-options"],
+			#menu-appearance a[href*="swgtheme-user-social"],
+			#menu-appearance a[href*="swgtheme-security"],
+			#menu-appearance a[href*="swgtheme-integrations"],
+			#menu-appearance a[href*="swgtheme-performance"],
+			#menu-appearance a[href*="swgtheme-advanced-seo"],
+			#menu-appearance a[href*="swgtheme-membership"],
+			#menu-appearance a[href*="swgtheme-documentation"],
+			#menu-appearance a[href*="swgtheme-multilang"],
+			#menu-appearance a[href*="swgtheme-ux"],
+			#menu-appearance a[href*="swgtheme-admin-management"] {
+				display: none !important;
+			}
+		</style>
+		<?php
+	}
+}
+add_action( 'admin_head', 'swgtheme_hide_theme_pages_css' );
+
+/**
  * Security Dashboard page callback
  */
 function swgtheme_security_dashboard_page() {
@@ -2403,6 +2430,7 @@ function swgtheme_register_settings() {
 	register_setting( 'swgtheme_options_group', 'swgtheme_footer_text', $args );
 	register_setting( 'swgtheme_options_group', 'swgtheme_slider_enabled', $args );
 	register_setting( 'swgtheme_options_group', 'swgtheme_slider_count', $args );
+	register_setting( 'swgtheme_options_group', 'swgtheme_clean_admin', $args );
 	register_setting( 'swgtheme_options_group', 'swgtheme_use_global_color', $args );
 	register_setting( 'swgtheme_options_group', 'swgtheme_primary_color', $args );
 	register_setting( 'swgtheme_options_group', 'swgtheme_button_color', $args );
@@ -3336,6 +3364,24 @@ function swgtheme_options_page() {
 							<p class="description">
 								<?php esc_html_e( 'How many images to display in the slider (1-20).', 'swgtheme' ); ?>
 							</p>
+						</td>
+					</tr>
+					
+					<tr>
+						<th scope="row">
+							<label for="swgtheme_clean_admin">
+								<?php esc_html_e( 'Clean Admin', 'swgtheme' ); ?>
+							</label>
+						</th>
+						<td>
+							<input type="checkbox" 
+								id="swgtheme_clean_admin" 
+								name="swgtheme_clean_admin" 
+								value="1" 
+								<?php checked( get_option( 'swgtheme_clean_admin', '1' ), '1' ); ?> />
+							<label for="swgtheme_clean_admin">
+								<?php esc_html_e( 'Enable clean admin interface', 'swgtheme' ); ?>
+							</label>
 						</td>
 					</tr>
 				</tbody>
@@ -5400,208 +5446,250 @@ function swgtheme_user_social_admin_page() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'User & Social Features', 'swgtheme' ); ?></h1>
+		
+		<h2 class="nav-tab-wrapper">
+			<a href="#user-profiles" class="nav-tab nav-tab-active">👤 User Profiles</a>
+			<a href="#share-counts" class="nav-tab">📊 Share Counts</a>
+			<a href="#social-proof" class="nav-tab">🔔 Social Proof</a>
+			<a href="#related-authors" class="nav-tab">✍️ Related Authors</a>
+			<a href="#author-follow" class="nav-tab">⭐ Author Follow</a>
+			<a href="#user-ratings" class="nav-tab">⭐ User Ratings</a>
+		</h2>
+		
 		<form method="post" action="options.php">
 			<?php
 			settings_fields( 'swgtheme-settings-group' );
 			do_settings_sections( 'swgtheme-settings-group' );
 			?>
 			
-			<table class="form-table">
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'User Profiles', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
-				<tr valign="top">
-					<th scope="row"><?php esc_html_e( 'Enable Enhanced Author Profiles', 'swgtheme' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_author_profiles_enable" value="1" <?php checked( get_option('swgtheme_author_profiles_enable', '0'), '1' ); ?> />
-							<?php esc_html_e( 'Show enhanced author profile pages with biography, social links, and recent posts', 'swgtheme' ); ?>
-						</label>
-					</td>
-				</tr>
-				<tr valign="top" id="author-profile-options" style="<?php echo get_option('swgtheme_author_profiles_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Show Social Links', 'swgtheme' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_author_profiles_social" value="1" <?php checked( get_option('swgtheme_author_profiles_social', '1'), '1' ); ?> />
-							<?php esc_html_e( 'Display author social media links on profile', 'swgtheme' ); ?>
-						</label>
-					</td>
-				</tr>
-				<tr valign="top" id="author-profile-posts" style="<?php echo get_option('swgtheme_author_profiles_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Recent Posts to Show', 'swgtheme' ); ?></th>
-					<td>
-						<input type="number" name="swgtheme_author_profiles_posts_count" value="<?php echo esc_attr( get_option('swgtheme_author_profiles_posts_count', '6') ); ?>" min="1" max="20" />
-						<p class="description"><?php esc_html_e( 'Number of recent posts to display on author profile', 'swgtheme' ); ?></p>
-					</td>
-				</tr>
-				
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'Social Share Counts', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
-				<tr valign="top">
-					<th scope="row"><?php esc_html_e( 'Show Share Counts', 'swgtheme' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_social_share_counts" value="1" <?php checked( get_option('swgtheme_social_share_counts', '0'), '1' ); ?> />
-							<?php esc_html_e( 'Display share counts on social sharing buttons', 'swgtheme' ); ?>
-						</label>
-					</td>
-				</tr>
-				<tr valign="top" id="share-cache-options" style="<?php echo get_option('swgtheme_social_share_counts', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Cache Duration', 'swgtheme' ); ?></th>
-					<td>
-						<select name="swgtheme_share_cache_time">
-							<option value="3600" <?php selected( get_option('swgtheme_share_cache_time', '3600'), '3600' ); ?>>1 Hour</option>
-							<option value="21600" <?php selected( get_option('swgtheme_share_cache_time', '3600'), '21600' ); ?>>6 Hours</option>
-							<option value="43200" <?php selected( get_option('swgtheme_share_cache_time', '3600'), '43200' ); ?>>12 Hours</option>
-							<option value="86400" <?php selected( get_option('swgtheme_share_cache_time', '3600'), '86400' ); ?>>24 Hours</option>
-						</select>
-						<p class="description"><?php esc_html_e( 'How long to cache share count data', 'swgtheme' ); ?></p>
-					</td>
-				</tr>
-				
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'Social Proof Notifications', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
-				<tr valign="top">
-					<th scope="row"><?php esc_html_e( 'Enable Social Proof Popups', 'swgtheme' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_social_proof_enable" value="1" <?php checked( get_option('swgtheme_social_proof_enable', '0'), '1' ); ?> />
-							<?php esc_html_e( 'Show "X people reading this" notification popups', 'swgtheme' ); ?>
-						</label>
-					</td>
-				</tr>
-				<tr valign="top" id="social-proof-message" style="<?php echo get_option('swgtheme_social_proof_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Notification Message', 'swgtheme' ); ?></th>
-					<td>
-						<input type="text" name="swgtheme_social_proof_message" value="<?php echo esc_attr( get_option('swgtheme_social_proof_message', '{count} people reading this now') ); ?>" class="regular-text" />
-						<p class="description"><?php esc_html_e( 'Use {count} as placeholder for viewer count', 'swgtheme' ); ?></p>
-					</td>
-				</tr>
-				<tr valign="top" id="social-proof-delay" style="<?php echo get_option('swgtheme_social_proof_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Delay Before Showing', 'swgtheme' ); ?></th>
-					<td>
-						<input type="number" name="swgtheme_social_proof_delay" value="<?php echo esc_attr( get_option('swgtheme_social_proof_delay', '3') ); ?>" min="0" max="30" /> seconds
-					</td>
-				</tr>
-				<tr valign="top" id="social-proof-duration" style="<?php echo get_option('swgtheme_social_proof_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Display Duration', 'swgtheme' ); ?></th>
-					<td>
-						<input type="number" name="swgtheme_social_proof_duration" value="<?php echo esc_attr( get_option('swgtheme_social_proof_duration', '5') ); ?>" min="1" max="30" /> seconds
-					</td>
-				</tr>
-				
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'Related Authors', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
-				<tr valign="top">
-					<th scope="row"><?php esc_html_e( 'Enable Related Authors', 'swgtheme' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_related_authors_enable" value="1" <?php checked( get_option('swgtheme_related_authors_enable', '0'), '1' ); ?> />
-							<?php esc_html_e( 'Show authors who write about similar topics', 'swgtheme' ); ?>
-						</label>
-					</td>
-				</tr>
-				<tr valign="top" id="related-authors-count" style="<?php echo get_option('swgtheme_related_authors_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Number of Authors', 'swgtheme' ); ?></th>
-					<td>
-						<input type="number" name="swgtheme_related_authors_count" value="<?php echo esc_attr( get_option('swgtheme_related_authors_count', '4') ); ?>" min="2" max="12" />
-					</td>
-				</tr>
-				
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'Author Follow System', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
-				<tr valign="top">
-					<th scope="row"><?php esc_html_e( 'Enable Author Following', 'swgtheme' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_author_follow_enable" value="1" <?php checked( get_option('swgtheme_author_follow_enable', '0'), '1' ); ?> />
-							<?php esc_html_e( 'Let users follow their favorite authors', 'swgtheme' ); ?>
-						</label>
-					</td>
-				</tr>
-				<tr valign="top" id="author-follow-text" style="<?php echo get_option('swgtheme_author_follow_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Follow Button Text', 'swgtheme' ); ?></th>
-					<td>
-						<input type="text" name="swgtheme_author_follow_button_text" value="<?php echo esc_attr( get_option('swgtheme_author_follow_button_text', 'Follow') ); ?>" class="regular-text" />
-					</td>
-				</tr>
-				
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'User Ratings System', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
-				<tr valign="top">
-					<th scope="row"><?php esc_html_e( 'Enable User Ratings', 'swgtheme' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_user_rating_enable" value="1" <?php checked( get_option('swgtheme_user_rating_enable', '0'), '1' ); ?> />
-							<?php esc_html_e( 'Allow users to rate posts and pages', 'swgtheme' ); ?>
-						</label>
-					</td>
-				</tr>
-				<tr valign="top" id="user-rating-position" style="<?php echo get_option('swgtheme_user_rating_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Rating Position', 'swgtheme' ); ?></th>
-					<td>
-						<select name="swgtheme_user_rating_position">
-							<option value="before" <?php selected( get_option('swgtheme_user_rating_position', 'after'), 'before' ); ?>>Before Content</option>
-							<option value="after" <?php selected( get_option('swgtheme_user_rating_position', 'after'), 'after' ); ?>>After Content</option>
-							<option value="both" <?php selected( get_option('swgtheme_user_rating_position', 'after'), 'both' ); ?>>Before and After</option>
-						</select>
-					</td>
-				</tr>
-				<tr valign="top" id="user-rating-login" style="<?php echo get_option('swgtheme_user_rating_enable', '0') !== '1' ? 'display:none;' : ''; ?>">
-					<th scope="row"><?php esc_html_e( 'Require Login', 'swgtheme' ); ?></th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_user_rating_require_login" value="1" <?php checked( get_option('swgtheme_user_rating_require_login', '0'), '1' ); ?> />
-							<?php esc_html_e( 'Only logged-in users can rate content', 'swgtheme' ); ?>
-						</label>
-					</td>
-				</tr>
-			</table>
+			<!-- User Profiles Tab -->
+			<div id="user-profiles" class="tab-content active">
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><?php esc_html_e( 'Enable Enhanced Author Profiles', 'swgtheme' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_author_profiles_enable" value="1" <?php checked( get_option('swgtheme_author_profiles_enable', '0'), '1' ); ?> />
+								<?php esc_html_e( 'Show enhanced author profile pages with biography, social links, and recent posts', 'swgtheme' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr valign="top" class="author-profile-option">
+						<th scope="row"><?php esc_html_e( 'Show Social Links', 'swgtheme' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_author_profiles_social" value="1" <?php checked( get_option('swgtheme_author_profiles_social', '1'), '1' ); ?> />
+								<?php esc_html_e( 'Display author social media links on profile', 'swgtheme' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr valign="top" class="author-profile-option">
+						<th scope="row"><?php esc_html_e( 'Recent Posts to Show', 'swgtheme' ); ?></th>
+						<td>
+							<input type="number" name="swgtheme_author_profiles_posts_count" value="<?php echo esc_attr( get_option('swgtheme_author_profiles_posts_count', '6') ); ?>" min="1" max="20" />
+							<p class="description"><?php esc_html_e( 'Number of recent posts to display on author profile', 'swgtheme' ); ?></p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Share Counts Tab -->
+			<div id="share-counts" class="tab-content">
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><?php esc_html_e( 'Show Share Counts', 'swgtheme' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_social_share_counts" value="1" <?php checked( get_option('swgtheme_social_share_counts', '0'), '1' ); ?> />
+								<?php esc_html_e( 'Display share counts on social sharing buttons', 'swgtheme' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr valign="top" class="share-cache-option">
+						<th scope="row"><?php esc_html_e( 'Cache Duration', 'swgtheme' ); ?></th>
+						<td>
+							<select name="swgtheme_share_cache_time">
+								<option value="3600" <?php selected( get_option('swgtheme_share_cache_time', '3600'), '3600' ); ?>>1 Hour</option>
+								<option value="21600" <?php selected( get_option('swgtheme_share_cache_time', '3600'), '21600' ); ?>>6 Hours</option>
+								<option value="43200" <?php selected( get_option('swgtheme_share_cache_time', '3600'), '43200' ); ?>>12 Hours</option>
+								<option value="86400" <?php selected( get_option('swgtheme_share_cache_time', '3600'), '86400' ); ?>>24 Hours</option>
+							</select>
+							<p class="description"><?php esc_html_e( 'How long to cache share count data', 'swgtheme' ); ?></p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Social Proof Tab -->
+			<div id="social-proof" class="tab-content">
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><?php esc_html_e( 'Enable Social Proof Popups', 'swgtheme' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_social_proof_enable" value="1" <?php checked( get_option('swgtheme_social_proof_enable', '0'), '1' ); ?> />
+								<?php esc_html_e( 'Show "X people reading this" notification popups', 'swgtheme' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr valign="top" class="social-proof-option">
+						<th scope="row"><?php esc_html_e( 'Notification Message', 'swgtheme' ); ?></th>
+						<td>
+							<input type="text" name="swgtheme_social_proof_message" value="<?php echo esc_attr( get_option('swgtheme_social_proof_message', '{count} people reading this now') ); ?>" class="regular-text" />
+							<p class="description"><?php esc_html_e( 'Use {count} as placeholder for viewer count', 'swgtheme' ); ?></p>
+						</td>
+					</tr>
+					<tr valign="top" class="social-proof-option">
+						<th scope="row"><?php esc_html_e( 'Delay Before Showing', 'swgtheme' ); ?></th>
+						<td>
+							<input type="number" name="swgtheme_social_proof_delay" value="<?php echo esc_attr( get_option('swgtheme_social_proof_delay', '3') ); ?>" min="0" max="30" /> seconds
+						</td>
+					</tr>
+					<tr valign="top" class="social-proof-option">
+						<th scope="row"><?php esc_html_e( 'Display Duration', 'swgtheme' ); ?></th>
+						<td>
+							<input type="number" name="swgtheme_social_proof_duration" value="<?php echo esc_attr( get_option('swgtheme_social_proof_duration', '5') ); ?>" min="1" max="30" /> seconds
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Related Authors Tab -->
+			<div id="related-authors" class="tab-content">
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><?php esc_html_e( 'Enable Related Authors', 'swgtheme' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_related_authors_enable" value="1" <?php checked( get_option('swgtheme_related_authors_enable', '0'), '1' ); ?> />
+								<?php esc_html_e( 'Show authors who write about similar topics', 'swgtheme' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr valign="top" class="related-authors-option">
+						<th scope="row"><?php esc_html_e( 'Number of Authors', 'swgtheme' ); ?></th>
+						<td>
+							<input type="number" name="swgtheme_related_authors_count" value="<?php echo esc_attr( get_option('swgtheme_related_authors_count', '4') ); ?>" min="2" max="12" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Author Follow Tab -->
+			<div id="author-follow" class="tab-content">
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><?php esc_html_e( 'Enable Author Following', 'swgtheme' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_author_follow_enable" value="1" <?php checked( get_option('swgtheme_author_follow_enable', '0'), '1' ); ?> />
+								<?php esc_html_e( 'Let users follow their favorite authors', 'swgtheme' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr valign="top" class="author-follow-option">
+						<th scope="row"><?php esc_html_e( 'Follow Button Text', 'swgtheme' ); ?></th>
+						<td>
+							<input type="text" name="swgtheme_author_follow_button_text" value="<?php echo esc_attr( get_option('swgtheme_author_follow_button_text', 'Follow') ); ?>" class="regular-text" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- User Ratings Tab -->
+			<div id="user-ratings" class="tab-content">
+				<table class="form-table">
+					<tr valign="top">
+						<th scope="row"><?php esc_html_e( 'Enable User Ratings', 'swgtheme' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_user_rating_enable" value="1" <?php checked( get_option('swgtheme_user_rating_enable', '0'), '1' ); ?> />
+								<?php esc_html_e( 'Allow users to rate posts and pages', 'swgtheme' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr valign="top" class="user-rating-option">
+						<th scope="row"><?php esc_html_e( 'Rating Position', 'swgtheme' ); ?></th>
+						<td>
+							<select name="swgtheme_user_rating_position">
+								<option value="before" <?php selected( get_option('swgtheme_user_rating_position', 'after'), 'before' ); ?>>Before Content</option>
+								<option value="after" <?php selected( get_option('swgtheme_user_rating_position', 'after'), 'after' ); ?>>After Content</option>
+								<option value="both" <?php selected( get_option('swgtheme_user_rating_position', 'after'), 'both' ); ?>>Before and After</option>
+							</select>
+						</td>
+					</tr>
+					<tr valign="top" class="user-rating-option">
+						<th scope="row"><?php esc_html_e( 'Require Login', 'swgtheme' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_user_rating_require_login" value="1" <?php checked( get_option('swgtheme_user_rating_require_login', '0'), '1' ); ?> />
+								<?php esc_html_e( 'Only logged-in users can rate content', 'swgtheme' ); ?>
+							</label>
+						</td>
+					</tr>
+				</table>
 			</div>
 			
 			<?php submit_button(); ?>
 		</form>
-		
-		<style>
-		.nav-tab-wrapper {
-			margin: 20px 0;
-			border-bottom: 1px solid #ccc;
-		}
-		.nav-tab {
-			position: relative;
-			padding: 10px 15px;
-			cursor: pointer;
-		}
-		.tab-content {
-			display: none !important;
-			padding: 20px 0;
-		}
-		.tab-content.active {
-			display: block !important;
-		}
-		.tab-content h2 {
-			margin-top: 0;
-		}
-		</style>
 	</div>
+	
+	<style>
+	.wrap .tab-content {
+		display: none !important;
+	}
+	.wrap .tab-content.active {
+		display: block !important;
+	}
+	</style>
+	
+	<script>
+	(function($) {
+		function switchTab(tabId) {
+			$('.nav-tab').removeClass('nav-tab-active');
+			$('.tab-content').removeClass('active');
+			$('a[href="' + tabId + '"]').addClass('nav-tab-active');
+			$(tabId).addClass('active');
+			
+			if (history.pushState) {
+				history.pushState(null, null, tabId);
+			}
+		}
+		
+		$(document).ready(function() {
+			// Tab click handler
+			$('.nav-tab').on('click', function(e) {
+				e.preventDefault();
+				switchTab($(this).attr('href'));
+			});
+			
+			// Handle initial hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
+			
+			// Toggle dependent options
+			function toggleOptions() {
+				$('.author-profile-option').toggle($('input[name="swgtheme_author_profiles_enable"]').is(':checked'));
+				$('.share-cache-option').toggle($('input[name="swgtheme_social_share_counts"]').is(':checked'));
+				$('.social-proof-option').toggle($('input[name="swgtheme_social_proof_enable"]').is(':checked'));
+				$('.related-authors-option').toggle($('input[name="swgtheme_related_authors_enable"]').is(':checked'));
+				$('.author-follow-option').toggle($('input[name="swgtheme_author_follow_enable"]').is(':checked'));
+				$('.user-rating-option').toggle($('input[name="swgtheme_user_rating_enable"]').is(':checked'));
+			}
+			
+			toggleOptions();
+			$('input[type="checkbox"]').on('change', toggleOptions);
+		});
+	})(jQuery);
+	</script>
 	<?php
 }
 
@@ -6235,18 +6323,26 @@ function swgtheme_advanced_seo_admin_page() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Advanced SEO & Analytics', 'swgtheme' ); ?></h1>
+		
+		<!-- Tabs -->
+		<h2 class="nav-tab-wrapper">
+			<a href="#schema" class="nav-tab nav-tab-active"><?php esc_html_e( 'Schema Markup', 'swgtheme' ); ?></a>
+			<a href="#local-business" class="nav-tab"><?php esc_html_e( 'Local Business', 'swgtheme' ); ?></a>
+			<a href="#analytics" class="nav-tab"><?php esc_html_e( 'Analytics', 'swgtheme' ); ?></a>
+			<a href="#content" class="nav-tab"><?php esc_html_e( 'Content', 'swgtheme' ); ?></a>
+		</h2>
+		
 		<form method="post" action="options.php">
 			<?php
 			settings_fields( 'swgtheme-settings-group' );
 			do_settings_sections( 'swgtheme-settings-group' );
 			?>
 			
-			<table class="form-table">
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'Structured Data / Schema Markup', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
+			<!-- Tab: Schema Markup -->
+			<div class="tab-content active" id="schema-tab">
+				<h2><?php esc_html_e( 'Structured Data / Schema Markup', 'swgtheme' ); ?></h2>
+				
+				<table class="form-table" role="presentation">
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Breadcrumb Schema', 'swgtheme' ); ?></th>
 					<td>
@@ -6307,12 +6403,14 @@ function swgtheme_advanced_seo_admin_page() {
 						</label>
 					</td>
 				</tr>
-				
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'Local Business SEO', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
+			</table>
+		</div>
+		
+		<!-- Tab: Local Business -->
+		<div class="tab-content" id="local-business-tab">
+			<h2><?php esc_html_e( 'Local Business SEO', 'swgtheme' ); ?></h2>
+			
+			<table class="form-table" role="presentation">
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Enable Local Business Schema', 'swgtheme' ); ?></th>
 					<td>
@@ -6360,12 +6458,14 @@ function swgtheme_advanced_seo_admin_page() {
 						<p class="description"><?php esc_html_e( 'Format: Mo-Fr 09:00-17:00, Sa 10:00-14:00', 'swgtheme' ); ?></p>
 					</td>
 				</tr>
-				
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'Analytics & Tracking', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
+			</table>
+		</div>
+		
+		<!-- Tab: Analytics -->
+		<div class="tab-content" id="analytics-tab">
+			<h2><?php esc_html_e( 'Analytics & Tracking', 'swgtheme' ); ?></h2>
+			
+			<table class="form-table" role="presentation">
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Scroll Depth Tracking', 'swgtheme' ); ?></th>
 					<td>
@@ -6382,12 +6482,14 @@ function swgtheme_advanced_seo_admin_page() {
 						<p class="description"><?php esc_html_e( 'Comma-separated percentages (e.g., 25,50,75,100)', 'swgtheme' ); ?></p>
 					</td>
 				</tr>
-				
-				<tr valign="top">
-					<th scope="row" colspan="2">
-						<h2><?php esc_html_e( 'Auto-Generated Content', 'swgtheme' ); ?></h2>
-					</th>
-				</tr>
+			</table>
+		</div>
+		
+		<!-- Tab: Content -->
+		<div class="tab-content" id="content-tab">
+			<h2><?php esc_html_e( 'Auto-Generated Content', 'swgtheme' ); ?></h2>
+			
+			<table class="form-table" role="presentation">
 				<tr valign="top">
 					<th scope="row"><?php esc_html_e( 'Auto Meta Descriptions', 'swgtheme' ); ?></th>
 					<td>
@@ -6405,12 +6507,58 @@ function swgtheme_advanced_seo_admin_page() {
 					</td>
 				</tr>
 			</table>
-			
-			<?php submit_button(); ?>
-		</form>
+		</div>
 		
-		<script>
-		jQuery(document).ready(function($) {
+		<?php submit_button(); ?>
+	</form>
+	
+	<style type="text/css">
+		.wrap .tab-content { display: none !important; }
+		.wrap .tab-content.active { display: block !important; }
+	</style>
+	
+	<script>
+	(function($) {
+		// Tab switching function
+		function switchTab(target) {
+			$('.nav-tab').removeClass('nav-tab-active');
+			$('.nav-tab[href="' + target + '"]').addClass('nav-tab-active');
+			
+			$('.tab-content').removeClass('active');
+			var tabId = target.replace('#', '') + '-tab';
+			$('#' + tabId).addClass('active');
+		}
+		
+		$(document).ready(function() {
+			// Handle tab clicks
+			$('.nav-tab-wrapper .nav-tab').on('click', function(e) {
+				e.preventDefault();
+				var target = $(this).attr('href');
+				switchTab(target);
+				
+				// Update URL hash without scrolling
+				if (history.pushState) {
+					history.pushState(null, null, target);
+				} else {
+					location.hash = target;
+				}
+			});
+			
+			// Handle initial page load with hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			} else {
+				// Ensure first tab is active on initial load
+				switchTab('#schema');
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
+			
 			// FAQ Schema toggle
 			$('input[name="swgtheme_faq_schema_enable"]').change(function() {
 				if ($(this).is(':checked')) {
@@ -6472,9 +6620,10 @@ function swgtheme_advanced_seo_admin_page() {
 				}).open();
 			});
 		});
-		</script>
-	</div>
-	<?php
+	})(jQuery);
+	</script>
+</div>
+<?php
 }
 
 // Breadcrumb Schema
@@ -7724,11 +7873,23 @@ function swgtheme_ux_page() {
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+		
+		<!-- Tabs -->
+		<h2 class="nav-tab-wrapper">
+			<a href="#navigation" class="nav-tab nav-tab-active"><?php esc_html_e( 'Navigation & Scrolling', 'swgtheme' ); ?></a>
+			<a href="#reading" class="nav-tab"><?php esc_html_e( 'Reading Experience', 'swgtheme' ); ?></a>
+			<a href="#visual" class="nav-tab"><?php esc_html_e( 'Visual Effects', 'swgtheme' ); ?></a>
+			<a href="#loading" class="nav-tab"><?php esc_html_e( 'Loading & Performance', 'swgtheme' ); ?></a>
+			<a href="#protection" class="nav-tab"><?php esc_html_e( 'Content Protection', 'swgtheme' ); ?></a>
+		</h2>
+		
 		<form method="post" action="options.php">
 			<?php settings_fields( 'swgtheme_ux_group' ); ?>
 			
-			<h2><?php esc_html_e( 'Navigation & Scrolling', 'swgtheme' ); ?></h2>
-			<table class="form-table" role="presentation">
+			<!-- Tab: Navigation & Scrolling -->
+			<div class="tab-content active" id="navigation-tab">
+				<h2><?php esc_html_e( 'Navigation & Scrolling', 'swgtheme' ); ?></h2>
+				<table class="form-table" role="presentation">
 				<tbody>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Smooth Scroll', 'swgtheme' ); ?></th>
@@ -7786,7 +7947,10 @@ function swgtheme_ux_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Reading Experience -->
+		<div class="tab-content" id="reading-tab">
 			<h2><?php esc_html_e( 'Reading Experience', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -7820,7 +7984,10 @@ function swgtheme_ux_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Visual Effects -->
+		<div class="tab-content" id="visual-tab">
 			<h2><?php esc_html_e( 'Visual Effects', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -7894,7 +8061,10 @@ function swgtheme_ux_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Loading & Performance -->
+		<div class="tab-content" id="loading-tab">
 			<h2><?php esc_html_e( 'Loading & Performance', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -7921,7 +8091,10 @@ function swgtheme_ux_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Content Protection -->
+		<div class="tab-content" id="protection-tab">
 			<h2><?php esc_html_e( 'Content Protection', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -7948,14 +8121,60 @@ function swgtheme_ux_page() {
 					</tr>
 				</tbody>
 			</table>
-			
-			<?php submit_button(); ?>
-		</form>
-	</div>
+		</div>
+		
+		<?php submit_button(); ?>
+	</form>
+	
+	<style type="text/css">
+		.wrap .tab-content { display: none !important; }
+		.wrap .tab-content.active { display: block !important; }
+	</style>
+	
 	<script>
-	jQuery(document).ready(function($) {
+	(function($) {
+		// Tab switching function
+		function switchTab(target) {
+			$('.nav-tab').removeClass('nav-tab-active');
+			$('.nav-tab[href="' + target + '"]').addClass('nav-tab-active');
+			
+			$('.tab-content').removeClass('active');
+			var tabId = target.replace('#', '') + '-tab';
+			$('#' + tabId).addClass('active');
+		}
+		
+		$(document).ready(function() {
+			// Handle tab clicks
+			$('.nav-tab-wrapper .nav-tab').on('click', function(e) {
+				e.preventDefault();
+				var target = $(this).attr('href');
+				switchTab(target);
+				
+				// Update URL hash without scrolling
+				if (history.pushState) {
+					history.pushState(null, null, target);
+				} else {
+					location.hash = target;
+				}
+			});
+			
+			// Handle initial page load with hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			} else {
+				// Ensure first tab is active on initial load
+				switchTab('#navigation');
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
+			
 		// Toggle Back to Top position
-		$('#swgtheme_enable_back_to_top').on('change', function() {
+		$('#swgtheme_enable_back_to_top_ux').on('change', function() {
 			$('#back-to-top-position').toggle(this.checked);
 		});
 		
@@ -7984,8 +8203,10 @@ function swgtheme_ux_page() {
 			$('#loading-logo').toggle(this.checked);
 		});
 	});
+	})(jQuery);
 	</script>
-	<?php
+</div>
+<?php
 }
 
 /**
@@ -8469,11 +8690,23 @@ function swgtheme_admin_management_page() {
 			</div>
 		<?php endif; ?>
 		
+		<!-- Tabs -->
+		<h2 class="nav-tab-wrapper">
+			<a href="#content" class="nav-tab nav-tab-active"><?php esc_html_e( 'Content Management', 'swgtheme' ); ?></a>
+			<a href="#activity" class="nav-tab"><?php esc_html_e( 'Activity & Monitoring', 'swgtheme' ); ?></a>
+			<a href="#database" class="nav-tab"><?php esc_html_e( 'Database Cleanup', 'swgtheme' ); ?></a>
+			<a href="#dashboard" class="nav-tab"><?php esc_html_e( 'Dashboard Customization', 'swgtheme' ); ?></a>
+			<a href="#login" class="nav-tab"><?php esc_html_e( 'Login Customization', 'swgtheme' ); ?></a>
+			<a href="#maintenance" class="nav-tab"><?php esc_html_e( 'Maintenance Mode', 'swgtheme' ); ?></a>
+		</h2>
+		
 		<form method="post" action="options.php">
 			<?php settings_fields( 'swgtheme_admin_group' ); ?>
 			
-			<h2><?php esc_html_e( 'Content Management', 'swgtheme' ); ?></h2>
-			<table class="form-table" role="presentation">
+			<!-- Tab: Content Management -->
+			<div class="tab-content active" id="content-tab">
+				<h2><?php esc_html_e( 'Content Management', 'swgtheme' ); ?></h2>
+				<table class="form-table" role="presentation">
 				<tbody>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Duplicate Posts/Pages', 'swgtheme' ); ?></th>
@@ -8513,7 +8746,10 @@ function swgtheme_admin_management_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Activity & Monitoring -->
+		<div class="tab-content" id="activity-tab">
 			<h2><?php esc_html_e( 'Activity & Monitoring', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -8544,7 +8780,10 @@ function swgtheme_admin_management_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Database Cleanup -->
+		<div class="tab-content" id="database-tab">
 			<h2><?php esc_html_e( 'Database Cleanup', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -8581,7 +8820,10 @@ function swgtheme_admin_management_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Dashboard Customization -->
+		<div class="tab-content" id="dashboard-tab">
 			<h2><?php esc_html_e( 'Dashboard Customization', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -8625,7 +8867,10 @@ function swgtheme_admin_management_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Login Customization -->
+		<div class="tab-content" id="login-tab">
 			<h2><?php esc_html_e( 'Login Customization', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -8652,7 +8897,10 @@ function swgtheme_admin_management_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Maintenance Mode -->
+		<div class="tab-content" id="maintenance-tab">
 			<h2><?php esc_html_e( 'Maintenance Mode', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -8676,12 +8924,58 @@ function swgtheme_admin_management_page() {
 					</tr>
 				</tbody>
 			</table>
-			
-			<?php submit_button(); ?>
-		</form>
-	</div>
+		</div>
+		
+		<?php submit_button(); ?>
+	</form>
+	
+	<style type="text/css">
+		.wrap .tab-content { display: none !important; }
+		.wrap .tab-content.active { display: block !important; }
+	</style>
+	
 	<script>
-	jQuery(document).ready(function($) {
+	(function($) {
+		// Tab switching function
+		function switchTab(target) {
+			$('.nav-tab').removeClass('nav-tab-active');
+			$('.nav-tab[href="' + target + '"]').addClass('nav-tab-active');
+			
+			$('.tab-content').removeClass('active');
+			var tabId = target.replace('#', '') + '-tab';
+			$('#' + tabId).addClass('active');
+		}
+		
+		$(document).ready(function() {
+			// Handle tab clicks
+			$('.nav-tab-wrapper .nav-tab').on('click', function(e) {
+				e.preventDefault();
+				var target = $(this).attr('href');
+				switchTab(target);
+				
+				// Update URL hash without scrolling
+				if (history.pushState) {
+					history.pushState(null, null, target);
+				} else {
+					location.hash = target;
+				}
+			});
+			
+			// Handle initial page load with hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			} else {
+				// Ensure first tab is active on initial load
+				switchTab('#content');
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
+			
 		// Toggle duplicate post types
 		$('#swgtheme_enable_duplicate_posts').on('change', function() {
 			$('#duplicate-post-types').toggle(this.checked);
@@ -8702,8 +8996,10 @@ function swgtheme_admin_management_page() {
 			$('#maintenance-message').toggle(this.checked);
 		});
 	});
+	})(jQuery);
 	</script>
-	<?php
+</div>
+<?php
 }
 
 /**
@@ -9158,11 +9454,24 @@ function swgtheme_membership_page() {
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+		
+		<!-- Tabs -->
+		<h2 class="nav-tab-wrapper">
+			<a href="#registration" class="nav-tab nav-tab-active"><?php esc_html_e( 'Frontend Registration', 'swgtheme' ); ?></a>
+			<a href="#profiles" class="nav-tab"><?php esc_html_e( 'User Profiles', 'swgtheme' ); ?></a>
+			<a href="#avatars" class="nav-tab"><?php esc_html_e( 'Avatar System', 'swgtheme' ); ?></a>
+			<a href="#restriction" class="nav-tab"><?php esc_html_e( 'Content Restriction', 'swgtheme' ); ?></a>
+			<a href="#dashboard-user" class="nav-tab"><?php esc_html_e( 'User Dashboard', 'swgtheme' ); ?></a>
+			<a href="#badges" class="nav-tab"><?php esc_html_e( 'Badges & Achievements', 'swgtheme' ); ?></a>
+		</h2>
+		
 		<form method="post" action="options.php">
 			<?php settings_fields( 'swgtheme_membership_group' ); ?>
 			
-			<h2><?php esc_html_e( 'Frontend Registration', 'swgtheme' ); ?></h2>
-			<table class="form-table" role="presentation">
+			<!-- Tab: Frontend Registration -->
+			<div class="tab-content active" id="registration-tab">
+				<h2><?php esc_html_e( 'Frontend Registration', 'swgtheme' ); ?></h2>
+				<table class="form-table" role="presentation">
 				<tbody>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'Enable Frontend Registration', 'swgtheme' ); ?></th>
@@ -9207,7 +9516,10 @@ function swgtheme_membership_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: User Profiles -->
+		<div class="tab-content" id="profiles-tab">
 			<h2><?php esc_html_e( 'User Profiles', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -9245,7 +9557,10 @@ function swgtheme_membership_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Avatar System -->
+		<div class="tab-content" id="avatars-tab">
 			<h2><?php esc_html_e( 'Avatar System', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -9270,7 +9585,10 @@ function swgtheme_membership_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Content Restriction -->
+		<div class="tab-content" id="restriction-tab">
 			<h2><?php esc_html_e( 'Content Restriction', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -9295,7 +9613,10 @@ function swgtheme_membership_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: User Dashboard -->
+		<div class="tab-content" id="dashboard-user-tab">
 			<h2><?php esc_html_e( 'User Dashboard', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -9311,7 +9632,10 @@ function swgtheme_membership_page() {
 					</tr>
 				</tbody>
 			</table>
-			
+		</div>
+		
+		<!-- Tab: Badges & Achievements -->
+		<div class="tab-content" id="badges-tab">
 			<h2><?php esc_html_e( 'Badges & Achievements', 'swgtheme' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tbody>
@@ -9343,12 +9667,58 @@ function swgtheme_membership_page() {
 					</tr>
 				</tbody>
 			</table>
-			
-			<?php submit_button(); ?>
-		</form>
-	</div>
+		</div>
+		
+		<?php submit_button(); ?>
+	</form>
+	
+	<style type="text/css">
+		.wrap .tab-content { display: none !important; }
+		.wrap .tab-content.active { display: block !important; }
+	</style>
+	
 	<script>
-	jQuery(document).ready(function($) {
+	(function($) {
+		// Tab switching function
+		function switchTab(target) {
+			$('.nav-tab').removeClass('nav-tab-active');
+			$('.nav-tab[href="' + target + '"]').addClass('nav-tab-active');
+			
+			$('.tab-content').removeClass('active');
+			var tabId = target.replace('#', '') + '-tab';
+			$('#' + tabId).addClass('active');
+		}
+		
+		$(document).ready(function() {
+			// Handle tab clicks
+			$('.nav-tab-wrapper .nav-tab').on('click', function(e) {
+				e.preventDefault();
+				var target = $(this).attr('href');
+				switchTab(target);
+				
+				// Update URL hash without scrolling
+				if (history.pushState) {
+					history.pushState(null, null, target);
+				} else {
+					location.hash = target;
+				}
+			});
+			
+			// Handle initial page load with hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			} else {
+				// Ensure first tab is active on initial load
+				switchTab('#registration');
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
+			
 		$('#swgtheme_enable_frontend_registration').on('change', function() {
 			$('#registration-redirect, #email-verification, #default-role').toggle(this.checked);
 		});
@@ -9369,8 +9739,10 @@ function swgtheme_membership_page() {
 			$('#badge-milestones').toggle(this.checked);
 		});
 	});
+	})(jQuery);
 	</script>
-	<?php
+</div>
+<?php
 }
 
 /**
@@ -10653,210 +11025,262 @@ function swgtheme_documentation_page() {
 	<div class="wrap">
 		<h1>Documentation & Support Settings</h1>
 		
+		<h2 class="nav-tab-wrapper">
+			<a href="#knowledge-base" class="nav-tab nav-tab-active">📚 Knowledge Base</a>
+			<a href="#faq-system" class="nav-tab">❓ FAQ System</a>
+			<a href="#video-library" class="nav-tab">🎥 Video Library</a>
+			<a href="#support-tickets" class="nav-tab">🎫 Support Tickets</a>
+			<a href="#contextual-help" class="nav-tab">💡 Contextual Help</a>
+		</h2>
+		
 		<form method="post" action="options.php">
 			<?php settings_fields( 'swgtheme_documentation_options' ); ?>
 			
-			<table class="form-table">
-				<!-- Knowledge Base -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">📚 Knowledge Base System</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable Knowledge Base</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_knowledge_base" value="1" <?php checked( get_option( 'swgtheme_enable_knowledge_base' ), 1 ); ?>>
-							Create knowledge base custom post type
-						</label>
-					</td>
-				</tr>
-				<tr class="kb-option">
-					<th scope="row">KB Slug</th>
-					<td>
-						<input type="text" name="swgtheme_kb_slug" value="<?php echo esc_attr( get_option( 'swgtheme_kb_slug', 'knowledge-base' ) ); ?>" class="regular-text">
-						<p class="description">URL slug for knowledge base (e.g., /knowledge-base/article-name/)</p>
-					</td>
-				</tr>
-				<tr class="kb-option">
-					<th scope="row">KB Features</th>
-					<td>
-						<label style="display: block; margin-bottom: 8px;">
-							<input type="checkbox" name="swgtheme_kb_categories" value="1" <?php checked( get_option( 'swgtheme_kb_categories' ), 1 ); ?>>
-							Enable KB categories
-						</label>
-						<label style="display: block; margin-bottom: 8px;">
-							<input type="checkbox" name="swgtheme_kb_search" value="1" <?php checked( get_option( 'swgtheme_kb_search' ), 1 ); ?>>
-							Enable search functionality
-						</label>
-						<label style="display: block; margin-bottom: 8px;">
-							<input type="checkbox" name="swgtheme_kb_views" value="1" <?php checked( get_option( 'swgtheme_kb_views' ), 1 ); ?>>
-							Track article views
-						</label>
-						<label style="display: block;">
-							<input type="checkbox" name="swgtheme_kb_voting" value="1" <?php checked( get_option( 'swgtheme_kb_voting' ), 1 ); ?>>
-							Enable helpful/not helpful voting
-						</label>
-					</td>
-				</tr>
-				
-				<!-- FAQ System -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">❓ FAQ System</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable FAQ</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_faq" value="1" <?php checked( get_option( 'swgtheme_enable_faq' ), 1 ); ?>>
-							Create FAQ custom post type with accordion display
-						</label>
-						<p class="description">Use shortcode: [faq] or [faq category="category-slug" limit="10"]</p>
-					</td>
-				</tr>
-				<tr class="faq-option">
-					<th scope="row">FAQ Features</th>
-					<td>
-						<label style="display: block; margin-bottom: 8px;">
-							<input type="checkbox" name="swgtheme_faq_schema" value="1" <?php checked( get_option( 'swgtheme_faq_schema' ), 1 ); ?>>
-							Add FAQ schema markup (SEO)
-						</label>
-						<label style="display: block;">
-							<input type="checkbox" name="swgtheme_faq_search" value="1" <?php checked( get_option( 'swgtheme_faq_search' ), 1 ); ?>>
-							Enable FAQ search
-						</label>
-					</td>
-				</tr>
-				
-				<!-- Video Tutorial Library -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🎥 Video Tutorial Library</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable Video Library</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_video_library" value="1" <?php checked( get_option( 'swgtheme_enable_video_library' ), 1 ); ?>>
-							Create video tutorial custom post type
-						</label>
-						<p class="description">Use shortcode: [video_library] or [video_library category="category-slug" columns="3"]</p>
-					</td>
-				</tr>
-				<tr class="video-option">
-					<th scope="row">Video Provider</th>
-					<td>
-						<select name="swgtheme_video_provider">
-							<option value="youtube" <?php selected( get_option( 'swgtheme_video_provider' ), 'youtube' ); ?>>YouTube</option>
-							<option value="vimeo" <?php selected( get_option( 'swgtheme_video_provider' ), 'vimeo' ); ?>>Vimeo</option>
-							<option value="both" <?php selected( get_option( 'swgtheme_video_provider' ), 'both' ); ?>>Both</option>
-						</select>
-					</td>
-				</tr>
-				<tr class="video-option">
-					<th scope="row">Video Features</th>
-					<td>
-						<label style="display: block; margin-bottom: 8px;">
-							<input type="checkbox" name="swgtheme_video_categories" value="1" <?php checked( get_option( 'swgtheme_video_categories' ), 1 ); ?>>
-							Enable video categories
-						</label>
-						<label style="display: block;">
-							<input type="checkbox" name="swgtheme_video_playlist" value="1" <?php checked( get_option( 'swgtheme_video_playlist' ), 1 ); ?>>
-							Enable playlist functionality
-						</label>
-					</td>
-				</tr>
-				
-				<!-- Support Ticket System -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🎫 Support Ticket System</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable Support Tickets</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_support_tickets" value="1" <?php checked( get_option( 'swgtheme_enable_support_tickets' ), 1 ); ?>>
-							Create support ticket system
-						</label>
-						<p class="description">Use shortcode: [support_ticket]</p>
-					</td>
-				</tr>
-				<tr class="ticket-option">
-					<th scope="row">Notification Email</th>
-					<td>
-						<input type="email" name="swgtheme_ticket_email" value="<?php echo esc_attr( get_option( 'swgtheme_ticket_email', get_option( 'admin_email' ) ) ); ?>" class="regular-text">
-						<p class="description">Email address for ticket notifications</p>
-					</td>
-				</tr>
-				<tr class="ticket-option">
-					<th scope="row">Ticket Features</th>
-					<td>
-						<label style="display: block; margin-bottom: 8px;">
-							<input type="checkbox" name="swgtheme_ticket_priority" value="1" <?php checked( get_option( 'swgtheme_ticket_priority' ), 1 ); ?>>
-							Enable priority levels (Low, Normal, High, Urgent)
-						</label>
-						<label style="display: block; margin-bottom: 8px;">
-							<input type="checkbox" name="swgtheme_ticket_departments" value="1" <?php checked( get_option( 'swgtheme_ticket_departments' ), 1 ); ?>>
-							Enable departments
-						</label>
-						<label style="display: block;">
-							<input type="checkbox" name="swgtheme_ticket_auto_response" value="1" <?php checked( get_option( 'swgtheme_ticket_auto_response' ), 1 ); ?>>
-							Send auto-response email to users
-						</label>
-					</td>
-				</tr>
-				
-				<!-- Contextual Help -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">💡 Contextual Help Tooltips</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable Help Tooltips</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_contextual_help" value="1" <?php checked( get_option( 'swgtheme_enable_contextual_help' ), 1 ); ?>>
-							Enable contextual help tooltips
-						</label>
-						<p class="description">Use shortcode: [help text="Your help text here"]</p>
-					</td>
-				</tr>
-				<tr class="help-option">
-					<th scope="row">Tooltip Position</th>
-					<td>
-						<select name="swgtheme_help_position">
-							<option value="top-right" <?php selected( get_option( 'swgtheme_help_position' ), 'top-right' ); ?>>Top Right</option>
-							<option value="top-left" <?php selected( get_option( 'swgtheme_help_position' ), 'top-left' ); ?>>Top Left</option>
-							<option value="bottom-right" <?php selected( get_option( 'swgtheme_help_position' ), 'bottom-right' ); ?>>Bottom Right</option>
-							<option value="bottom-left" <?php selected( get_option( 'swgtheme_help_position' ), 'bottom-left' ); ?>>Bottom Left</option>
-						</select>
-					</td>
-				</tr>
-				<tr class="help-option">
-					<th scope="row">Trigger Method</th>
-					<td>
-						<select name="swgtheme_help_trigger">
-							<option value="hover" <?php selected( get_option( 'swgtheme_help_trigger' ), 'hover' ); ?>>Hover</option>
-							<option value="click" <?php selected( get_option( 'swgtheme_help_trigger' ), 'click' ); ?>>Click</option>
-						</select>
-					</td>
-				</tr>
-			</table>
+			<!-- Knowledge Base Tab -->
+			<div id="knowledge-base" class="tab-content active">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable Knowledge Base</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_knowledge_base" value="1" <?php checked( get_option( 'swgtheme_enable_knowledge_base' ), 1 ); ?>>
+								Create knowledge base custom post type
+							</label>
+						</td>
+					</tr>
+					<tr class="kb-option">
+						<th scope="row">KB Slug</th>
+						<td>
+							<input type="text" name="swgtheme_kb_slug" value="<?php echo esc_attr( get_option( 'swgtheme_kb_slug', 'knowledge-base' ) ); ?>" class="regular-text">
+							<p class="description">URL slug for knowledge base (e.g., /knowledge-base/article-name/)</p>
+						</td>
+					</tr>
+					<tr class="kb-option">
+						<th scope="row">KB Features</th>
+						<td>
+							<label style="display: block; margin-bottom: 8px;">
+								<input type="checkbox" name="swgtheme_kb_categories" value="1" <?php checked( get_option( 'swgtheme_kb_categories' ), 1 ); ?>>
+								Enable KB categories
+							</label>
+							<label style="display: block; margin-bottom: 8px;">
+								<input type="checkbox" name="swgtheme_kb_search" value="1" <?php checked( get_option( 'swgtheme_kb_search' ), 1 ); ?>>
+								Enable search functionality
+							</label>
+							<label style="display: block; margin-bottom: 8px;">
+								<input type="checkbox" name="swgtheme_kb_views" value="1" <?php checked( get_option( 'swgtheme_kb_views' ), 1 ); ?>>
+								Track article views
+							</label>
+							<label style="display: block;">
+								<input type="checkbox" name="swgtheme_kb_voting" value="1" <?php checked( get_option( 'swgtheme_kb_voting' ), 1 ); ?>>
+								Enable helpful/not helpful voting
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- FAQ System Tab -->
+			<div id="faq-system" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable FAQ</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_faq" value="1" <?php checked( get_option( 'swgtheme_enable_faq' ), 1 ); ?>>
+								Create FAQ custom post type with accordion display
+							</label>
+							<p class="description">Use shortcode: [faq] or [faq category="category-slug" limit="10"]</p>
+						</td>
+					</tr>
+					<tr class="faq-option">
+						<th scope="row">FAQ Features</th>
+						<td>
+							<label style="display: block; margin-bottom: 8px;">
+								<input type="checkbox" name="swgtheme_faq_schema" value="1" <?php checked( get_option( 'swgtheme_faq_schema' ), 1 ); ?>>
+								Add FAQ schema markup (SEO)
+							</label>
+							<label style="display: block;">
+								<input type="checkbox" name="swgtheme_faq_search" value="1" <?php checked( get_option( 'swgtheme_faq_search' ), 1 ); ?>>
+								Enable FAQ search
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Video Library Tab -->
+			<div id="video-library" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable Video Library</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_video_library" value="1" <?php checked( get_option( 'swgtheme_enable_video_library' ), 1 ); ?>>
+								Create video tutorial custom post type
+							</label>
+							<p class="description">Use shortcode: [video_library] or [video_library category="category-slug" columns="3"]</p>
+						</td>
+					</tr>
+					<tr class="video-option">
+						<th scope="row">Video Provider</th>
+						<td>
+							<select name="swgtheme_video_provider">
+								<option value="youtube" <?php selected( get_option( 'swgtheme_video_provider' ), 'youtube' ); ?>>YouTube</option>
+								<option value="vimeo" <?php selected( get_option( 'swgtheme_video_provider' ), 'vimeo' ); ?>>Vimeo</option>
+								<option value="both" <?php selected( get_option( 'swgtheme_video_provider' ), 'both' ); ?>>Both</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="video-option">
+						<th scope="row">Video Features</th>
+						<td>
+							<label style="display: block; margin-bottom: 8px;">
+								<input type="checkbox" name="swgtheme_video_categories" value="1" <?php checked( get_option( 'swgtheme_video_categories' ), 1 ); ?>>
+								Enable video categories
+							</label>
+							<label style="display: block;">
+								<input type="checkbox" name="swgtheme_video_playlist" value="1" <?php checked( get_option( 'swgtheme_video_playlist' ), 1 ); ?>>
+								Enable playlist functionality
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Support Tickets Tab -->
+			<div id="support-tickets" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable Support Tickets</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_support_tickets" value="1" <?php checked( get_option( 'swgtheme_enable_support_tickets' ), 1 ); ?>>
+								Create support ticket system
+							</label>
+							<p class="description">Use shortcode: [support_ticket]</p>
+						</td>
+					</tr>
+					<tr class="ticket-option">
+						<th scope="row">Notification Email</th>
+						<td>
+							<input type="email" name="swgtheme_ticket_email" value="<?php echo esc_attr( get_option( 'swgtheme_ticket_email', get_option( 'admin_email' ) ) ); ?>" class="regular-text">
+							<p class="description">Email address for ticket notifications</p>
+						</td>
+					</tr>
+					<tr class="ticket-option">
+						<th scope="row">Ticket Features</th>
+						<td>
+							<label style="display: block; margin-bottom: 8px;">
+								<input type="checkbox" name="swgtheme_ticket_priority" value="1" <?php checked( get_option( 'swgtheme_ticket_priority' ), 1 ); ?>>
+								Enable priority levels (Low, Normal, High, Urgent)
+							</label>
+							<label style="display: block; margin-bottom: 8px;">
+								<input type="checkbox" name="swgtheme_ticket_departments" value="1" <?php checked( get_option( 'swgtheme_ticket_departments' ), 1 ); ?>>
+								Enable departments
+							</label>
+							<label style="display: block;">
+								<input type="checkbox" name="swgtheme_ticket_auto_response" value="1" <?php checked( get_option( 'swgtheme_ticket_auto_response' ), 1 ); ?>>
+								Send auto-response email to users
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Contextual Help Tab -->
+			<div id="contextual-help" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable Help Tooltips</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_contextual_help" value="1" <?php checked( get_option( 'swgtheme_enable_contextual_help' ), 1 ); ?>>
+								Enable contextual help tooltips
+							</label>
+							<p class="description">Use shortcode: [help text="Your help text here"]</p>
+						</td>
+					</tr>
+					<tr class="help-option">
+						<th scope="row">Tooltip Position</th>
+						<td>
+							<select name="swgtheme_help_position">
+								<option value="top-right" <?php selected( get_option( 'swgtheme_help_position' ), 'top-right' ); ?>>Top Right</option>
+								<option value="top-left" <?php selected( get_option( 'swgtheme_help_position' ), 'top-left' ); ?>>Top Left</option>
+								<option value="bottom-right" <?php selected( get_option( 'swgtheme_help_position' ), 'bottom-right' ); ?>>Bottom Right</option>
+								<option value="bottom-left" <?php selected( get_option( 'swgtheme_help_position' ), 'bottom-left' ); ?>>Bottom Left</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="help-option">
+						<th scope="row">Trigger Method</th>
+						<td>
+							<select name="swgtheme_help_trigger">
+								<option value="hover" <?php selected( get_option( 'swgtheme_help_trigger' ), 'hover' ); ?>>Hover</option>
+								<option value="click" <?php selected( get_option( 'swgtheme_help_trigger' ), 'click' ); ?>>Click</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</div>
 			
 			<?php submit_button(); ?>
 		</form>
 	</div>
 	
+	<style>
+	.wrap .tab-content {
+		display: none !important;
+	}
+	.wrap .tab-content.active {
+		display: block !important;
+	}
+	</style>
+	
 	<script>
-	jQuery(document).ready(function($) {
-		function toggleOptions() {
-			$('.kb-option').toggle($('input[name="swgtheme_enable_knowledge_base"]').is(':checked'));
-			$('.faq-option').toggle($('input[name="swgtheme_enable_faq"]').is(':checked'));
-			$('.video-option').toggle($('input[name="swgtheme_enable_video_library"]').is(':checked'));
-			$('.ticket-option').toggle($('input[name="swgtheme_enable_support_tickets"]').is(':checked'));
-			$('.help-option').toggle($('input[name="swgtheme_enable_contextual_help"]').is(':checked'));
+	(function($) {
+		function switchTab(tabId) {
+			$('.nav-tab').removeClass('nav-tab-active');
+			$('.tab-content').removeClass('active');
+			$('a[href="' + tabId + '"]').addClass('nav-tab-active');
+			$(tabId).addClass('active');
+			
+			if (history.pushState) {
+				history.pushState(null, null, tabId);
+			}
 		}
 		
-		toggleOptions();
-		$('input[name="swgtheme_enable_knowledge_base"], input[name="swgtheme_enable_faq"], input[name="swgtheme_enable_video_library"], input[name="swgtheme_enable_support_tickets"], input[name="swgtheme_enable_contextual_help"]').on('change', toggleOptions);
-	});
+		$(document).ready(function() {
+			// Tab click handler
+			$('.nav-tab').on('click', function(e) {
+				e.preventDefault();
+				switchTab($(this).attr('href'));
+			});
+			
+			// Handle initial hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
+			
+			// Toggle dependent options
+			function toggleOptions() {
+				$('.kb-option').toggle($('input[name="swgtheme_enable_knowledge_base"]').is(':checked'));
+				$('.faq-option').toggle($('input[name="swgtheme_enable_faq"]').is(':checked'));
+				$('.video-option').toggle($('input[name="swgtheme_enable_video_library"]').is(':checked'));
+				$('.ticket-option').toggle($('input[name="swgtheme_enable_support_tickets"]').is(':checked'));
+				$('.help-option').toggle($('input[name="swgtheme_enable_contextual_help"]').is(':checked'));
+			}
+			
+			toggleOptions();
+			$('input[type="checkbox"]').on('change', toggleOptions);
+		});
+	})(jQuery);
 	</script>
 	<?php
 }
@@ -11389,212 +11813,266 @@ function swgtheme_multilang_page() {
 	<div class="wrap">
 		<h1>Multi-language & Translation Settings</h1>
 		
+		<h2 class="nav-tab-wrapper">
+			<a href="#language-switcher" class="nav-tab nav-tab-active">🌍 Language Switcher</a>
+			<a href="#plugin-integration" class="nav-tab">🔌 Plugin Integration</a>
+			<a href="#rtl-support" class="nav-tab">↔️ RTL Support</a>
+			<a href="#translation-management" class="nav-tab">📝 Translation Management</a>
+			<a href="#auto-translate" class="nav-tab">🤖 Auto-translate</a>
+			<a href="#lang-specific" class="nav-tab">🎯 Language-specific Content</a>
+		</h2>
+		
 		<form method="post" action="options.php">
 			<?php settings_fields( 'swgtheme_multilang_options' ); ?>
 			
-			<table class="form-table">
-				<!-- Language Switcher -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🌍 Language Switcher</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable Language Switcher</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_language_switcher" value="1" <?php checked( get_option( 'swgtheme_enable_language_switcher' ), 1 ); ?>>
-							Enable language switcher
-						</label>
-						<p class="description">Use shortcode: [language_switcher] or add to menu automatically</p>
-					</td>
-				</tr>
-				<tr class="switcher-option">
-					<th scope="row">Switcher Position</th>
-					<td>
-						<select name="swgtheme_switcher_position">
-							<option value="menu" <?php selected( get_option( 'swgtheme_switcher_position' ), 'menu' ); ?>>In Navigation Menu</option>
-							<option value="header" <?php selected( get_option( 'swgtheme_switcher_position' ), 'header' ); ?>>In Header</option>
-							<option value="footer" <?php selected( get_option( 'swgtheme_switcher_position' ), 'footer' ); ?>>In Footer</option>
-							<option value="shortcode" <?php selected( get_option( 'swgtheme_switcher_position' ), 'shortcode' ); ?>>Shortcode Only</option>
-						</select>
-					</td>
-				</tr>
-				<tr class="switcher-option">
-					<th scope="row">Switcher Style</th>
-					<td>
-						<select name="swgtheme_switcher_style">
-							<option value="dropdown" <?php selected( get_option( 'swgtheme_switcher_style' ), 'dropdown' ); ?>>Dropdown</option>
-							<option value="inline" <?php selected( get_option( 'swgtheme_switcher_style' ), 'inline' ); ?>>Inline Links</option>
-						</select>
-					</td>
-				</tr>
-				<tr class="switcher-option">
-					<th scope="row">Show Flags</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_switcher_flags" value="1" <?php checked( get_option( 'swgtheme_switcher_flags' ), 1 ); ?>>
-							Show country flags next to language names
-						</label>
-					</td>
-				</tr>
-				
-				<!-- Plugin Integration -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🔌 Plugin Integration</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">WPML Support</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_wpml_support" value="1" <?php checked( get_option( 'swgtheme_wpml_support' ), 1 ); ?>>
-							Enable WPML integration
-						</label>
-						<p class="description">Integrate with WPML if installed</p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Polylang Support</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_polylang_support" value="1" <?php checked( get_option( 'swgtheme_polylang_support' ), 1 ); ?>>
-							Enable Polylang integration
-						</label>
-						<p class="description">Integrate with Polylang if installed</p>
-					</td>
-				</tr>
-				
-				<!-- RTL Support -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">↔️ RTL Support</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable RTL</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_rtl" value="1" <?php checked( get_option( 'swgtheme_enable_rtl' ), 1 ); ?>>
-							Enable right-to-left language support
-						</label>
-					</td>
-				</tr>
-				<tr class="rtl-option">
-					<th scope="row">RTL Languages</th>
-					<td>
-						<input type="text" name="swgtheme_rtl_languages" value="<?php echo esc_attr( implode( ', ', get_option( 'swgtheme_rtl_languages', array( 'ar', 'he', 'fa', 'ur' ) ) ) ); ?>" class="regular-text">
-						<p class="description">Comma-separated language codes (e.g., ar, he, fa, ur)</p>
-					</td>
-				</tr>
-				<tr class="rtl-option">
-					<th scope="row">Mirror Layout</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_rtl_mirror_layout" value="1" <?php checked( get_option( 'swgtheme_rtl_mirror_layout' ), 1 ); ?>>
-							Automatically mirror entire layout for RTL languages
-						</label>
-					</td>
-				</tr>
-				
-				<!-- Translation Management -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">📝 Translation Management</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Translation Fallback</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_translation_fallback" value="1" <?php checked( get_option( 'swgtheme_translation_fallback' ), 1 ); ?>>
-							Fall back to English if translation not available
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Show Untranslated</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_show_untranslated" value="1" <?php checked( get_option( 'swgtheme_show_untranslated' ), 1 ); ?>>
-							Show original content if no translation exists
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Translation Notice</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_translation_notice" value="1" <?php checked( get_option( 'swgtheme_translation_notice' ), 1 ); ?>>
-							Show notice when viewing untranslated content
-						</label>
-					</td>
-				</tr>
-				
-				<!-- Auto-translate -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🤖 Auto-translate API</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable Auto-translate</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_auto_translate" value="1" <?php checked( get_option( 'swgtheme_enable_auto_translate' ), 1 ); ?>>
-							Enable automatic translation via API
-						</label>
-					</td>
-				</tr>
-				<tr class="translate-option">
-					<th scope="row">Translation API</th>
-					<td>
-						<select name="swgtheme_translate_api">
-							<option value="google" <?php selected( get_option( 'swgtheme_translate_api' ), 'google' ); ?>>Google Translate API</option>
-							<option value="deepl" <?php selected( get_option( 'swgtheme_translate_api' ), 'deepl' ); ?>>DeepL API</option>
-						</select>
-					</td>
-				</tr>
-				<tr class="translate-option">
-					<th scope="row">API Key</th>
-					<td>
-						<input type="text" name="swgtheme_translate_api_key" value="<?php echo esc_attr( get_option( 'swgtheme_translate_api_key' ) ); ?>" class="regular-text">
-						<p class="description">Enter your translation API key</p>
-					</td>
-				</tr>
-				
-				<!-- Language-specific Content -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🎯 Language-specific Content</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Language-specific Menus</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_lang_specific_menu" value="1" <?php checked( get_option( 'swgtheme_lang_specific_menu' ), 1 ); ?>>
-							Enable separate menu for each language
-						</label>
-						<p class="description">Creates menu locations like "Primary Menu (Español)"</p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Language-specific Widgets</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_lang_specific_widgets" value="1" <?php checked( get_option( 'swgtheme_lang_specific_widgets' ), 1 ); ?>>
-							Enable separate widget areas for each language
-						</label>
-						<p class="description">Creates sidebars like "Sidebar (Español)"</p>
-					</td>
-				</tr>
-			</table>
+			<!-- Language Switcher Tab -->
+			<div id="language-switcher" class="tab-content active">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable Language Switcher</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_language_switcher" value="1" <?php checked( get_option( 'swgtheme_enable_language_switcher' ), 1 ); ?>>
+								Enable language switcher
+							</label>
+							<p class="description">Use shortcode: [language_switcher] or add to menu automatically</p>
+						</td>
+					</tr>
+					<tr class="switcher-option">
+						<th scope="row">Switcher Position</th>
+						<td>
+							<select name="swgtheme_switcher_position">
+								<option value="menu" <?php selected( get_option( 'swgtheme_switcher_position' ), 'menu' ); ?>>In Navigation Menu</option>
+								<option value="header" <?php selected( get_option( 'swgtheme_switcher_position' ), 'header' ); ?>>In Header</option>
+								<option value="footer" <?php selected( get_option( 'swgtheme_switcher_position' ), 'footer' ); ?>>In Footer</option>
+								<option value="shortcode" <?php selected( get_option( 'swgtheme_switcher_position' ), 'shortcode' ); ?>>Shortcode Only</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="switcher-option">
+						<th scope="row">Switcher Style</th>
+						<td>
+							<select name="swgtheme_switcher_style">
+								<option value="dropdown" <?php selected( get_option( 'swgtheme_switcher_style' ), 'dropdown' ); ?>>Dropdown</option>
+								<option value="inline" <?php selected( get_option( 'swgtheme_switcher_style' ), 'inline' ); ?>>Inline Links</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="switcher-option">
+						<th scope="row">Show Flags</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_switcher_flags" value="1" <?php checked( get_option( 'swgtheme_switcher_flags' ), 1 ); ?>>
+								Show country flags next to language names
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Plugin Integration Tab -->
+			<div id="plugin-integration" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">WPML Support</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_wpml_support" value="1" <?php checked( get_option( 'swgtheme_wpml_support' ), 1 ); ?>>
+								Enable WPML integration
+							</label>
+							<p class="description">Integrate with WPML if installed</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Polylang Support</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_polylang_support" value="1" <?php checked( get_option( 'swgtheme_polylang_support' ), 1 ); ?>>
+								Enable Polylang integration
+							</label>
+							<p class="description">Integrate with Polylang if installed</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- RTL Support Tab -->
+			<div id="rtl-support" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable RTL</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_rtl" value="1" <?php checked( get_option( 'swgtheme_enable_rtl' ), 1 ); ?>>
+								Enable right-to-left language support
+							</label>
+						</td>
+					</tr>
+					<tr class="rtl-option">
+						<th scope="row">RTL Languages</th>
+						<td>
+							<input type="text" name="swgtheme_rtl_languages" value="<?php echo esc_attr( implode( ', ', get_option( 'swgtheme_rtl_languages', array( 'ar', 'he', 'fa', 'ur' ) ) ) ); ?>" class="regular-text">
+							<p class="description">Comma-separated language codes (e.g., ar, he, fa, ur)</p>
+						</td>
+					</tr>
+					<tr class="rtl-option">
+						<th scope="row">Mirror Layout</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_rtl_mirror_layout" value="1" <?php checked( get_option( 'swgtheme_rtl_mirror_layout' ), 1 ); ?>>
+								Automatically mirror entire layout for RTL languages
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Translation Management Tab -->
+			<div id="translation-management" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Translation Fallback</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_translation_fallback" value="1" <?php checked( get_option( 'swgtheme_translation_fallback' ), 1 ); ?>>
+								Fall back to English if translation not available
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Show Untranslated</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_show_untranslated" value="1" <?php checked( get_option( 'swgtheme_show_untranslated' ), 1 ); ?>>
+								Show original content if no translation exists
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Translation Notice</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_translation_notice" value="1" <?php checked( get_option( 'swgtheme_translation_notice' ), 1 ); ?>>
+								Show notice when viewing untranslated content
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Auto-translate Tab -->
+			<div id="auto-translate" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable Auto-translate</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_auto_translate" value="1" <?php checked( get_option( 'swgtheme_enable_auto_translate' ), 1 ); ?>>
+								Enable automatic translation via API
+							</label>
+						</td>
+					</tr>
+					<tr class="translate-option">
+						<th scope="row">Translation API</th>
+						<td>
+							<select name="swgtheme_translate_api">
+								<option value="google" <?php selected( get_option( 'swgtheme_translate_api' ), 'google' ); ?>>Google Translate API</option>
+								<option value="deepl" <?php selected( get_option( 'swgtheme_translate_api' ), 'deepl' ); ?>>DeepL API</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="translate-option">
+						<th scope="row">API Key</th>
+						<td>
+							<input type="text" name="swgtheme_translate_api_key" value="<?php echo esc_attr( get_option( 'swgtheme_translate_api_key' ) ); ?>" class="regular-text">
+							<p class="description">Enter your translation API key</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Language-specific Content Tab -->
+			<div id="lang-specific" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Language-specific Menus</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_lang_specific_menu" value="1" <?php checked( get_option( 'swgtheme_lang_specific_menu' ), 1 ); ?>>
+								Enable separate menu for each language
+							</label>
+							<p class="description">Creates menu locations like "Primary Menu (Español)"</p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Language-specific Widgets</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_lang_specific_widgets" value="1" <?php checked( get_option( 'swgtheme_lang_specific_widgets' ), 1 ); ?>>
+								Enable separate widget areas for each language
+							</label>
+							<p class="description">Creates sidebars like "Sidebar (Español)"</p>
+						</td>
+					</tr>
+				</table>
+			</div>
 			
 			<?php submit_button(); ?>
 		</form>
 	</div>
 	
+	<style>
+	.wrap .tab-content {
+		display: none !important;
+	}
+	.wrap .tab-content.active {
+		display: block !important;
+	}
+	</style>
+	
 	<script>
-	jQuery(document).ready(function($) {
-		function toggleOptions() {
-			$('.switcher-option').toggle($('input[name="swgtheme_enable_language_switcher"]').is(':checked'));
-			$('.rtl-option').toggle($('input[name="swgtheme_enable_rtl"]').is(':checked'));
-			$('.translate-option').toggle($('input[name="swgtheme_enable_auto_translate"]').is(':checked'));
+	(function($) {
+		function switchTab(tabId) {
+			$('.nav-tab').removeClass('nav-tab-active');
+			$('.tab-content').removeClass('active');
+			$('a[href="' + tabId + '"]').addClass('nav-tab-active');
+			$(tabId).addClass('active');
+			
+			if (history.pushState) {
+				history.pushState(null, null, tabId);
+			}
 		}
 		
-		toggleOptions();
-		$('input[name="swgtheme_enable_language_switcher"], input[name="swgtheme_enable_rtl"], input[name="swgtheme_enable_auto_translate"]').on('change', toggleOptions);
-	});
+		$(document).ready(function() {
+			// Tab click handler
+			$('.nav-tab').on('click', function(e) {
+				e.preventDefault();
+				switchTab($(this).attr('href'));
+			});
+			
+			// Handle initial hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
+			
+			// Toggle dependent options
+			function toggleOptions() {
+				$('.switcher-option').toggle($('input[name="swgtheme_enable_language_switcher"]').is(':checked'));
+				$('.rtl-option').toggle($('input[name="swgtheme_enable_rtl"]').is(':checked'));
+				$('.translate-option').toggle($('input[name="swgtheme_enable_auto_translate"]').is(':checked'));
+			}
+			
+			toggleOptions();
+			$('input[type="checkbox"]').on('change', toggleOptions);
+		});
+	})(jQuery);
 	</script>
 	<?php
 }
@@ -12055,287 +12533,345 @@ function swgtheme_security_page() {
 			<strong>⚠️ Warning:</strong> Some security features may affect site functionality. Test thoroughly before enabling on production sites.
 		</div>
 		
+		<h2 class="nav-tab-wrapper">
+			<a href="#login-security" class="nav-tab nav-tab-active">🔐 Login Security</a>
+			<a href="#ip-blocking" class="nav-tab">🌐 IP Blocking</a>
+			<a href="#file-security" class="nav-tab">📁 File Security</a>
+			<a href="#database-security" class="nav-tab">💾 Database Security</a>
+			<a href="#wordpress-security" class="nav-tab">🔧 WordPress Security</a>
+			<a href="#admin-security" class="nav-tab">⚙️ Admin Security</a>
+			<a href="#forms-security" class="nav-tab">📝 Forms Security</a>
+			<a href="#security-headers" class="nav-tab">🛡️ Security Headers</a>
+		</h2>
+		
 		<form method="post" action="options.php">
 			<?php settings_fields( 'swgtheme_security_options' ); ?>
 			
-			<table class="form-table">
-				<!-- Login Security -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🔐 Login Security</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Login Attempt Limiting</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_login_limiting" value="1" <?php checked( get_option( 'swgtheme_enable_login_limiting' ), 1 ); ?>>
-							Enable login attempt limiting
-						</label>
-					</td>
-				</tr>
-				<tr class="login-option">
-					<th scope="row">Max Login Attempts</th>
-					<td>
-						<input type="number" name="swgtheme_login_attempts" value="<?php echo esc_attr( get_option( 'swgtheme_login_attempts', 5 ) ); ?>" min="1" max="20" style="width: 80px;">
-						<p class="description">Maximum failed login attempts before lockout</p>
-					</td>
-				</tr>
-				<tr class="login-option">
-					<th scope="row">Lockout Duration</th>
-					<td>
-						<input type="number" name="swgtheme_lockout_duration" value="<?php echo esc_attr( get_option( 'swgtheme_lockout_duration', 30 ) ); ?>" min="5" max="1440" style="width: 80px;"> minutes
-						<p class="description">How long to lock out after max attempts</p>
-					</td>
-				</tr>
-				<tr class="login-option">
-					<th scope="row">Auto-block IPs</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_auto_block_failed_login" value="1" <?php checked( get_option( 'swgtheme_auto_block_failed_login' ), 1 ); ?>>
-							Automatically block IPs after max failed attempts
-						</label>
-					</td>
-				</tr>
-				
-				<!-- IP Security -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🌐 IP Blocking</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable IP Blocking</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_ip_blocking" value="1" <?php checked( get_option( 'swgtheme_enable_ip_blocking' ), 1 ); ?>>
-							Enable IP address blocking
-						</label>
-					</td>
-				</tr>
-				<tr class="ip-option">
-					<th scope="row">Blocked IPs</th>
-					<td>
-						<textarea name="swgtheme_blocked_ips" rows="5" class="large-text"><?php echo esc_textarea( get_option( 'swgtheme_blocked_ips' ) ); ?></textarea>
-						<p class="description">One IP per line. Supports wildcards (e.g., 192.168.1.*)</p>
-					</td>
-				</tr>
-				<tr class="ip-option">
-					<th scope="row">Whitelisted IPs</th>
-					<td>
-						<textarea name="swgtheme_whitelist_ips" rows="5" class="large-text"><?php echo esc_textarea( get_option( 'swgtheme_whitelist_ips' ) ); ?></textarea>
-						<p class="description">IPs that should never be blocked (one per line)</p>
-					</td>
-				</tr>
-				
-				<!-- File Security -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">📁 File Security</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Malicious File Detection</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_file_detection" value="1" <?php checked( get_option( 'swgtheme_enable_file_detection' ), 1 ); ?>>
-							Enable malicious file detection
-						</label>
-					</td>
-				</tr>
-				<tr class="file-option">
-					<th scope="row">Scan Uploads</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_scan_uploads" value="1" <?php checked( get_option( 'swgtheme_scan_uploads' ), 1 ); ?>>
-							Scan uploaded files for malicious code
-						</label>
-					</td>
-				</tr>
-				<tr class="file-option">
-					<th scope="row">Allowed File Types</th>
-					<td>
-						<input type="text" name="swgtheme_allowed_file_types" value="<?php echo esc_attr( get_option( 'swgtheme_allowed_file_types', 'jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx' ) ); ?>" class="large-text">
-						<p class="description">Comma-separated file extensions</p>
-					</td>
-				</tr>
-				
-				<!-- Database Security -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">💾 Database Security</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Database Hardening</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_db_hardening" value="1" <?php checked( get_option( 'swgtheme_enable_db_hardening' ), 1 ); ?>>
-							Enable database security hardening
-						</label>
-					</td>
-				</tr>
-				<tr class="db-option">
-					<th scope="row">Hide Database Errors</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_disable_db_error_display" value="1" <?php checked( get_option( 'swgtheme_disable_db_error_display' ), 1 ); ?>>
-							Suppress database error messages
-						</label>
-						<p class="description">Prevents exposure of database structure</p>
-					</td>
-				</tr>
-				
-				<!-- WordPress Security -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🔧 WordPress Security</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Disable XML-RPC</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_disable_xmlrpc" value="1" <?php checked( get_option( 'swgtheme_disable_xmlrpc' ), 1 ); ?>>
-							Disable XML-RPC (prevents brute force attacks)
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Disable File Editing</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_disable_file_editing" value="1" <?php checked( get_option( 'swgtheme_disable_file_editing' ), 1 ); ?>>
-							Disable theme and plugin editor in admin
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Hide WordPress Version</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_hide_wp_version" value="1" <?php checked( get_option( 'swgtheme_hide_wp_version' ), 1 ); ?>>
-							Hide WordPress version from public view
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Disable User Enumeration</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_disable_user_enumeration" value="1" <?php checked( get_option( 'swgtheme_disable_user_enumeration' ), 1 ); ?>>
-							Prevent username discovery via author archives
-						</label>
-					</td>
-				</tr>
-				
-				<!-- Admin Security -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">⚙️ Admin Security</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Custom Admin URL</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_custom_admin_url" value="1" <?php checked( get_option( 'swgtheme_custom_admin_url' ), 1 ); ?>>
-							Enable custom admin URL
-						</label>
-						<p class="description">⚠️ Warning: Test carefully! May break some plugins.</p>
-					</td>
-				</tr>
-				<tr class="admin-url-option">
-					<th scope="row">Admin URL Slug</th>
-					<td>
-						<input type="text" name="swgtheme_admin_url_slug" value="<?php echo esc_attr( get_option( 'swgtheme_admin_url_slug', 'admin-panel' ) ); ?>" class="regular-text">
-						<p class="description">Access admin at: <?php echo home_url( '/' ); ?><strong>[slug]</strong></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row">Custom Login URL</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_custom_login_url" value="1" <?php checked( get_option( 'swgtheme_custom_login_url' ), 1 ); ?>>
-							Enable custom login URL
-						</label>
-					</td>
-				</tr>
-				<tr class="login-url-option">
-					<th scope="row">Login URL Slug</th>
-					<td>
-						<input type="text" name="swgtheme_login_url_slug" value="<?php echo esc_attr( get_option( 'swgtheme_login_url_slug', 'login' ) ); ?>" class="regular-text">
-						<p class="description">Access login at: <?php echo home_url( '/' ); ?><strong>[slug]</strong></p>
-					</td>
-				</tr>
-				
-				<!-- Forms Security -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">📝 Forms Security</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Honeypot Protection</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_honeypot" value="1" <?php checked( get_option( 'swgtheme_enable_honeypot' ), 1 ); ?>>
-							Enable honeypot anti-spam protection
-						</label>
-					</td>
-				</tr>
-				<tr class="honeypot-option">
-					<th scope="row">Protect Forms</th>
-					<td>
-						<label style="display: block;">
-							<input type="checkbox" name="swgtheme_honeypot_forms[]" value="comment" <?php checked( in_array( 'comment', get_option( 'swgtheme_honeypot_forms', array( 'comment' ) ) ) ); ?>>
-							Comment forms
-						</label>
-						<label style="display: block;">
-							<input type="checkbox" name="swgtheme_honeypot_forms[]" value="registration" <?php checked( in_array( 'registration', get_option( 'swgtheme_honeypot_forms', array() ) ) ); ?>>
-							Registration forms
-						</label>
-					</td>
-				</tr>
-				
-				<!-- Security Headers -->
-				<tr>
-					<th colspan="2"><h2 style="margin: 30px 0 10px 0;">🛡️ HTTP Security Headers</h2></th>
-				</tr>
-				<tr>
-					<th scope="row">Enable Security Headers</th>
-					<td>
-						<label>
-							<input type="checkbox" name="swgtheme_enable_security_headers" value="1" <?php checked( get_option( 'swgtheme_enable_security_headers' ), 1 ); ?>>
-							Enable HTTP security headers
-						</label>
-					</td>
-				</tr>
-				<tr class="headers-option">
-					<th scope="row">X-Frame-Options</th>
-					<td>
-						<select name="swgtheme_x_frame_options">
-							<option value="DENY" <?php selected( get_option( 'swgtheme_x_frame_options' ), 'DENY' ); ?>>DENY</option>
-							<option value="SAMEORIGIN" <?php selected( get_option( 'swgtheme_x_frame_options', 'SAMEORIGIN' ), 'SAMEORIGIN' ); ?>>SAMEORIGIN</option>
-						</select>
-						<p class="description">Prevents clickjacking attacks</p>
-					</td>
-				</tr>
-				<tr class="headers-option">
-					<th scope="row">Content Security Policy</th>
-					<td>
-						<input type="text" name="swgtheme_content_security_policy" value="<?php echo esc_attr( get_option( 'swgtheme_content_security_policy' ) ); ?>" class="large-text">
-						<p class="description">Example: default-src 'self'; script-src 'self' 'unsafe-inline'</p>
-					</td>
-				</tr>
-			</table>
+			<!-- Login Security Tab -->
+			<div id="login-security" class="tab-content active">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Login Attempt Limiting</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_login_limiting" value="1" <?php checked( get_option( 'swgtheme_enable_login_limiting' ), 1 ); ?>>
+								Enable login attempt limiting
+							</label>
+						</td>
+					</tr>
+					<tr class="login-option">
+						<th scope="row">Max Login Attempts</th>
+						<td>
+							<input type="number" name="swgtheme_login_attempts" value="<?php echo esc_attr( get_option( 'swgtheme_login_attempts', 5 ) ); ?>" min="1" max="20" style="width: 80px;">
+							<p class="description">Maximum failed login attempts before lockout</p>
+						</td>
+					</tr>
+					<tr class="login-option">
+						<th scope="row">Lockout Duration</th>
+						<td>
+							<input type="number" name="swgtheme_lockout_duration" value="<?php echo esc_attr( get_option( 'swgtheme_lockout_duration', 30 ) ); ?>" min="5" max="1440" style="width: 80px;"> minutes
+							<p class="description">How long to lock out after max attempts</p>
+						</td>
+					</tr>
+					<tr class="login-option">
+						<th scope="row">Auto-block IPs</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_auto_block_failed_login" value="1" <?php checked( get_option( 'swgtheme_auto_block_failed_login' ), 1 ); ?>>
+								Automatically block IPs after max failed attempts
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- IP Blocking Tab -->
+			<div id="ip-blocking" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable IP Blocking</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_ip_blocking" value="1" <?php checked( get_option( 'swgtheme_enable_ip_blocking' ), 1 ); ?>>
+								Enable IP address blocking
+							</label>
+						</td>
+					</tr>
+					<tr class="ip-option">
+						<th scope="row">Blocked IPs</th>
+						<td>
+							<textarea name="swgtheme_blocked_ips" rows="5" class="large-text"><?php echo esc_textarea( get_option( 'swgtheme_blocked_ips' ) ); ?></textarea>
+							<p class="description">One IP per line. Supports wildcards (e.g., 192.168.1.*)</p>
+						</td>
+					</tr>
+					<tr class="ip-option">
+						<th scope="row">Whitelisted IPs</th>
+						<td>
+							<textarea name="swgtheme_whitelist_ips" rows="5" class="large-text"><?php echo esc_textarea( get_option( 'swgtheme_whitelist_ips' ) ); ?></textarea>
+							<p class="description">IPs that should never be blocked (one per line)</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- File Security Tab -->
+			<div id="file-security" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Malicious File Detection</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_file_detection" value="1" <?php checked( get_option( 'swgtheme_enable_file_detection' ), 1 ); ?>>
+								Enable malicious file detection
+							</label>
+						</td>
+					</tr>
+					<tr class="file-option">
+						<th scope="row">Scan Uploads</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_scan_uploads" value="1" <?php checked( get_option( 'swgtheme_scan_uploads' ), 1 ); ?>>
+								Scan uploaded files for malicious code
+							</label>
+						</td>
+					</tr>
+					<tr class="file-option">
+						<th scope="row">Allowed File Types</th>
+						<td>
+							<input type="text" name="swgtheme_allowed_file_types" value="<?php echo esc_attr( get_option( 'swgtheme_allowed_file_types', 'jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx' ) ); ?>" class="large-text">
+							<p class="description">Comma-separated file extensions</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Database Security Tab -->
+			<div id="database-security" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Database Hardening</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_db_hardening" value="1" <?php checked( get_option( 'swgtheme_enable_db_hardening' ), 1 ); ?>>
+								Enable database security hardening
+							</label>
+						</td>
+					</tr>
+					<tr class="db-option">
+						<th scope="row">Hide Database Errors</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_disable_db_error_display" value="1" <?php checked( get_option( 'swgtheme_disable_db_error_display' ), 1 ); ?>>
+								Suppress database error messages
+							</label>
+							<p class="description">Prevents exposure of database structure</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- WordPress Security Tab -->
+			<div id="wordpress-security" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Disable XML-RPC</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_disable_xmlrpc" value="1" <?php checked( get_option( 'swgtheme_disable_xmlrpc' ), 1 ); ?>>
+								Disable XML-RPC (prevents brute force attacks)
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Disable File Editing</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_disable_file_editing" value="1" <?php checked( get_option( 'swgtheme_disable_file_editing' ), 1 ); ?>>
+								Disable theme and plugin editor in admin
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Hide WordPress Version</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_hide_wp_version" value="1" <?php checked( get_option( 'swgtheme_hide_wp_version' ), 1 ); ?>>
+								Hide WordPress version from public view
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Disable User Enumeration</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_disable_user_enumeration" value="1" <?php checked( get_option( 'swgtheme_disable_user_enumeration' ), 1 ); ?>>
+								Prevent username discovery via author archives
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Admin Security Tab -->
+			<div id="admin-security" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Custom Admin URL</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_custom_admin_url" value="1" <?php checked( get_option( 'swgtheme_custom_admin_url' ), 1 ); ?>>
+								Enable custom admin URL
+							</label>
+							<p class="description">⚠️ Warning: Test carefully! May break some plugins.</p>
+						</td>
+					</tr>
+					<tr class="admin-url-option">
+						<th scope="row">Admin URL Slug</th>
+						<td>
+							<input type="text" name="swgtheme_admin_url_slug" value="<?php echo esc_attr( get_option( 'swgtheme_admin_url_slug', 'admin-panel' ) ); ?>" class="regular-text">
+							<p class="description">Access admin at: <?php echo home_url( '/' ); ?><strong>[slug]</strong></p>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Custom Login URL</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_custom_login_url" value="1" <?php checked( get_option( 'swgtheme_custom_login_url' ), 1 ); ?>>
+								Enable custom login URL
+							</label>
+						</td>
+					</tr>
+					<tr class="login-url-option">
+						<th scope="row">Login URL Slug</th>
+						<td>
+							<input type="text" name="swgtheme_login_url_slug" value="<?php echo esc_attr( get_option( 'swgtheme_login_url_slug', 'login' ) ); ?>" class="regular-text">
+							<p class="description">Access login at: <?php echo home_url( '/' ); ?><strong>[slug]</strong></p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Forms Security Tab -->
+			<div id="forms-security" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Honeypot Protection</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_honeypot" value="1" <?php checked( get_option( 'swgtheme_enable_honeypot' ), 1 ); ?>>
+								Enable honeypot anti-spam protection
+							</label>
+						</td>
+					</tr>
+					<tr class="honeypot-option">
+						<th scope="row">Protect Forms</th>
+						<td>
+							<label style="display: block;">
+								<input type="checkbox" name="swgtheme_honeypot_forms[]" value="comment" <?php checked( in_array( 'comment', get_option( 'swgtheme_honeypot_forms', array( 'comment' ) ) ) ); ?>>
+								Comment forms
+							</label>
+							<label style="display: block;">
+								<input type="checkbox" name="swgtheme_honeypot_forms[]" value="registration" <?php checked( in_array( 'registration', get_option( 'swgtheme_honeypot_forms', array() ) ) ); ?>>
+								Registration forms
+							</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- Security Headers Tab -->
+			<div id="security-headers" class="tab-content">
+				<table class="form-table">
+					<tr>
+						<th scope="row">Enable Security Headers</th>
+						<td>
+							<label>
+								<input type="checkbox" name="swgtheme_enable_security_headers" value="1" <?php checked( get_option( 'swgtheme_enable_security_headers' ), 1 ); ?>>
+								Enable HTTP security headers
+							</label>
+						</td>
+					</tr>
+					<tr class="headers-option">
+						<th scope="row">X-Frame-Options</th>
+						<td>
+							<select name="swgtheme_x_frame_options">
+								<option value="DENY" <?php selected( get_option( 'swgtheme_x_frame_options' ), 'DENY' ); ?>>DENY</option>
+								<option value="SAMEORIGIN" <?php selected( get_option( 'swgtheme_x_frame_options', 'SAMEORIGIN' ), 'SAMEORIGIN' ); ?>>SAMEORIGIN</option>
+							</select>
+							<p class="description">Prevents clickjacking attacks</p>
+						</td>
+					</tr>
+					<tr class="headers-option">
+						<th scope="row">Content Security Policy</th>
+						<td>
+							<input type="text" name="swgtheme_content_security_policy" value="<?php echo esc_attr( get_option( 'swgtheme_content_security_policy' ) ); ?>" class="large-text">
+							<p class="description">Example: default-src 'self'; script-src 'self' 'unsafe-inline'</p>
+						</td>
+					</tr>
+				</table>
+			</div>
 			
 			<?php submit_button(); ?>
 		</form>
 	</div>
 	
+	<style>
+	.wrap .tab-content {
+		display: none !important;
+	}
+	.wrap .tab-content.active {
+		display: block !important;
+	}
+	</style>
+	
 	<script>
-	jQuery(document).ready(function($) {
-		function toggleOptions() {
-			$('.login-option').toggle($('input[name="swgtheme_enable_login_limiting"]').is(':checked'));
-			$('.ip-option').toggle($('input[name="swgtheme_enable_ip_blocking"]').is(':checked'));
-			$('.file-option').toggle($('input[name="swgtheme_enable_file_detection"]').is(':checked'));
-			$('.db-option').toggle($('input[name="swgtheme_enable_db_hardening"]').is(':checked'));
-			$('.admin-url-option').toggle($('input[name="swgtheme_custom_admin_url"]').is(':checked'));
-			$('.login-url-option').toggle($('input[name="swgtheme_custom_login_url"]').is(':checked'));
-			$('.honeypot-option').toggle($('input[name="swgtheme_enable_honeypot"]').is(':checked'));
-			$('.headers-option').toggle($('input[name="swgtheme_enable_security_headers"]').is(':checked'));
+	(function($) {
+		function switchTab(tabId) {
+			$('.nav-tab').removeClass('nav-tab-active');
+			$('.tab-content').removeClass('active');
+			$('a[href="' + tabId + '"]').addClass('nav-tab-active');
+			$(tabId).addClass('active');
+			
+			if (history.pushState) {
+				history.pushState(null, null, tabId);
+			}
 		}
 		
-		toggleOptions();
-		$('input[type="checkbox"]').on('change', toggleOptions);
-	});
+		$(document).ready(function() {
+			// Tab click handler
+			$('.nav-tab').on('click', function(e) {
+				e.preventDefault();
+				switchTab($(this).attr('href'));
+			});
+			
+			// Handle initial hash
+			if (window.location.hash) {
+				switchTab(window.location.hash);
+			}
+			
+			// Handle browser back/forward
+			$(window).on('hashchange', function() {
+				if (window.location.hash) {
+					switchTab(window.location.hash);
+				}
+			});
+			
+			// Toggle dependent options
+			function toggleOptions() {
+				$('.login-option').toggle($('input[name="swgtheme_enable_login_limiting"]').is(':checked'));
+				$('.ip-option').toggle($('input[name="swgtheme_enable_ip_blocking"]').is(':checked'));
+				$('.file-option').toggle($('input[name="swgtheme_enable_file_detection"]').is(':checked'));
+				$('.db-option').toggle($('input[name="swgtheme_enable_db_hardening"]').is(':checked'));
+				$('.admin-url-option').toggle($('input[name="swgtheme_custom_admin_url"]').is(':checked'));
+				$('.login-url-option').toggle($('input[name="swgtheme_custom_login_url"]').is(':checked'));
+				$('.honeypot-option').toggle($('input[name="swgtheme_enable_honeypot"]').is(':checked'));
+				$('.headers-option').toggle($('input[name="swgtheme_enable_security_headers"]').is(':checked'));
+			}
+			
+			toggleOptions();
+			$('input[type="checkbox"]').on('change', toggleOptions);
+		});
+	})(jQuery);
 	</script>
 	<?php
 }
